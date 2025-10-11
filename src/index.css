@@ -1,0 +1,60 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+
+@layer base {
+  :root {
+    /* Light mode */
+    --bg: #f6f8fa;
+    --card-bg: #ffffff;
+    --text-primary: #1f2328;
+    --text-secondary: #656d76;
+    --primary: #0969da;
+    --accent: #035fc7;
+    --border: #d0d7de;
+    --success: #1a7f37;
+    --error: #cf222e;
+  }
+
+  .dark {
+    /* Dark mode */
+    --bg: #0d1117;
+    --card-bg: #161b22;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --primary: #2f81f7;
+    --accent: #388bfd;
+    --border: #30363d;
+    --success: #2ea043;
+    --error: #f85149;
+  }
+
+  body {
+    @apply bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-[var(--text-primary)];
+  }
+
+  p, span, li {
+    @apply text-[var(--text-secondary)];
+  }
+
+  a {
+    @apply text-[var(--primary)] hover:text-[var(--accent)] transition-colors;
+  }
+
+  button {
+    @apply bg-[var(--primary)] text-white font-medium px-4 py-2 rounded-lg hover:bg-[var(--accent)] transition-colors;
+  }
+
+  input, textarea, select {
+    @apply bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-primary)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--primary)];
+  }
+
+  .card {
+    @apply bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl shadow-sm p-4 transition-colors;
+  }
+}
