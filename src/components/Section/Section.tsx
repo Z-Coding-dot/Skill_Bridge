@@ -11,7 +11,7 @@ const Section = ({children, className ="", id}: SectionsProps) => {
  return (
     <section
     id={id}
-    className={`py-12 sm:py-16 lg:py-24 bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-300 ${className}`}>
+    className={`2xl:py-4 py-[1.563rem] ${className}`}>
     <Container>{children}</Container>
   </section>
   )

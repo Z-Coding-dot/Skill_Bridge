@@ -2,7 +2,8 @@ import Section from "../../Section/Section";
 
 export default function Hero() {
   return (
-    <Section className="text-center">
+    <Section>
+      <div className="flex flex-col items-center justify-center min-h-100">
       <h1 className="text-3xl sm:text-5xl font-bold mb-4">
         Connect Talent. Build Skills. Get Hired.
       </h1>
@@ -14,6 +15,8 @@ export default function Hero() {
         <button className="bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-primary)]">
           Post a Task
         </button>
+      </div>
+
       </div>
     </Section>
   );

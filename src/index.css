@@ -23,13 +23,21 @@
     --card-bg: #161b22;
     --text-primary: #e6edf3;
     --text-secondary: #8b949e;
-    --primary: #2f81f7;
-    --accent: #388bfd;
+    /* --primary: #2f81f7; */
+    /* --accent: #388bfd; */
+    --primary: #19BFB7;
+    --accent: #199d96;
     --border: #30363d;
     --success: #2ea043;
     --error: #f85149;
   }
-
+  
+  @theme inline{
+    --breakpoint-2xl: 90rem;
+	  --breakpoint-3xl: 120rem;
+	  --font-inter: 'Inter', ui-sans-serif, sans-serif;
+  }
+  
   body {
     @apply bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-300;
   }
@@ -43,11 +51,11 @@
   }
 
   a {
-    @apply text-[var(--primary)] hover:text-[var(--accent)] transition-colors;
+    @apply text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors;
   }
 
   button {
-    @apply bg-[var(--primary)] text-white font-medium px-4 py-2 rounded-lg hover:bg-[var(--accent)] transition-colors;
+    @apply bg-[var(--primary)] text-white font-medium px-4 py-2 rounded-full hover:bg-[var(--accent)] transition-colors;
   }
 
   input, textarea, select {
