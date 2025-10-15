@@ -9,17 +9,17 @@ export const Header = () => {
     setMenuOpen(!menuOpen);
   }
   return (
-    <section className='fixed w-full'>
-      <header className='z-10 relative flex items-center justify-between px-4 md:px-22 bg-[var(--bg)]'>
+    <section className='fixed w-full z-50'>
+      <header className='z-20 relative flex items-center justify-between px-4 md:px-22 backdrop-blur-3xl drop-shadow-lg bg-'>
           <a href="#">
             <img src={logo} alt="SkillBridge Logo" className='w-35 md:w-45' />
           </a>
           {/* Desktop Navbar */}
           <nav className='hidden sm:block'>
           <ul className='flex items-center gap-6'>
-              <li><Link to={'/'} >How it Works</Link></li>
-              <li><Link to={'/'} >Categories</Link></li>
-              <li><Link to={'/'} >FAQ</Link></li>
+              <li className='hover:underline '><Link to={'/'} >Home</Link></li>
+              <li className='hover:underline '><Link to={'/'} >Task Board</Link></li>
+              <li className='hover:underline '><Link to={'/'} >Dashboard</Link></li>
             </ul>
             
           </nav>
