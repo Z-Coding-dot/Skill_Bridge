@@ -28,7 +28,7 @@ export const exploreCategories: HowItsWorksProps[] = [
         icon: CodeIcon,
     },
     {
-        title: "Development",
+        title: "Case Studying",
         description: "Web, Mobile & Software",
         opportunities: "265 Opportunities",
         icon: CodeIcon,

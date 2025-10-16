@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import  logo  from '../../assets/header/SkillBridge.svg';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import * as m from 'motion/react-client'
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,9 +31,22 @@ export const Header = () => {
            absolute inset-0 min-h-screen sm:hidden z-50 transition-transform duration-300`}>
           <nav className='flex flex-col items-start'>
           <ul className='mt-20 mx-16'>
-              <li className='my-4 font-semibold text-2xl'><Link to={'/'} >How it Works</Link></li>
-              <li className='my-4 font-semibold text-2xl'><Link to={'/'} >Categories</Link></li>
-              <li className='my-4 font-semibold text-2xl'><Link to={'/'} >FAQ</Link></li>
+              <m.li 
+              initial={{ opacity: 0, y: -110 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.0, delay: 1.2}}
+              
+               className='my-4 font-semibold text-2xl'><Link to={'/'} >How it Works</Link></m.li>
+              <m.li 
+              initial={{ opacity: 0, y: -150 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.9}}
+               className='my-4 font-semibold text-2xl'><Link to={'/'} >Categories</Link></m.li>
+              <m.li 
+              initial={{ opacity: 0, y: -190 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.3, delay: 0.7}}
+               className='my-4 font-semibold text-2xl'><Link to={'/'} >FAQ</Link></m.li>
             </ul>
           </nav>
           </div>

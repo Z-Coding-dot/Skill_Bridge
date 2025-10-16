@@ -7,4 +7,5 @@ export interface HowItsWorksProps {
     color?: string;
     iconBg?: string;
     opportunities?: string;
+    cardBg?: string;
 }
