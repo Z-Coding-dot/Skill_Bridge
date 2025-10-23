@@ -11,7 +11,7 @@ export const Header = () => {
   }
   return (
     <section className='fixed w-full z-50'>
-      <header className='z-20 relative flex items-center justify-between px-4 md:px-22 backdrop-blur-3xl drop-shadow-lg bg-'>
+      <header className='z-20 relative flex items-center justify-between px-3 md:px-22 backdrop-blur-3xl drop-shadow-lg bg-'>
           <a href="#">
             <img src={logo} alt="SkillBridge Logo" className='w-35 md:w-45' />
           </a>
@@ -34,25 +34,26 @@ export const Header = () => {
               <m.li 
               initial={{ opacity: 0, y: -110 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.0, delay: 1.2}}
+              transition={{ duration: 1.0, delay: 0.7}}
               
                className='my-4 font-semibold text-2xl'><Link to={'/'} >How it Works</Link></m.li>
               <m.li 
               initial={{ opacity: 0, y: -150 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.9}}
+              transition={{ duration: 1.2, delay: 0.5}}
                className='my-4 font-semibold text-2xl'><Link to={'/'} >Categories</Link></m.li>
               <m.li 
               initial={{ opacity: 0, y: -190 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.3, delay: 0.7}}
+              transition={{ duration: 1.3, delay: 0.3}}
                className='my-4 font-semibold text-2xl'><Link to={'/'} >FAQ</Link></m.li>
             </ul>
           </nav>
           </div>
 
           <div className='flex items-center gap-4'>
-          <button>Sign in</button>
+          <button className='hidden sm:block bg-[var(--card-bg)] text-[var(--text-primary)] px-4 py-1.5 rounded-lg hover:bg-[var(--accent)] transition-colors duration-500 ease-in-out'>Log in</button>
+          <button>Sign Up</button>
           {menuOpen ? (
             <X onClick={handleMenu} className={'block sm:hidden size-7 cursor-pointer z-50'} />
           ): (

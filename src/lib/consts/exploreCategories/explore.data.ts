@@ -1,5 +1,5 @@
 import type { HowItsWorksProps } from '../.././../types/howWorks'
-import { CodeIcon } from 'lucide-react'
+import { BadgePercent, BicepsFlexed, BookOpen, Briefcase, CodeIcon, SquarePen } from 'lucide-react'
 
 
 export const exploreCategories: HowItsWorksProps[] = [
@@ -10,34 +10,34 @@ export const exploreCategories: HowItsWorksProps[] = [
         icon: CodeIcon,
     },
     {
-        title: "Design",
-        description: "Web, Mobile & Software",
-        opportunities: "265 Opportunities",
-        icon: CodeIcon,
+        title: "Tutoring",
+        description: "Share & gain knowledge",
+        opportunities: "83 Opportunities",
+        icon: BookOpen,
     },
     {
         title: "Marketing",
         description: "Web, Mobile & Software",
         opportunities: "265 Opportunities",
-        icon: CodeIcon,
+        icon: BadgePercent,
     },
     {
         title: "Writing",
         description: "Web, Mobile & Software",
         opportunities: "265 Opportunities",
-        icon: CodeIcon,
+        icon: SquarePen,
     },
     {
-        title: "Case Studying",
-        description: "Web, Mobile & Software",
+        title: "Gigs",
+        description: "Quick task and freelance work",
         opportunities: "265 Opportunities",
-        icon: CodeIcon,
+        icon: Briefcase,
     },
     {
-        title: "Development",
-        description: "Web, Mobile & Software",
-        opportunities: "265 Opportunities",
-        icon: CodeIcon,
+        title: "Internships",
+        description: "Real-world experience opportunities",
+        opportunities: "25 Opportunities",
+        icon: BicepsFlexed,
     },
 
 ]

@@ -8,7 +8,7 @@ export const HowItsWorks: HowItsWorksProps[] = [
         icon: User,
         color: "from-blue-500 to-cyan-400",
         iconBg: "from-blue-500 to-cyan-400 bg-gradient-to-b",
-        cardBg: "hover:bg-gradient-to-r hover:from-[#37635D] hover:to-[#1B3240] transition-all duration-500",
+        cardBg: "hover:bg-gradient-to-r hover:from-[#37635D] hover:to-[#1B3240] transition-colors ease-in duration-500",
     },
     {
         title: "Find Matches",
@@ -16,7 +16,7 @@ export const HowItsWorks: HowItsWorksProps[] = [
         icon:Search,
         color: "from-purple-500 to-pink-500 w-90",
         iconBg: "from-purple-500 to-pink-500 bg-gradient-to-b text-light ",
-        cardBg: "hover:bg-gradient-to-r hover:from-[#703753] hover:to-[#264457] transition-all duration-500",
+        cardBg: "hover:bg-gradient-to-r hover:from-[#703753] hover:to-[#264457] transition-colors ease-in duration-500",
     },
     {
         title: "Start Working",
@@ -24,6 +24,6 @@ export const HowItsWorks: HowItsWorksProps[] = [
         icon:Briefcase,
         color: "from-green-500 to-lime-400 w-60",
         iconBg: "from-green-500 to-lime-400 bg-gradient-to-b ",
-        cardBg: "hover:bg-gradient-to-r hover:from-[#315726] hover:to-[#40571A] transition-all duration-500",
+        cardBg: "hover:bg-gradient-to-r hover:from-[#315726] hover:to-[#40571A] transition-colors ease-in duration-500",
     }
 ]
