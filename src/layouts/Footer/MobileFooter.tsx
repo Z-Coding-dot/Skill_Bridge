@@ -1,11 +1,11 @@
 import { Home, LayoutDashboard, ListChecks, MessagesSquare,  } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 const MobileFooter = () => {
-
+  const location = useLocation();
   const links = [
     { to: "/", label: "Home", icon: Home },
-    { to: "/tasksBoard", label: "Tasks Board", icon: ListChecks },
+    { to: "/taskBoard", label: "Tasks Board", icon: ListChecks },
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/messages", label: "Messages", icon: MessagesSquare },
   ];
