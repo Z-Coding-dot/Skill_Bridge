@@ -6,7 +6,7 @@ import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-black mt-15">
+    <footer className="bg-black mt-15 max-sm:pb-15">
       <Section>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}

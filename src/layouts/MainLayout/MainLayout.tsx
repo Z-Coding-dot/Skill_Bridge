@@ -4,7 +4,7 @@ import { Header } from '../Header/Header'
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className='min-h-dvw'>
       <Header />
       <Outlet />
       <Footer />

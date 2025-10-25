@@ -21,7 +21,7 @@ const Explore = () => {
                  key={index}
                  initial={{ opacity: 0, y: 50 }}
 			            whileInView={{ opacity: 1, y: 0 }}
-			            transition={{ duration: 0.8, delay: 0.4 * index }}
+			            transition={{ duration: 0.7, delay: 0.4 * index }}
                   className='card hover:shadow-2xl group'>
                   <span className={`group-hover:border-[var(--accent)] card size-10 sm:size-12 rounded-xl p-3 flex items-center justify-center mb-2 sm:mb-4`}>
                         <category.icon className="size-8 font-bold text-[var(--accent)]"/>
