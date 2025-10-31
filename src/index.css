@@ -10,6 +10,7 @@
     --card-bg: #ffffff;
     --text-primary: #1f2328;
     --text-secondary: #656d76;
+    --text-trinary: #8b949e;
     --primary: #162230;
     --accent: #364454;
     --border: #d0d7de;
@@ -23,6 +24,7 @@
     --card-bg: #161b22;
     --text-primary: #e6edf3;
     --text-secondary: #8b949e;
+    --text-trinary: #dcdfe3;
     /* --primary: #2f81f7; */
     /* --accent: #388bfd; */
     --primary: #13908a;
@@ -55,7 +57,7 @@
   }
 
   button {
-    @apply bg-[var(--primary)] text-white text-sm font-medium px-4 py-1.5 rounded-lg hover:bg-[var(--accent)] transition-colors;
+    @apply bg-[var(--primary)] text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors hover:bg-[var(--primary-dark)];
   }
 
   input, textarea, select {

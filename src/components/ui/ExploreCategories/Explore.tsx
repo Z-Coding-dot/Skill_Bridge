@@ -2,6 +2,7 @@ import Section from '../../Section/Section'
 import {exploreCategories} from '../../../lib/consts/exploreCategories/explore.data';
 import * as m from "motion/react-client"
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 const Explore = () => {
   return (
     <Section>
@@ -33,8 +34,10 @@ const Explore = () => {
             ))}
          </div>
            <div className='mt-10 flex justify-center text-center'>
+            <Link to="/taskBoard">
            <button className='w-full sm:w-auto px-8 py-3 flex items-center justify-center gap-2 transition-all duration-700 ease-in group'>Discover More
              <ArrowRight className='transform-translate group-hover:translate-x-2'/></button>
+           </Link>
            </div>
     </Section>
   )
