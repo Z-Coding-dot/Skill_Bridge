@@ -4,11 +4,13 @@ import { Header } from '../Header/Header'
 
 const MainLayout = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Outlet />
+      <main className='sm:min-h-screen min-h-dvw'>
+         <Outlet />
+      </main>
       <Footer />
-    </div>
+    </>
   )
 }
 
