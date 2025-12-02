@@ -11,7 +11,7 @@ export const HowWorks = () => {
             <m.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 * index }}
+            transition={{ duration: 0.8, delay: 0.3 * index }}
              key={card.title} className={`card sm:p-4 lg:p-8 transition-all duration-500 ${card.cardBg}`}>
                 <span className={`${card.iconBg} size-10 sm:size-12 rounded-xl p-3 flex items-center justify-center mb-2 sm:mb-4`}>
                 <card.icon className="size-8 font-bold text-white"/>
