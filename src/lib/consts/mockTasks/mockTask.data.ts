@@ -14,7 +14,7 @@ export const mockTasks: Task[] = [
       name: 'Sarah Johnson',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop'
     },
-    status: 'open',
+    status: 'Open',
     createdAt: '2025-10-10'
   },
   {
@@ -29,7 +29,7 @@ export const mockTasks: Task[] = [
       name: 'Tech Startup Inc.',
       avatar: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=150&h=150&fit=crop'
     },
-    status: 'open',
+    status: 'Open',
     createdAt: '2025-10-12'
   },
   {
@@ -44,7 +44,7 @@ export const mockTasks: Task[] = [
       name: 'Alex Chen',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop'
     },
-    status: 'open',
+    status: 'Open',
     createdAt: '2025-10-14'
   },
   {
@@ -59,7 +59,7 @@ export const mockTasks: Task[] = [
       name: 'Emma Wilson',
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop'
     },
-    status: 'open',
+    status: 'Open',
     createdAt: '2025-10-08'
   },
   {
@@ -74,7 +74,7 @@ export const mockTasks: Task[] = [
       name: 'David Park',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop'
     },
-    status: 'open',
+    status: 'Open',
     createdAt: '2025-10-11'
   },
   {
@@ -89,7 +89,7 @@ export const mockTasks: Task[] = [
       name: 'Jessica Lee',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop'
     },
-    status: 'open',
+    status: 'Open',
     createdAt: '2025-10-13'
   }
 ];
