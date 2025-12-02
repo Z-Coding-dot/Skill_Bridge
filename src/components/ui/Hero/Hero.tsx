@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import Section from "../../Section/Section";
-import DarkVeil from "./Hero_background/Background";
 import * as m from 'motion/react-client'
+// import DarkVeil from "./Hero_background/Background";
 
 export default function Hero() {
   return (
     <Section>
         {/* Background Layer */}
-        <div className="hidden sm:block absolute inset-0 -z-20">
+        {/* <div className="hidden sm:block absolute inset-0 -z-20">
        <DarkVeil />
-        </div>
+        </div> */}
       <div className="relative w-full max-sm:mt-16 min-h-100 sm:min-h-dvh flex justify-center items-center overflow-hidden">
         {/* Foreground Content */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center sm:px-4 px-3">

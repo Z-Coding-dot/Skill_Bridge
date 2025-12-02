@@ -10,6 +10,6 @@ export interface Task {
     name: string;
     avatar?: string;
   };
-  status: 'open' | 'closed';
+  status: 'Open' | 'Closed';
   createdAt: string;
 }

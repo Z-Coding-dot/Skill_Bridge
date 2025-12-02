@@ -16,6 +16,7 @@
     --border: #d0d7de;
     --success: #1a7f37;
     --error: #cf222e;
+    --login-bg: #18345E;
   }
 
   .dark {
@@ -32,12 +33,26 @@
     --border: #30363d;
     --success: #2ea043;
     --error: #f85149;
+    --login-bg: #18345E;
+
   }
   
   @theme inline{
+    --breakpoint-1xl:48rem;
     --breakpoint-2xl: 90rem;
 	  --breakpoint-3xl: 120rem;
 	  --font-inter: 'Inter', ui-sans-serif, sans-serif;
+    --color-bg-color: #f6f8fa;
+    --color-card-bg: #ffffff;
+    --color-text-primary: #1f2328;
+    --color-secondary: #656d76;
+    --color-text-trinary: #8b949e;
+    --color-primary: #162230;
+    --color-accent: #364454;
+    --color-border: #d0d7de;
+    --color-success: #1a7f37;
+    --color-error: #cf222e;
+    --color-login-bg: #18345E;
   }
   
   body {
@@ -57,7 +72,7 @@
   }
 
   button {
-    @apply bg-[var(--primary)] text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors hover:bg-[var(--primary-dark)];
+    @apply bg-[var(--primary)] text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors hover:active:bg-[var(--primary-dark)];
   }
 
   input, textarea, select {
