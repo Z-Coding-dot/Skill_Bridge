@@ -20,9 +20,9 @@ const Explore = () => {
             {exploreCategories.map((category, index) => (
                 <m.div
                  key={index}
-                 initial={{ opacity: 0, y: 60 }}
+                 initial={{ opacity: 0, y: 20 }}
 			            whileInView={{ opacity: 1, y: 0 }}
-			            transition={{ duration: 0.4, delay: 0.1 * index }}
+			            transition={{ duration: 0.3, delay: 0.1 * index }}
                   className='card hover:shadow-2xl group'>
                   <span className={`group-hover:border-[var(--accent)] card size-10 sm:size-14 rounded-xl p-3 flex items-center justify-center mb-2 sm:mb-4`}>
                         <category.icon className="size-8 font-bold text-[var(--accent)]"/>

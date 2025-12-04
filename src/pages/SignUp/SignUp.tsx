@@ -29,7 +29,7 @@ const schema = yup.object({
     .string()
     .email("Please enter a valid email")
     .required("Email is required"),
-  bio: yup.string().optional(),
+  bio: yup.string().nullable(),
   skills: yup
     .array()
     .of(yup.object({ value: yup.string().required() }))
@@ -49,7 +49,7 @@ export default function SignUp() {
   const {login} = useAuth();
   const [step, setStep] = useState(1);
   const methods = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       name: "",
       email: "",

@@ -12,6 +12,7 @@ export const Header = () => {
   const links = [
     { to: "/", label: "Home" },
     { to: "/taskBoard", label: "Task Board" },
+
   ];
 
   return (
@@ -20,6 +21,7 @@ export const Header = () => {
         <Link to="/">
           <img src={logo} alt="SkillBridge Logo" className="w-32 1xl:w-35 2xl:w-45" />
         </Link>
+
 
         {/* Desktop Navbar */}
         <nav className="hidden sm:block">
@@ -32,7 +34,7 @@ export const Header = () => {
                     to={to}
                     className={`transition-colors duration-700 ease-in-out text-sm 2xl:text-base ${
                       isActive
-                        ? "underline underline-offset-18 text-[var(--accent)] "
+                        ? "underline underline-offset-18 text-active "
                         : "text-[var(--text-primary)]"
                     }`}>
                     {label}
@@ -42,7 +44,8 @@ export const Header = () => {
             })}
           </ul>
         </nav>
-
+        
+      <div>
         {/* Auth Buttons */}
           {user  === null ? (
         <div className="flex items-center gap-4">
@@ -60,7 +63,7 @@ export const Header = () => {
                 <Link to='/messages' className="hidden sm:block">
                 <p className="cursor-pointer"><MessageCircle/></p>
                 </Link>
-              <div onClick={() => setIsProfile(!isProfile)}className="">
+                   <div onClick={() => setIsProfile(!isProfile)}className="">
                   <p className="relative border-2 rounded-full p-1.2 cursor-pointer"><User className="size-5 sm:size-6"/></p>
                   <div className={`${isProfile ? 'absolute right-2 sm:right-12 2xl:right-22 mt-2 sm:mt-5 bg-primary rounded-b-2xl py-2 sm:py-5 ' : 'pointer-events-none hidden'} `}>
                     <Link to='/dashboard' >
@@ -78,6 +81,7 @@ export const Header = () => {
               </div>
               </div>
             )}
+           </div>
 
       </header>
 

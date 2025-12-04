@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Section from '../../Section/Section'
 import { ArrowRight } from 'lucide-react'
 
@@ -11,8 +12,10 @@ export const FinalCta = () => {
                     <p className='text-sm sm:text-base lg:text-lg mb-5'>Join an exclusive community of creators and innovators. Get started today and redefine what's possible.</p>
                 </div>
                 <div>
+                  <Link to='/signup'>
                 <button className='w-full sm:w-auto text-base py-2 sm:px-4 lg:px-8 sm:py-3 lg:py-4 flex items-center justify-center gap-2 group'>Begin Your Journey
                 <ArrowRight className='transform-translate group-hover:translate-x-2'/></button>
+                </Link>
                 </div>
            </div>
       </div>
