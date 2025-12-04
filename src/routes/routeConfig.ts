@@ -9,5 +9,11 @@ export class RouteConfig {
     LOGIN = 'login';
     SIGNUP = 'signup';
     PROFILE = 'profile'
+    OVERVIEW = 'overview'
+    MY_TASK = 'my_task'
+    APPLICATIONS = 'applications'
+    NOTIFICATIONS = 'notifications'
+    SETTINGS = 'settings'
+    
 }
 export const ROUTES = new RouteConfig();
