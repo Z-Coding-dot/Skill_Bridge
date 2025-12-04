@@ -7,10 +7,10 @@ import MainLayout from "../layouts/MainLayout/MainLayout.tsx";
 import { Login } from "../pages/Login/Login.tsx";
 import { NotFound } from "../pages/404/404NotFound.tsx";
 import Home from "../pages/Home/Home.tsx";
-import { ROUTES } from "../lib/consts/routeConfig.ts";
 import SignUp from "../pages/SignUp/SignUp.tsx";
 import { Profile } from "../pages/Profile/Profile.tsx";
 import { ProtectedRoute } from "../components/ProtectedRoute/ProtectedRoute.tsx";
+import { ROUTES } from "./routeConfig.ts";
 
 export const routes = createBrowserRouter([
   {
@@ -26,10 +26,6 @@ export const routes = createBrowserRouter([
         element: <TaskBoard />,
       },
       {
-        path: ROUTES.DASHBOARD,
-        element:( <ProtectedRoute><Dashboard /></ProtectedRoute>)
-      },
-      {
         path: ROUTES.MESSAGES,
         element:(<ProtectedRoute> <Messages /></ProtectedRoute>),
       },
@@ -42,6 +38,10 @@ export const routes = createBrowserRouter([
         element: <TaskDetailsPage />,
       },
     ],
+  },
+  {
+    path: ROUTES.DASHBOARD,
+    element:( <ProtectedRoute><Dashboard /></ProtectedRoute>)
   },
   {
     path: ROUTES.LOGIN,

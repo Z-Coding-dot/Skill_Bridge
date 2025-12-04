@@ -34,6 +34,8 @@
     --success: #2ea043;
     --error: #f85149;
     --login-bg: #18345E;
+    --accent: #1e242a;
+
 
   }
   
@@ -43,16 +45,21 @@
 	  --breakpoint-3xl: 120rem;
 	  --font-inter: 'Inter', ui-sans-serif, sans-serif;
     --color-bg-color: #f6f8fa;
-    --color-card-bg: #ffffff;
     --color-text-primary: #1f2328;
     --color-secondary: #656d76;
-    --color-text-trinary: #8b949e;
+    --color-trinary: #8b949e;
     --color-primary: #162230;
-    --color-accent: #364454;
+    --color-accent: #1e242a;
     --color-border: #d0d7de;
     --color-success: #1a7f37;
     --color-error: #cf222e;
     --color-login-bg: #18345E;
+    --color-bg: #0d1117;
+    --color-card-bg: #161b22;
+    --color-2card: #131a23;
+    --color-active: #1a6561;
+
+
   }
   
   body {
