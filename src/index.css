@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
@@ -23,6 +22,7 @@
     /* Dark mode */
     --bg: #0d1117;
     --card-bg: #161b22;
+    --color-card-bg: #282c31;
     --text-primary: #e6edf3;
     --text-secondary: #8b949e;
     --text-trinary: #dcdfe3;
@@ -49,15 +49,16 @@
     --color-secondary: #656d76;
     --color-trinary: #8b949e;
     --color-primary: #162230;
-    --color-accent: #1e242a;
     --color-border: #d0d7de;
     --color-success: #1a7f37;
     --color-error: #cf222e;
     --color-login-bg: #18345E;
     --color-bg: #0d1117;
     --color-card-bg: #161b22;
-    --color-2card: #131a23;
+    --color-2card: #282c31;
     --color-active: #1a6561;
+    --color-text-primary: #13908a;
+    --color-hover: #2a2e35;
 
 
   }

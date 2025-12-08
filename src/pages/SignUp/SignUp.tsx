@@ -12,6 +12,7 @@ import logo from "../../assets/header/SkillBridge.svg";
 import { useAuth } from "../../context/AuthContext";
 import {motion} from 'motion/react';
 
+
 /* form types */
 type FormData = {
   name: string;
@@ -85,9 +86,9 @@ export default function SignUp() {
     <FormProvider {...methods}>
       <div className="flex bg-[var(--login-bg)] ">
         <motion.div
-        initial={{opacity: 0, x: 20}}
-       whileInView={{opacity: 1, x: 0}}
-       transition={{duration: 0.3, delay: 0.2}}
+         initial={{opacity: 0, x: 50}}
+        whileInView={{opacity: 1, x: 0}}
+        transition={{duration: 0.5}}
          className="hidden w-1/2 sm:flex flex-col items-center justify-center">
           <img src={signup} alt="sing Up photo" className="1xl:w-70 2xl:w-100" />
           <div className="mt-10 mr-12 2xl:mr-16">
@@ -95,9 +96,9 @@ export default function SignUp() {
           </div>
         </motion.div>
         <motion.div
-        initial={{opacity: 0, x: -20}}
+        initial={{opacity: 0, x: -50}}
        whileInView={{opacity: 1, x: 0}}
-       transition={{duration: 0.3, delay: 0.2}}
+       transition={{duration: 0.5}}
          className="w-full h-screen flex flex-col justify-center items-start sm:w-1/2 p-8 bg-primary sm:bg-white text-[var(--text-primary)] 2xl:px-40 2xl:pt-16">
           <Link to="/">
             <img

@@ -1,14 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/header/SkillBridge.svg";
-import MobileFooter from "../Footer/MobileFooter";
-import { useAuth } from "../../context/AuthContext";
+import logo from "@/assets/header/SkillBridge.svg";
+import MobileFooter from "@/layouts/Footer/MobileFooter";
+import { useAuth } from "@/context/AuthContext";
 import { LayoutDashboard, LogOut, MessageCircle, User } from "lucide-react";
 import { useState } from "react";
 
 export const Header = () => {
   const location = useLocation();
   const {user, logout} = useAuth();
-  const [isProfile, setIsProfile] = useState(false);
+  const [isProfile, setIsProfile] = useState<boolean>(false);
   const links = [
     { to: "/", label: "Home" },
     { to: "/taskBoard", label: "Task Board" },
@@ -34,7 +34,7 @@ export const Header = () => {
                     to={to}
                     className={`transition-colors duration-700 ease-in-out text-sm 2xl:text-base ${
                       isActive
-                        ? "underline underline-offset-18 text-active "
+                        ? "underline underline-offset-18 text-text-primary "
                         : "text-[var(--text-primary)]"
                     }`}>
                     {label}
@@ -51,7 +51,7 @@ export const Header = () => {
         <div className="flex items-center gap-4">
 
           <Link to={'/login'}>
-          <button className="hidden sm:block bg-[var(--card-bg)] text-xs 1xl:text-sm 2xl:text-base text-[var(--text-primary)] px-3 py-1 2xl:px-4 2xl:py-1.5 rounded-lg hover:bg-[var(--accent)] transition-colors duration-500 ease-in-out">
+          <button className="hidden sm:block bg-[var(--card-bg)] text-xs 1xl:text-sm 2xl:text-base text-[var(--text-primary)] px-3 py-1 2xl:px-4 2xl:py-1.5 rounded-lg hover:bg-text-primary transition-colors duration-500 ease-in-out">
             Log in</button>
           </Link>
           <Link to={'/signUp'}>

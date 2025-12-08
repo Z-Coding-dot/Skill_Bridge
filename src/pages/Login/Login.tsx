@@ -37,12 +37,12 @@ export const Login = () => {
 
   return (
     <div className="flex flex-row-reverse items-center min-h-screen">
-      <motion.div
-      initial={{opacity: 0, x: 20}}
+      <div className="hidden sm:flex w-1/2 flex-col items-center justify-center bg-[var(--login-bg)]">
+        <motion.div
+        initial={{opacity: 0, x: 50}}
        whileInView={{opacity: 1, x: 0}}
-       transition={{duration: 0.3, delay: 0.2}}
-       className="hidden sm:flex w-1/2 flex-col items-center justify-center bg-[var(--login-bg)]">
-        <div className="flex flex-col items-center justify-center min-h-screen">
+       transition={{duration: 0.5,}}
+         className="flex flex-col items-center justify-center min-h-screen">
           <img src={loginImg} alt="login page" className="1xl:w-70 2xl:w-100" />
           <h1 className="text-base sm:text-xl xl:text-2xl font-semibold text-[var(text-primary)] mr-12 mt-6 mb-2">
             Welcome Back
@@ -50,15 +50,15 @@ export const Login = () => {
           <p className="text-sm sm:text-base text-[var(text-secondary)] mr-14">
             Sign in to continue your journey
           </p>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
-      <motion.div
-      initial={{opacity: 0, x: -20}}
+      <div className="bg-primary sm:bg-white sm:w-1/2 w-full 1xl:min-w-[220px] 2xl:min-w-[400px]">
+        <motion.div
+        initial={{opacity: 0, x: -50}}
        whileInView={{opacity: 1, x: 0}}
-       transition={{duration: 0.3, delay: 0.2}}
-       className="bg-primary sm:bg-white sm:w-1/2 w-full 1xl:min-w-[220px] 2xl:min-w-[400px]">
-        <div className="flex flex-col items-center justify-center min-h-screen">
+       transition={{duration: 0.5,}}
+         className="flex flex-col items-center justify-center min-h-screen">
           <Link to="/">
           <img src={logo} alt="SkillBridge" className="block sm:hidden w-70 -mt-15 mr-10" />
           </Link>
@@ -111,8 +111,8 @@ export const Login = () => {
               Create Account
             </Link>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };
