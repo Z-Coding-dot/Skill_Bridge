@@ -29,11 +29,11 @@ export const Overview = () => {
     ]
 
     return(
-        <Section className="">
-            <div className=" grid grid-cols-3 gap-6 mt-5">
+        <Section className="h-screen">
+            <div className="grid grid-cols-3 gap-6 mt-5">
                 {overview.map((item, index) => (
                     <div key={index}>
-                        <div className="flex items-center justify-between bg-card-bg shadow-sm px-6 py-4 rounded-2xl">
+                        <div className="flex items-center justify-between bg-2card shadow-sm px-6 py-4 rounded-2xl">
                             <div>
                                 <h2 className="text-trinary">{item.label}</h2>
                                 <p className="text-2xl text-white font-semibold">{item.count}</p>
@@ -46,7 +46,7 @@ export const Overview = () => {
                 ))}
             </div>
 
-                <div className="gird grid-rows-1 bg-card-bg rounded-2xl p-5 mt-10">
+                <div className="gird grid-rows-1 rounded-2xl p-5 mt-10">
                     <h2 className="text-xl mb-4">Recent Activity</h2>
                     {recentActivity.map((activity, index) => (
                         <div key={index} className="flex items-center px-6 py-4 gap-4">
