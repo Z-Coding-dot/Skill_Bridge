@@ -15,10 +15,10 @@ export const Setting = () => {
     {id: 'flutter', label: "Flutter"},
   ]
   return (
-    <Section className="-mx-4">
-      <h1 className="mt-5 2xl:text-xl font-semibold mb-10">Settings</h1>
-      <div className="flex flex-col gap-4 bg-2card w-full rounded-xl p-6 mb-4">
-        <h1>Profile Information</h1>
+    <Section>
+      <div className="flex items-start justify-between gap-4">
+      <div className="2xl:w-3/4 flex flex-col gap-4 bg-2card rounded-xl p-6 mb-4">
+        <h1 className="2xl:text-2xl 3xl:text-3xl font-semibold tracking-tight">Profile Information</h1>
         <div className="flex items-start gap-5 my-5">
           <span className="p-2 rounded-full border-1 border-trinary ">
           <User2Icon className="size-16" />
@@ -36,18 +36,19 @@ export const Setting = () => {
         </form>
           <button className="w-40">Save Changes</button>
       </div>
-      <div className="flex flex-col gap-4 bg-2card w-full rounded-xl p-6">
+      <div className="flex flex-col gap-4 bg-2card rounded-xl p-6">
         <div className="flex items-center justify-between">
-        <h1>Skills</h1>
+        <h1 className="2xl:text-2xl 3xl:text-3xl font-semibold tracking-tight">Skills</h1>
         <button>Edit</button>
         </div>
-        <div className="flex items-start gap-4 mt-8">
+        <div className="flex flex-wrap items-start gap-4 mt-8">
           {SkillList.map((list) => (
-            <span key={list.id} className="bg-card-bg rounded-xl px-3 py-1 text-stone-100">
+            <span key={list.id} className="bg-card-bg rounded-xl px-3 py-1 text-stone-100 ">
                 {list.label}
             </span>
           ))}
         </div>
+      </div>
       </div>
     </Section>
   )

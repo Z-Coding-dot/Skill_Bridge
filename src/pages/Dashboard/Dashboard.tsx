@@ -34,7 +34,7 @@ export const Dashboard = () => {
     { id: "setting", label: "Settings", icon: Settings },
   ];
   return (
-    <div className="flex flex-wrap w-full bg-card-bg h-screen">
+    <div className="flex flex-row w-full bg-card-bg h-screen ">
       <div className={`${sideBarOpen ? '1xl:w-55 pt-3' : 'w-16'} transition-all duration-500 ease-initial bg-bg`}>
           <Link to={'/'} className="flex items-center  gap-2 font-bold ml-4 mt-4 mb-12 ">
             <CodeIcon className={`text-[#199d96] 2xl:size-7 ${sideBarOpen ? '' : '2xl:size-7 mt-2'}`} />
@@ -46,7 +46,7 @@ export const Dashboard = () => {
         {sidebarTab.map((d) => (
           <li key={d.id}
            onClick={() => setActiveTab(d.id)} 
-           className={`my-4 mx-2 truncate list-none cursor-pointer ${activeTab === d.id ? 'rounded-lg bg-active py-2 px-4' : 'py-2 px-4 hover:bg-hover hover:rounded-xl'}`}>
+           className={`my-4 mx-2 truncate list-none cursor-pointer ${activeTab === d.id ? 'rounded-lg bg-active py-2 px-4' : 'py-2 px-4 hover:bg-btnHover hover:rounded-xl'}`}>
             <div className="flex items-center gap-4">
               <span>
                 <d.icon className="3xl:size-5 2xl:size-4 text-white" />
@@ -56,7 +56,7 @@ export const Dashboard = () => {
           </li>
         ))}
       </div>
-      <div className="w-[77%] pt-3">
+      <div className="w-full pt-3">
         <DashboardHeader handleSideBar={handleSideBar} />
         <div>
           {componentMap[activeTab]}

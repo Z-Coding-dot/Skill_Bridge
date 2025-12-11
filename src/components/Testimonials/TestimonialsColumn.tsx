@@ -2,10 +2,17 @@
 import React from "react";
 import { motion } from "motion/react";
 
+type testimonials = {
+  text: string;
+  image: string;
+  name: string;
+  role: string;
+};
+
 
 export const TestimonialsColumn = (props: {
   className?: string;
-  testimonials: typeof testimonials;
+  testimonials:testimonials;
   duration?: number;
 }) => {
   return (

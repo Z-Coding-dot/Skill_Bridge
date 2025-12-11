@@ -1,5 +1,5 @@
+import Section from "@/components/Section/Section"
 import {Bell, Briefcase, CheckCheckIcon, CircleCheck, File, type LucideIcon } from "lucide-react"
-import Section from "../../Section/Section"
 
 type OverviewProps = {
     id: string,
@@ -29,7 +29,7 @@ export const Overview = () => {
     ]
 
     return(
-        <Section className="h-screen">
+        <Section>
             <div className="grid grid-cols-3 gap-6 mt-5">
                 {overview.map((item, index) => (
                     <div key={index}>

@@ -3,8 +3,7 @@ import Section from "../../Section/Section"
 
 export const Applications = () => {
   return (
-    <Section className="-mx-4">
-          <h1 className="mt-5 2xl:text-xl font-semibold mb-10">My Applications</h1>
+    <Section className="mt-5">
         <div className="flex flex-col items-start bg-2card w-full rounded-xl p-6">
           <h3 className="mb-3">Web Design for Student Portfolio</h3>
           <span className="flex items-center text-xs gap-2 bg-accent rounded-2xl px-2 py-1 mb-5 text-stone-100"><Clock className="size-4"/>Pending</span>

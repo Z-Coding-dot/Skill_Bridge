@@ -3,7 +3,7 @@ import Section from "@/components/Section/Section"
 
 export const MyTask = () => {
     return(
-        <Section className="-mx-4">
+        <Section>
             <div className="flex items-center justify-between mt-5">
             <h1 className="2xl:text-xl font-semibold">My Posted Tasks</h1>
             <button className="flex items-center gap-2 2xl:text-base"><Plus className="size-5 font-bold"/>Add Task</button>
