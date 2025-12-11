@@ -3,9 +3,8 @@ import Section from '@/components/Section/Section'
 
 export const Notifications = () => {
   return (
-    <Section className='-mx-4'>
-        <h1 className="mt-5 2xl:text-xl font-semibold mb-10">Notifications</h1>
-        <div className='flex flex-col gap-4 bg-2card w-full rounded-xl p-6'>
+    <Section>
+        <div className='flex flex-col gap-4 bg-2card w-full rounded-xl p-6 mt-5'>
             <div className="flex gap-4 bg-card-bg rounded-xl p-4">
               <Bell className='mt-1 text-blue-500'/>
               <div className='flex flex-col items-start '>

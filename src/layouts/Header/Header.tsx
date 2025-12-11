@@ -11,13 +11,15 @@ export const Header = () => {
   const [isProfile, setIsProfile] = useState<boolean>(false);
   const links = [
     { to: "/", label: "Home" },
-    { to: "/taskBoard", label: "Task Board" },
+    { to: "/taskBoard", label: "Find a Work" },
+    { to: "#", label: "Why SkillBridge" },
+    { to: "#", label: "What's New" },
 
   ];
 
   return (
     <section className="fixed w-full z-50">
-      <header className="z-20 relative flex items-center justify-between px-3 1xl:px-14 2xl:px-24 backdrop-blur-3xl drop-shadow-lg">
+      <header className="z-20 relative flex items-center justify-between px-3 1xl:px-14 2xl:px-18 backdrop-blur-3xl drop-shadow-lg">
         <Link to="/">
           <img src={logo} alt="SkillBridge Logo" className="w-32 1xl:w-35 2xl:w-45" />
         </Link>
