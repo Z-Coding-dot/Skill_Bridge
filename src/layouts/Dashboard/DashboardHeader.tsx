@@ -10,7 +10,7 @@ export const DashboardHeader = ({handleSideBar}: sidebarProps ) => {
   return (
         <div className='flex items-center justify-between gap-3 pr-10 h-18 -mt-3 border-b border-secondary z-20'>
             <div className="flex">
-              <span onClick={handleSideBar} className="hover:bg-btnHover rounded-lg p-2 cursor-pointer">
+              <span onClick={handleSideBar} className="hover:bg-btnHover rounded-lg p-2 cursor-pointer mx-2">
               <PanelRight  className='2xl:size-5 text-trinary'/>
               </span>
               <div className="mx-2">
