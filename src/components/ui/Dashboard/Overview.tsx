@@ -1,65 +1,65 @@
-import Section from "@/components/Section/Section"
-import {Bell, Briefcase, CheckCheckIcon, CircleCheck, File, type LucideIcon } from "lucide-react"
-
-type OverviewProps = {
-    id: string,
-    count: number,
-    label: string,
-    icon: LucideIcon
-}
-type activity = {
-    id: string,
-    time: string,
-    icon: LucideIcon,
-    text: string,
-}
-
+import { useQuery } from "@tanstack/react-query";
+import Section from "@/components/Section/Section";
+import { Bell, Briefcase, CheckCheck, CircleCheck, File} from "lucide-react";
+import type { DashboardOverview } from "@/schemas/dashboard.schema";
+import { getDashboardOverview } from "@/api/dashboard.api";
 
 export const Overview = () => {
-    const overview:OverviewProps[] = [
-        {id: "1", label: "Tasks Posted", count: 10, icon: Briefcase},
-        {id: "2", label: "Applications Sent", count: 2, icon: File},
-        {id: "3", label: "Accepted", count: 0, icon: CheckCheckIcon},
-    ]
+  const { data, isLoading } = useQuery<DashboardOverview>({
+    queryKey: ["dashboard-overview"],
+    queryFn: getDashboardOverview,
+  });
 
-    const recentActivity:activity[] = [
+  if (isLoading) return <Section>Loading...</Section>;
+ 
 
-        {id: "4", icon: Bell ,text: "New application received for Web Design Project", time: "2 hours ago" },
-        {id: "5", icon: CircleCheck ,text: "Your application was accepted for Marketing Intern", time: "1 day ago" },
-    ]
+  return (
+    <Section>
 
-    return(
-        <Section>
-            <div className="grid grid-cols-3 gap-6 mt-5">
-                {overview.map((item, index) => (
-                    <div key={index}>
-                        <div className="flex items-center justify-between bg-2card shadow-sm px-6 py-4 rounded-2xl">
-                            <div>
-                                <h2 className="text-trinary">{item.label}</h2>
-                                <p className="text-2xl text-white font-semibold">{item.count}</p>
-                            </div>
-                            <div>
-                                <span className="text-white "><item.icon className="size-8" /></span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-                <div className="gird grid-rows-1 rounded-2xl p-5 mt-10">
-                    <h2 className="text-xl mb-4">Recent Activity</h2>
-                    {recentActivity.map((activity, index) => (
-                        <div key={index} className="flex items-center px-6 py-4 gap-4">
-                            <div className="flex items-center bg-2card shadow-lg rounded-2xl w-full px-6 py-4 gap-4">
-                            <activity.icon/>
-                            <div className="">   
-                                <h3 className="text-sm">{activity.text}</h3>
-                                <span>{activity.time}</span>
-                            </div>
-                            </div>
-                        </div>
-                    ))}
+      <div className="mt-5">
+          <div className="flex items-center justify-between gap-5 px-6 py-4 rounded-2xl">
+              <div className="flex items-center justify-between bg-active px-6 py-4 rounded-2xl w-full">
+                <div>
+                <h2 className="">Tasks Posted</h2>
+                <h2 className="text-white 2xl:text-3xl font-semibold mt-3">{data?.stats.tasksPosted}</h2>
                 </div>
-        </Section>
-    )
-}
+              <Briefcase className="2xl:size-8"/>
+              </div>
+              <div className="flex items-center justify-between bg-login-bg px-6 py-4 rounded-2xl w-full">
+                <div>
+                <h2 className="">Applications Sent</h2>
+                <h2 className="text-white 2xl:text-3xl font-semibold mt-3">{data?.stats.applicationsSent}</h2>
+                </div>
+              <File className="2xl:size-8"/>
+              </div>
+              <div className="flex items-center justify-between bg-success px-6 py-4 rounded-2xl w-full">
+                <div>
+                <h2 className="">Accepted</h2>
+                <h2 className="text-white 2xl:text-3xl font-semibold mt-3">{data?.stats.accepted}</h2>
+                </div>
+              <CheckCheck className="2xl:size-8 "/>
+              </div>
+          </div>
+      </div>
+
+      <div className="rounded-2xl p-5 mt-10">
+        <h2 className="text-xl mb-4">Recent Activity</h2>
+        {data?.recentActivity.length === 0 ? (
+          <p className="text-stone-400">No recent activity.</p>
+        ) : (
+          data?.recentActivity.map((activity) => (
+            <div
+              key={activity.id}
+              className="flex items-center bg-2card rounded-2xl px-6 py-4 gap-4 mb-3">
+              {activity.type === "success" ? <CircleCheck className="text-green-500" /> : <Bell className="text-yellow-500" />}
+              <div>
+                <h3 className="text-sm">{activity.text}</h3>
+                <span className="text-xs">{activity.time}</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </Section>
+  );
+};
