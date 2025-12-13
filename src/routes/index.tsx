@@ -11,6 +11,11 @@ import SignUp from "../pages/SignUp/SignUp.tsx";
 import { Profile } from "../pages/Profile/Profile.tsx";
 import { ProtectedRoute } from "../components/ProtectedRoute/ProtectedRoute.tsx";
 import { ROUTES } from "./routeConfig.ts";
+import { Overview } from "@/components/ui/Dashboard/Overview.tsx";
+import { Applications } from "@/components/ui/Dashboard/Applications.tsx";
+import { Setting } from "@/components/ui/Dashboard/Settings.tsx";
+import { MyTask } from "@/components/ui/Dashboard/MyTask.tsx";
+import { Notifications } from "@/components/ui/Dashboard/Notifications.tsx";
 
 export const routes = createBrowserRouter([
   {
@@ -35,13 +40,20 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/tasks/:id",
-        element: <TaskDetailsPage />,
+        element: (<ProtectedRoute> <TaskDetailsPage /></ProtectedRoute>),
       },
     ],
   },
   {
     path: ROUTES.DASHBOARD,
-    element:( <ProtectedRoute><Dashboard /></ProtectedRoute>)
+    element:( <ProtectedRoute><Dashboard /></ProtectedRoute>),
+    children: [
+      {index: true, element: <Overview/>},
+      {path: ROUTES.APPLICATIONS, element: <Applications/>},
+      {path: ROUTES.NOTIFICATIONS, element: <Notifications/>},
+      {path: ROUTES.MY_TASK, element: <MyTask/>},
+      {path: ROUTES.SETTINGS, element: <Setting/>},
+    ]
   },
   {
     path: ROUTES.LOGIN,

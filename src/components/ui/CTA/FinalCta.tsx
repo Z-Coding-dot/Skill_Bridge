@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import Section from '../../Section/Section'
 import { ArrowRight } from 'lucide-react'
+import Section from '@/components/Section/Section'
 
 export const FinalCta = () => {
   return (
