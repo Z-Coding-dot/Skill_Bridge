@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import Section from "@/components/Section/Section";
 import { User2Icon } from "lucide-react";
-import { getProfile, updateProfile, type Profile } from "@/api/profile.api";
+import { getProfile, updateProfile} from "@/api/profile.api";
+import type { ProfileSchema } from "@/schemas/profile.schema";
 export const Setting = () => {
 
-  const { data: profile, isLoading } = useQuery<Profile>({
+  const { data: profile, isLoading } = useQuery<ProfileSchema>({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
@@ -77,11 +78,8 @@ export const Setting = () => {
           {skill.label}
         </span> 
         ))}
-        
       </div>
-        
-        <span className="text-stone-400">No skills added.</span>
-        </div>
+      </div>
       </div>
     </Section>
 )}

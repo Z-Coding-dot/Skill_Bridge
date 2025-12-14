@@ -19,7 +19,7 @@ export const Header = () => {
 
   return (
     <section className="fixed w-full z-50">
-      <header className="z-20 relative flex items-center justify-between px-3 1xl:px-14 2xl:px-18 backdrop-blur-3xl drop-shadow-lg">
+      <header className="z-20 relative flex items-center justify-between px-3 1xl:px-12 backdrop-blur-3xl drop-shadow-lg">
         <Link to="/">
           <img src={logo} alt="SkillBridge Logo" className="w-32 1xl:w-35 2xl:w-45" />
         </Link>
@@ -65,9 +65,9 @@ export const Header = () => {
                 <Link to='/messages' className="hidden sm:block">
                 <p className="cursor-pointer"><MessageCircle/></p>
                 </Link>
-                   <div onClick={() => setIsProfile(!isProfile)}className="">
+                   <div onClick={() => setIsProfile(!isProfile)}>
                   <p className="relative border-2 rounded-full p-1.2 cursor-pointer"><User className="size-5 sm:size-6"/></p>
-                  <div className={`${isProfile ? 'absolute right-2 sm:right-12 2xl:right-22 mt-2 sm:mt-5 bg-primary rounded-b-2xl py-2 sm:py-5 ' : 'pointer-events-none hidden'} `}>
+                  <div className={`${isProfile ? 'absolute right-2 sm:right-12 2xl:right-10 mt-2 sm:mt-5 bg-primary rounded-b-2xl py-2 sm:py-5 ' : 'pointer-events-none hidden'} `}>
                     <Link to='/dashboard' >
                     <p
                      className="flex items-center gap-2 text-xs sm:text-sm px-3 sm:px-6 mb-2 hover:text-white cursor-pointer"><LayoutDashboard className="size-3 sm:size-4"/> Dashboard</p>
