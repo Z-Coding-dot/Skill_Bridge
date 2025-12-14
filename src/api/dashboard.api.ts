@@ -6,7 +6,6 @@ const USE_MOCK_API = true;
 
 export const getDashboardOverview = async (): Promise<DashboardOverview> => {
   if(USE_MOCK_API) {
-    console.log("Using mock API");
     return DashboardOverviewSchema.parse(dashboardMock);
   }
 

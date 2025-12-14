@@ -11,5 +11,5 @@ export const ProfileSchema = z.object({
     skills: z.array(Skill),
 })
 
-export type Profile = z.infer<typeof ProfileSchema>
+export type ProfileSchema = z.infer<typeof ProfileSchema>
 export type Skill = z.infer<typeof Skill>
