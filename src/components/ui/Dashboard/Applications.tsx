@@ -26,8 +26,7 @@ export const Applications = () => {
         {app.map((application) => (
           <div
             key={application.id}
-            className="flex flex-col items-start bg-2card w-full rounded-xl p-6"
-          >
+            className="flex flex-col items-start bg-2card w-full rounded-xl p-6">
             <h3 className="mb-3">{application.taskTitle}</h3>
 
             <span className="flex items-center text-xs gap-2 bg-accent rounded-2xl px-2 py-1 mb-5 text-stone-100">

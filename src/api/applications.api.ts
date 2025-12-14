@@ -3,13 +3,12 @@ import { api } from "./client";
 import { ApplicationSchema, type Application } from "@/schemas/application.schema";
 import { applicationsMock } from "@/mock/dashboard.mock";
 
-const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
+const USE_MOCK_API = true;
 
 const ApplicationListSchema = z.array(ApplicationSchema);
 
-export const getApplications = async () => {
+export const getApplications = async (): Promise<Application[]> => {
   if (USE_MOCK_API) {
-    console.log("Using applications mock API");
     return ApplicationListSchema.parse(applicationsMock);
   }
 
@@ -19,17 +18,17 @@ export const getApplications = async () => {
 
 export const submitApplication = async (
   app: Partial<Application>
-) => {
+): Promise<Application> => {
   if (USE_MOCK_API) {
-    console.log("Using applications mock API");
     return ApplicationSchema.parse({
       ...app,
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
-      status: "Pending",
+      status: "pending",
     });
   }
 
   const res = await api.post("/applications", app);
   return ApplicationSchema.parse(res.data);
 };
+

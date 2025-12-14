@@ -1,4 +1,4 @@
-import { PanelRight, User } from "lucide-react"
+import { MessageCircle, PanelRight, User } from "lucide-react"
 import { Link } from "react-router-dom";
 
 type sidebarProps = {
@@ -18,12 +18,17 @@ export const DashboardHeader = ({handleSideBar}: sidebarProps ) => {
                  <p className='text-xs'>Manage your tasks and applications</p>
               </div>
             </div>
-
-            <div className="rounded-full p-2 border-2">
-              <Link to={'/profile'}>
-              <User className="size-5 text-white"/>
+            <div className="flex items-center">
+              <Link to={'/messages'} className="hover:bg-btnHover hover:text-white rounded-lg p-2 cursor-pointer">
+               <MessageCircle className="size-6"/>
               </Link>
+            <Link to={'/profile'} className="hover:bg-btnHover hover:text-white rounded-lg p-2 cursor-pointer">
+            <div className="rounded-full p-1 border-2">
+              <User className="size-4 text-white"/>
             </div>
+            </Link>
+            </div>
+
     </div>
   )
 }
