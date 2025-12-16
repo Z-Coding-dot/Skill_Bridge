@@ -6,14 +6,14 @@ export const TaskSchema = z.object({
   description: z.string(),
   category: z.enum(["Gig", "Internship", "Tutoring", "Project", "Freelance"]),
   deadline: z.string(),
-  type: z.enum(["Gig", "Internship", "Tutoring"]),
-  postedBy: {
+  postedBy: z.object ({
     id: z.string(),
     name: z.string(),
     avatar: z.string().optional(),
-  },
+  }),
   status: z.enum(["Open", "Closed"]),
   createdAt: z.string(),
 });
 
+export type TaskCategory = z.infer<typeof TaskSchema>["category"];
 export type Task = z.infer<typeof TaskSchema>;
