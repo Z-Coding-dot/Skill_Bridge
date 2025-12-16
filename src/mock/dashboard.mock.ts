@@ -32,11 +32,10 @@ export const tasksMock: Task[]= [
     description:"I need a good",
     category: "Project",
     deadline: "2026-12-31",
-    type: "Internship",
     postedBy: {
       id: "user-1",
       name: "Parsa",
-      avatar: "profile.jpg"
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
   },
   status: "Open",
   createdAt: "2026-12-01",
