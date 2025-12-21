@@ -19,8 +19,8 @@ const MobileFooter = () => {
             <Link to={to} key={to}>
               <button
                 className={`flex flex-col items-center cursor-pointer transition-colors bg-transparent duration-300 ease-in-out`}>
-                <Icon className={`size-6 ${isActive ? "text-[var(--accent)]" : "text-[var(--text-primary)]"}`} />
-                <p className={`text-xs ${isActive ? 'text-[var(--accent)]' : 'text-[var(--text-primary)]'}`}>{label}</p>
+                <Icon className={`size-6 ${isActive ? "text-text-primary" : "text-[var(--text-primary)]"}`} />
+                <p className={`text-xs ${isActive ? 'text-text-primary' : 'text-[var(--text-primary)]'}`}>{label}</p>
               </button>
             </Link>
           );

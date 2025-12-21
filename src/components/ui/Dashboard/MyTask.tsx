@@ -12,7 +12,7 @@ export const MyTask = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, isLoading, error } = useQuery<Task[]>({
      queryKey: ["my_tasks"],
-     queryFn: getMyTasks,
+     queryFn: () => getMyTasks(),
    });
 
    if(error){

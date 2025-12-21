@@ -9,7 +9,7 @@ import { Clock } from "lucide-react"
 export const Applications = () => {
   const { data: app, isLoading } = useQuery<Application[]>({
     queryKey: ["applications"],
-    queryFn: getApplications,
+    queryFn: () => getApplications(),
   });
 
   if (isLoading) {

@@ -1,13 +1,17 @@
 import { Bell, Briefcase, ChartColumn, CodeIcon, File,Settings} from "lucide-react";
 import {NavLink, Outlet } from "react-router-dom";
 import type { dashboardData } from "@/types/dashboard";
-import { useState, } from "react";
+import { useRef, useState, } from "react";
 import { DashboardHeader } from "@/layouts/Dashboard/DashboardHeader";
 import { ROUTES } from "@/routes/routeConfig";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 
 export const Dashboard = () => {
-  const [sideBarOpen, setSideBarOpen] = useState<boolean>(true)
+  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false)
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+  
+  useOutsideClick(sidebarRef, () => setSideBarOpen(false), sideBarOpen);
 
   const sidebarTab: dashboardData[] = [
     { id: "overview", label: "Overview", to: "", icon: ChartColumn },
@@ -17,11 +21,11 @@ export const Dashboard = () => {
     { id: "setting", label: "Settings", to: ROUTES.SETTINGS, icon: Settings },
   ];
   return (
-    <div className="flex flex-row w-full bg-card-bg h-screen ">
-      <div className={`${sideBarOpen ? '1xl:w-55 pt-3' : 'w-16'} transition-all duration-500 ease-initial bg-bg`}>
-          <NavLink to={'/'} className="flex items-center  gap-2 font-bold ml-4 mt-4 mb-12 ">
-            <CodeIcon className={`text-[#199d96] 2xl:size-7 ${sideBarOpen ? '' : '2xl:size-7 mt-2'}`} />
-            <span className={`text-[#199d96] 2xl:text-lg ${sideBarOpen ? '' : 'hidden'}`}>
+    <div className="flex flex-row ">
+      <div ref={sidebarRef} className={`${sideBarOpen ? ' w-50 1xl:w-55 sm:-mt-0.15' : ' w-12 sm:w-16'} max-sm:fixed bg-card-bg h-screen transition-all duration-500 ease-initial`}>
+          <NavLink to={'/'} className="flex items-center  gap-2 font-bold pl-3 sm:pl-4 py-2.25 mb-5 sm:py-3.25 border-b border-secondary">
+            <CodeIcon className={`text-[#199d96] ${sideBarOpen ? 'size-5 my-1.5' : 'sm:size-7 mt-2 sm:mt-[3.5px]'}`} />
+            <span className={`text-[#199d96] text-xs sm:text-sm  ${sideBarOpen ? 'my-1.5' : 'hidden'}`}>
                 SkillBridge
             </span>
           </NavLink> 
@@ -33,16 +37,15 @@ export const Dashboard = () => {
             to={d.to}
             end={d.to === ""}
             className={({ isActive }) =>
-              `my-4 mx-2 block px-4 py-2 ${
+              `my-4 mx-2 block p-2 sm:px-4 py-2 ${
                 isActive
                   ? "rounded-lg bg-active"
                   : "hover:bg-btnHover hover:rounded-xl"
-              }`
-            }>
+              }`}>
               <div className="flex items-center gap-4">
-              <d.icon className="text-white 2xl:size-4" />
+              <d.icon className="text-white size-4" />
               {sideBarOpen && (
-                <span className="text-white text-sm">{d.label}</span>
+                <span className="text-white text-xs sm:text-sm">{d.label}</span>
               )}
             </div>
           </NavLink>
@@ -50,7 +53,7 @@ export const Dashboard = () => {
       </div>
 
         {/* content */}
-      <main className="w-full pt-3">
+      <main className="ml-10 sm:ml-0 w-full pt-3">
         <DashboardHeader handleSideBar={() => setSideBarOpen((prev) => !prev)} />
         <div>
           <Outlet/>
