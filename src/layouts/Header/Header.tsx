@@ -2,18 +2,30 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/header/SkillBridge.svg";
 import MobileFooter from "@/layouts/Footer/MobileFooter";
 import { useAuth } from "@/context/AuthContext";
-import { LayoutDashboard, LogOut, MessageCircle, User } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, LayoutDashboard, LogOut, MessageCircle, User } from "lucide-react";
+import { useRef, useState } from "react";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export const Header = () => {
   const location = useLocation();
+  const path = location.pathname;
   const {user, logout} = useAuth();
   const [isProfile, setIsProfile] = useState<boolean>(false);
-  const links = [
+  const sideRef = useRef<HTMLDivElement | null>(null);
+  useOutsideClick(sideRef, () => setIsProfile(false), isProfile)
+  const navData = [
     { to: "/", label: "Home" },
     { to: "/taskBoard", label: "Find a Work" },
-    { to: "#", label: "Why SkillBridge" },
-    { to: "#", label: "What's New" },
+    { label: "Why SkillBridge", dropdown:[
+      { title: "For Freelancers", desc: "Find real-world projects and grow faster" },
+      { title: "For Clients", desc: "Hire verified talent with confidence" },
+      { title: "Trust & Security", desc: "Escrow-based payments and reviews" },
+    ] },
+    { label: "What's New", dropdown:[
+      { title: "New Features", desc: "Latest tools and improvements" },
+      { title: "Product Updates", desc: "Recent releases and fixes" },
+      { title: "Community", desc: "Events, blogs, and announcements" },
+    ] },
 
   ];
 
@@ -23,29 +35,47 @@ export const Header = () => {
         <Link to="/">
           <img src={logo} alt="SkillBridge Logo" className="w-32 1xl:w-35 2xl:w-45" />
         </Link>
-
-
         {/* Desktop Navbar */}
-        <nav className="hidden sm:block">
-          <ul className="flex items-center gap-6">
-            {links.map(({ to, label }) => {
-              const isActive = location.pathname === to;
-              return (
-                <li key={to}>
-                  <Link
-                    to={to}
-                    className={`transition-colors duration-700 ease-in-out text-sm 2xl:text-base ${
-                      isActive
-                        ? "underline underline-offset-18 text-text-primary "
-                        : "text-[var(--text-primary)]"
-                    }`}>
-                    {label}
-                  </Link>
+    <nav className="hidden sm:block">
+      <ul className="flex items-center gap-6">
+    {navData.map((link) => (
+      <li key={link.label} className="relative group flex items-center justify-center gap-1">
+        {link.to ? (
+          <Link
+            to={link.to}
+            className={`${path === link.to ? "text-active underline font-bold" :  'text-white'} 1xl:text-sm 2xl:text-base  hover:underline underline-offset-18 transition`} >
+            {link.label}
+          </Link>
+        ) : (
+          <span className="cursor-pointer text-sm text-white">
+            {link.label}
+          </span>
+        )}
+        {/* Dropdown */}
+        {link.dropdown && (
+          <>
+          <ChevronDown className="size-5 transition-transform duration-500 group-hover:rotate-180" />
+          <div className="absolute 1xl:-right-30 2xl:-right-50 top-full mt-4 1xl:w-150 2xl:w-200 bg-card-bg rounded-b-xl shadow-xl
+          opacity-0 invisible group-hover:opacity-100 group-hover:visible
+          transition-all duration-300">
+            <ul className="2xl:p-5 1xl:p-3 grid grid-cols-3 gap-4 mr-25 text-start mx-auto w-full">
+              {link.dropdown.map((item) => (
+                <li
+                  key={item.title}
+                  className="2xl:p-6 1xl:p-3 bg-card-bg hover:bg-btnHover cursor-pointer rounded-2xl shadow-2xl" >
+                  <h2 className="1xl:text-sm 2xl:text-base font-medium mb-2">{item.title}</h2>
+                  <p className="1xl:text-sm 2xl:text-base opacity-70 text-trinary">{item.desc}</p>
                 </li>
-              );
-            })}
-          </ul>
-        </nav>
+              ))}
+            </ul>
+          </div>
+          </>
+        )}
+      </li>
+    ))}
+  </ul>
+    </nav>
+
         
       <div>
         {/* Auth Buttons */}
@@ -65,7 +95,7 @@ export const Header = () => {
                 <Link to='/messages' className="hidden sm:block">
                 <p className="cursor-pointer"><MessageCircle/></p>
                 </Link>
-                   <div onClick={() => setIsProfile(!isProfile)}>
+                   <div ref={sideRef} onClick={() => setIsProfile(!isProfile)}>
                   <p className="relative border-2 rounded-full p-1.2 cursor-pointer"><User className="size-5 sm:size-6"/></p>
                   <div className={`${isProfile ? 'absolute right-2 sm:right-12 2xl:right-10 mt-2 sm:mt-5 bg-primary rounded-b-2xl py-2 sm:py-5 ' : 'pointer-events-none hidden'} `}>
                     <Link to='/dashboard' >

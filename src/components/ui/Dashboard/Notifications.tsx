@@ -7,14 +7,15 @@ import clsx from "clsx";
 
 
 export const Notifications = () => {
-  const { data, isLoading } = useQuery<Notification[]>({
+  const { data, isPending, isError} = useQuery<Notification[]>({
     queryKey: ["notifications"],
-    queryFn: getNotifications,
+    queryFn: () => getNotifications(),
   });
 
-  if (isLoading) {
+  if (isPending) {
     return <Section>Loading...</Section>;
   }
+  if(isError) return <Section className="text-center mt-25 text-red-600">Something went wrong</Section>
 
   if (data?.length === 0) {
     return (
