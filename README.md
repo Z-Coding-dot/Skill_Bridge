@@ -108,7 +108,7 @@ src/
 
 1️⃣ Clone the repository
 
-- git clone https://github.com/your-username/skillbridge.git
+- git clone "https://github.com/Z-Coding-dot/Skill_Bridge.git"
 
 - cd skillbridge
 
@@ -120,10 +120,6 @@ src/
 
 - npm start
 
-- Server runs on:
-
-- http://localhost:5000
-
 3️⃣ Setup Frontend
 
 Open new terminal:
@@ -133,18 +129,6 @@ Open new terminal:
 - npm install
 
 - npm run dev
-
-Frontend runs on:
-
-- http://localhost:5173
-
-🔐 Environment Variables
-
-Create a .env file inside apps/frontend or apps/backend if required.
-
-Example:
-
-VITE_API_URL=http://localhost:5000
 
 📊 Development Workflow
 
