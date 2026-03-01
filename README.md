@@ -12,17 +12,17 @@ The goal of SkillBridge is to bridge the gap between academic learning and real 
 
 # Key Features
 
-Student registration and profile management
+- Student registration and profile management
 
-Micro-task creation and submission
+- Micro-task creation and submission
 
-Peer review and mentor feedback system
+- Peer review and mentor feedback system
 
-Portfolio artifact generation
+- Portfolio artifact generation
 
-Reputation and activity tracking
+- Reputation and activity tracking
 
-Dashboard for monitoring progress
+- Dashboard for monitoring progress
 
 # Project Architecture
 
@@ -36,13 +36,13 @@ apps/
 
 🔹 Backend
 
-Node.js
+- Node.js
 
-Express
+- Express
 
-REST API
+- REST API
 
-JSON-based data handling (or database if added)
+- JSON-based data handling 
 
 Main file:
 
@@ -50,11 +50,11 @@ server.js
 
 🔹 Frontend
 
-React
+- React
 
-TypeScript
+- TypeScript
 
-Vite
+- Vite
 
 Modular folder structure
 
@@ -80,63 +80,63 @@ src/
 
 🔹  Frontend
 
-React
+- React
 
-TypeScript
+- TypeScript
 
-Vite
+- Vite
 
-CSS
+- CSS
 
 🔹  Backend
 
-Node.js
+- Node.js
 
-Express
+- Express
 
-Development Tools
+- Development Tools
 
-VS Code
+- VS Code
 
-Git
+- Git
 
-GitHub
+- GitHub
 
-ESLint
+- ESLint
 
 # Installation and Setup
 
 1️⃣ Clone the repository
 
-git clone https://github.com/your-username/skillbridge.git
+- git clone https://github.com/your-username/skillbridge.git
 
-cd skillbridge
+- cd skillbridge
 
 2️⃣ Setup Backend
 
-cd apps/backend
+- cd apps/backend
 
-npm install
+- npm install
 
-npm start
+- npm start
 
-Server runs on:
+- Server runs on:
 
-http://localhost:5000
+- http://localhost:5000
 
 3️⃣ Setup Frontend
 
 Open new terminal:
 
-cd apps/frontend
+- cd apps/frontend
 
-npm install
+- npm install
 
-npm run dev
+- npm run dev
 
 Frontend runs on:
 
-http://localhost:5173
+- http://localhost:5173
 
 🔐 Environment Variables
 
@@ -148,15 +148,15 @@ VITE_API_URL=http://localhost:5000
 
 📊 Development Workflow
 
-Create a new branch
+- Create a new branch
 
-Implement feature
+- Implement feature
 
-Test locally
+- Test locally
 
-Create pull request
+- Create pull request
 
-Review and merge
+- Review and merge
 
 👥 Team Members
 
@@ -172,13 +172,13 @@ Astana IT University – 2026
 
 # Project Status
 
-Literature review completed
+- Literature review completed
 
-Survey conducted
+- Survey conducted
 
-System architecture designed
+- System architecture designed
 
-MVP development in progress
+- MVP development in progress
 
 📄 License
 
