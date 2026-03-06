@@ -86,7 +86,8 @@ src/
 
 - Vite
 
-- CSS
+- Tailwind CSS
+- Other importent Libraries 
 
 🔹  Backend
 
@@ -106,13 +107,13 @@ src/
 
 # Installation and Setup
 
-1️⃣ Clone the repository
+1️ Clone the repository
 
 - git clone "https://github.com/Z-Coding-dot/Skill_Bridge.git"
 
 - cd skillbridge
 
-2️⃣ Setup Backend
+2️ Setup Backend
 
 - cd apps/backend
 
@@ -120,7 +121,7 @@ src/
 
 - npm start
 
-3️⃣ Setup Frontend
+3️ Setup Frontend
 
 Open new terminal:
 
@@ -130,7 +131,7 @@ Open new terminal:
 
 - npm run dev
 
-📊 Development Workflow
+ # Development Workflow
 
 - Create a new branch
 
@@ -142,7 +143,7 @@ Open new terminal:
 
 - Review and merge
 
-👥 Team Members
+ # Team Members
 
 Muammar Tajwar Ariq – Backend logic and API development
 
@@ -164,6 +165,6 @@ Astana IT University – 2026
 
 - MVP development in progress
 
-📄 License
+# License
 
 This project is developed for academic purposes as part of a Bachelor’s Diploma Project at Astana IT University.
