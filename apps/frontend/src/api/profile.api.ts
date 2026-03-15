@@ -3,7 +3,7 @@ import { api } from "./client";
 import { profileMock } from "@/mock/dashboard.mock";
 
 
-const USE_MOCK_API = true;
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
 
 export const getProfile = async (): Promise<ProfileSchema> => {
   if (USE_MOCK_API) {
