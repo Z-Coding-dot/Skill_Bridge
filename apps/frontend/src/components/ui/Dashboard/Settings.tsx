@@ -3,13 +3,14 @@ import Section from "@/components/Section/Section";
 import { User2Icon } from "lucide-react";
 import { getProfile, updateProfile} from "@/api/profile.api";
 import { ProfileSchema } from "@/schemas/profile.schema";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 export const Setting = () => {
   const queryClient = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [isEditingSkills, setIsEditingSkills] = useState<boolean>(false);
   const [skills, setSkills] = useState<ProfileSchema["skills"]>([]);
+  const [skillsInput, setSkillsInput] = useState("");
   
   const { data: profile, isPending } = useQuery<ProfileSchema>({
     queryKey: ["profile"],
@@ -18,9 +19,36 @@ export const Setting = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
-    onSuccess: () => queryClient.invalidateQueries({queryKey: ["profile"]})})
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ["profile"]});
+      setIsEditingSkills(false);
+    },
+  });
+
+  useEffect(() => {
+    if (!profile) return;
+
+    setSkills(profile.skills ?? []);
+    setSkillsInput((profile.skills ?? []).map((skill) => skill.label).join(", "));
+  }, [profile]);
 
   if (isPending || !profile) return <Section>Loading...</Section>;
+
+  const saveSkills = () => {
+    const nextSkills = skillsInput
+      .split(",")
+      .map((skill) => skill.trim())
+      .filter(Boolean)
+      .map((skill, index) => ({
+        id: `${skill.toLowerCase().replace(/\s+/g, "-")}-${index + 1}`,
+        label: skill,
+      }));
+
+    setSkills(nextSkills);
+    updateProfileMutation.mutate({
+      skills: nextSkills,
+    });
+  };
 
   return (
     <Section>
@@ -53,10 +81,10 @@ export const Setting = () => {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
               updateProfileMutation.mutate({
-                ...profile,
                 name: formData.get("name") as string, 
                 email: formData.get("email") as string,
                 bio: formData.get("bio") as string,
+                skills,
               });
             }}   className="flex flex-col">
             <label htmlFor="name" className="text-xs sm:text-sm mb-1 text-trinary">Name</label>
@@ -77,26 +105,32 @@ export const Setting = () => {
             <h1 className="text-base sm:text-lg 2xl:text-2xl 3xl:text-3xl font-semibold tracking-tight">
               Skills
             </h1>
-            <button className="text-xs sm:text-sm" onClick={() => setIsEditingSkills(!isEditingSkills)}>{isEditingSkills ? "Done" : "Edit"}</button>
+            <button
+              className="text-xs sm:text-sm"
+              onClick={() => {
+                if (isEditingSkills) {
+                  saveSkills();
+                  return;
+                }
+
+                setIsEditingSkills(true);
+              }}
+            >
+              {isEditingSkills ? "Save" : "Edit"}
+            </button>
           </div>
 
           {isEditingSkills ?(
             <input
                 type="text"
                 placeholder="React, TypeScript, Tailwind"
-                onBlur={(e) =>
-                  setSkills(
-                    e.target.value.split(",").map((s) => ({
-                      id: crypto.randomUUID(),
-                      label: s.trim(),
-                    }))
-                  )
-                }
+                value={skillsInput}
+                onChange={(e) => setSkillsInput(e.target.value)}
               />
           ) : (
 
             <div className="flex flex-wrap items-start gap-4 mt-8">
-             {profile.skills?.map((skill) => (
+             {skills.map((skill) => (
             <span key={skill.id} className="bg-card-bg rounded-xl px-3 py-1 text-stone-100">
             {skill.label}</span> ))}
           </div> 

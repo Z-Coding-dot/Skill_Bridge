@@ -5,6 +5,8 @@ import { getProfile } from "@/api/profile.api"
 import {ProfileSchema } from "@/schemas/profile.schema"
 import { getMyTasks } from "@/api/tasks.api"
 import type { Task } from "@/schemas/task.schema"
+import { Link } from "react-router-dom"
+import { ROUTES } from "@/routes/routeConfig"
 
 export const Profile = () => {
     const {data: profile, isLoading} = useQuery<ProfileSchema>({
@@ -26,7 +28,9 @@ if (isLoading || !profile) return <Section>Loading...</Section>;
                         <User className="size-40" />
                         <h2 className="2xl:text-2xl font-semibold font-sans capitalize">{profile.name}</h2>
                         <p>{profile.email}</p>
-                        <button className="flex items-center gap-3 w-full justify-center"><Edit className="size-5"/>Edit Profile</button>
+                        <Link to={ROUTES.SETTINGS} className="flex items-center gap-3 w-full justify-center">
+                            <Edit className="size-5"/>Edit Profile
+                        </Link>
                     </div>
                     <div className="bg-card-bg rounded-lg w-full ">
                     <h2 className="text-start p-4">Skills</h2>
