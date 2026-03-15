@@ -28,7 +28,7 @@ if (isLoading || !profile) return <Section>Loading...</Section>;
                         <User className="size-40" />
                         <h2 className="2xl:text-2xl font-semibold font-sans capitalize">{profile.name}</h2>
                         <p>{profile.email}</p>
-                        <Link to={ROUTES.SETTINGS} className="flex items-center gap-3 w-full justify-center">
+                        <Link to={`/${ROUTES.DASHBOARD}/${ROUTES.SETTINGS}`} className="flex items-center gap-3 w-full justify-center">
                             <Edit className="size-5"/>Edit Profile
                         </Link>
                     </div>
