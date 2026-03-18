@@ -61,6 +61,9 @@ const getAllTasks = (filters = {}) => {
   return result;
 };
 
+const getTasksCount = () => tasks.length;
+
 module.exports = {
   getAllTasks,
+  getTasksCount,
 };
