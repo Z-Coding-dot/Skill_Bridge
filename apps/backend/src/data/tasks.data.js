@@ -61,9 +61,39 @@ const getAllTasks = (filters = {}) => {
   return result;
 };
 
+const getTaskById = (id) => {
+  return tasks.find((task) => task.id === id);
+};
+
+const createTask = ({
+  title,
+  description,
+  category,
+  deadline,
+  postedBy,
+  status = "Open",
+}) => {
+  const newTask = {
+    id: String(Date.now()),
+    title,
+    description,
+    category,
+    deadline,
+    postedBy,
+    status,
+    createdAt: new Date().toISOString(),
+  };
+
+  tasks.unshift(newTask);
+
+  return newTask;
+};
+
 const getTasksCount = () => tasks.length;
 
 module.exports = {
   getAllTasks,
+  getTaskById,
+  createTask,
   getTasksCount,
 };
