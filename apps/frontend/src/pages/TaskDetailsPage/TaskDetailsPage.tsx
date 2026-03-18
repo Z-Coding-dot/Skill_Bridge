@@ -1,14 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Section from "../../components/Section/Section";
-import { mockTasks } from "../../lib/consts/mockTasks/mockTask.data";
 import { ArrowLeft, Calendar, ExternalLink } from "lucide-react";
 import { ScrollToTop } from "../../components/ScrollToTop/ScrollToTop";
+import { getTaskById } from "@/api/tasks.api";
 
 export const TaskDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { data: task, isLoading } = useQuery({
+    queryKey: ["task", id],
+    queryFn: () => getTaskById(id as string),
+    enabled: Boolean(id),
+  });
 
-  const task = mockTasks.find((task) => task.id === id);
+  if (isLoading) {
+    return <Section>Loading task...</Section>;
+  }
 
   if (!task) {
     return (
