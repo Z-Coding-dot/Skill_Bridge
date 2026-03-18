@@ -3,6 +3,7 @@ const profileRoutes = require("./profile.routes");
 const tasksRoutes = require("./tasks.routes");
 const applicationsRoutes = require("./applications.routes");
 const notificationsRoutes = require("./notifications.routes");
+const messagesRoutes = require("./messages.routes");
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use("/profile", profileRoutes);
 router.use("/tasks", tasksRoutes);
 router.use("/applications", applicationsRoutes);
 router.use("/notifications", notificationsRoutes);
+router.use("/messages", messagesRoutes);
 
 module.exports = router;
