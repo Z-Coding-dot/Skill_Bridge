@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
+const { CORS_ORIGIN } = require("./config/env");
 const routes = require("./routes");
 const notFound = require("./middleware/notFound.middleware");
 const errorHandler = require("./middleware/error.middleware");
@@ -9,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: CORS_ORIGIN,
     credentials: true,
   }),
 );
