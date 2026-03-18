@@ -35,7 +35,16 @@ const createApplication = ({ taskTitle, pitch }) => {
   return newApplication;
 };
 
+const getApplicationsCount = () => applications.length;
+
+const getAcceptedApplicationsCount = () => {
+  return applications.filter((application) => application.status === "accepted")
+    .length;
+};
+
 module.exports = {
   getAllApplications,
   createApplication,
+  getApplicationsCount,
+  getAcceptedApplicationsCount,
 };
