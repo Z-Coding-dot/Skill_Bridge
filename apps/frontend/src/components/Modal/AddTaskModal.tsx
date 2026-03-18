@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { TaskSchema, type Task, type TaskCategory } from "@/schemas/task.schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Task, TaskCategory } from "@/schemas/task.schema";
+import { createTask } from "@/api/tasks.api";
 
 type Props = {
   isOpen: boolean;
@@ -17,6 +18,19 @@ const CATEGORY_OPTIONS = [
 
 export const AddTaskModal = ({ isOpen, onClose }: Props) => {
   const queryClient = useQueryClient();
+  const createTaskMutation = useMutation({
+    mutationFn: createTask,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      onClose();
+      setForm({
+        title: "",
+        description: "",
+        category: "Project",
+        deadline: "",
+      });
+    },
+  });
 
  const [form, setForm] = useState<{
   title: string;
@@ -34,39 +48,20 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
   if (!isOpen) return null;
 
   const handleSubmit = () => {
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title: form.title.trim(),
-      description: form.description.trim(),
-      category: form.category,
-      deadline: form.deadline,
-      status: "Open",
-      createdAt: new Date().toISOString(),
-      postedBy: {
-        id: "user-1",
-        name: "Parsa Karimi",
-      },
-    };
+const newTask: Omit<Task, "id" | "createdAt"> = {
+  title: form.title.trim(),
+  description: form.description.trim(),
+  category: form.category,
+  deadline: form.deadline,
+  status: "Open",
+  postedBy: {
+    id: "user-1",
+    name: "Parsa Karimi",
+  },
+};
 
-    try {
-      TaskSchema.parse(newTask);
 
-      queryClient.setQueryData<Task[]>(["my_task"], (old = []) => [
-        newTask,
-        ...old,
-      ]);
-
-      onClose();
-      setForm({
-        title: "",
-        description: "",
-        category: "Project",
-        deadline: "",
-      });
-    } catch (error) {
-      console.error("Validation failed:", error);
-      alert("Please fill all fields correctly");
-    }
+    createTaskMutation.mutate(newTask);
   };
 
   return (
@@ -117,6 +112,7 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
           </button>
           <button
             onClick={handleSubmit}
+            disabled={createTaskMutation.isPending}
             className="bg-primary px-4 py-2 rounded text-white">Save Task
           </button>
         </div>

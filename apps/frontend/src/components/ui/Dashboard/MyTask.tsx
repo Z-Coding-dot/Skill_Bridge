@@ -11,7 +11,7 @@ import { AddTaskModal } from "@/components/Modal/AddTaskModal";
 export const MyTask = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, isLoading, error } = useQuery<Task[]>({
-     queryKey: ["my_tasks"],
+     queryKey: ["tasks"],
      queryFn: () => getMyTasks(),
    });
 
