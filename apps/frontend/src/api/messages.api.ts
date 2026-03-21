@@ -4,7 +4,7 @@ import { messagesMock } from "@/mock/dashboard.mock";
 import z from "zod";
 
 
-const USE_MOCK_API = true;
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
 const MessageListSchema = z.array(MessageSchema)
 
 export const getMessages = async (): Promise<Message[]> => {
@@ -16,5 +16,5 @@ export const getMessages = async (): Promise<Message[]> => {
 
 
   const res = await api.get("/messages");
-  return Array.isArray(res.data.messages) ? res.data.messages : [];
+  return MessageListSchema.parse(res.data);
 };
