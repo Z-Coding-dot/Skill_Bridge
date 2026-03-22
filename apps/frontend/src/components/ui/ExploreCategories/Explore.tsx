@@ -6,7 +6,7 @@ import { exploreCategories } from '@/lib/consts/exploreCategories/explore.data';
 import SpotlightCard from '@/components/Card/SpotlightCard';
 const Explore = () => {
   return (
-    <Section>
+    <Section id='categories'>
         <m.h1
          initial={{ opacity: 0, y: 50 }}
 			            whileInView={{ opacity: 1, y: 0 }}
