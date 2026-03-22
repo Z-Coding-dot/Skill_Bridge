@@ -1,11 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import { Calendar, Search } from "lucide-react"
 import Section from "../../components/Section/Section"
-import { mockTasks } from "../../lib/consts/mockTasks/mockTask.data";
 import { Input } from "../../components/Search/Input";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import clsx from "clsx";
 import { ScrollToTop } from "../../components/ScrollToTop/ScrollToTop";
+import { getTasks } from "@/api/tasks.api";
+import type { Task } from "@/schemas/task.schema";
 
 
 
@@ -14,12 +16,20 @@ export const TaskBoard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const selectedCategory = searchParams.get('category') || 'All';
+  const { data = [], isLoading, error } = useQuery<Task[]>({
+    queryKey: ["tasks"],
+    queryFn: getTasks,
+  });
 
-  const filteredTasks = mockTasks.filter((task) => {
+  const filteredTasks = data.filter((task) => {
     const matchCategory = selectedCategory === "All" || task.category === selectedCategory;
     const matchSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) || task.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchCategory && matchSearch;
   })
+
+  if (isLoading) return <Section>Loading tasks...</Section>;
+
+  if (error) return <Section>Unable to load tasks.</Section>;
 
   return (
     <Section>
