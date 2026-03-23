@@ -3,7 +3,7 @@ import { api } from "./client";
 import { ApplicationSchema, type Application } from "@/schemas/application.schema";
 import { applicationsMock } from "@/mock/dashboard.mock";
 
-const USE_MOCK_API = true;
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
 
 const ApplicationListSchema = z.array(ApplicationSchema);
 
