@@ -5,6 +5,7 @@ const {
   updateTaskById,
   deleteTaskById,
 } = require("../data/tasks.data");
+const { getAllTasks, getTaskById, createTask } = require("../data/tasks.data");
 const ALLOWED_CATEGORIES = [
   "Gig",
   "Internship",
@@ -213,6 +214,88 @@ const deleteTask = (req, res, next) => {
       message: "Task deleted successfully",
       task: deletedTask,
     });
+=======
+    const { title, description, category, deadline, postedBy, status } =
+      req.body;
+    const normalizedTitle = typeof title === "string" ? title.trim() : title;
+    const normalizedDescription =
+      typeof description === "string" ? description.trim() : description;
+    const normalizedCategory =
+      typeof category === "string" ? category.trim() : category;
+    const normalizedStatus =
+      status === undefined
+        ? "Open"
+        : typeof status === "string"
+          ? status.trim()
+          : status;
+
+    if (!normalizedTitle || typeof normalizedTitle !== "string") {
+      return res.status(400).json({
+        message: "title is required and must be a string",
+      });
+    }
+
+    if (!normalizedDescription || typeof normalizedDescription !== "string") {
+      return res.status(400).json({
+        message: "description is required and must be a string",
+      });
+    }
+
+    if (!normalizedCategory || typeof normalizedCategory !== "string") {
+      return res.status(400).json({
+        message: "category is required and must be a string",
+      });
+    }
+
+    if (!ALLOWED_CATEGORIES.includes(normalizedCategory)) {
+      return res.status(400).json({
+        message: `category must be one of: ${ALLOWED_CATEGORIES.join(", ")}`,
+      });
+    }
+
+    if (!deadline || typeof deadline !== "string") {
+      return res.status(400).json({
+        message: "deadline is required and must be a string",
+      });
+    }
+
+    if (
+      !postedBy ||
+      typeof postedBy !== "object" ||
+      typeof postedBy.id !== "string" ||
+      typeof postedBy.name !== "string"
+    ) {
+      return res.status(400).json({
+        message: "postedBy is required and must include string id and name",
+      });
+    }
+
+    if (
+      !normalizedStatus ||
+      typeof normalizedStatus !== "string" ||
+      !ALLOWED_STATUSES.includes(normalizedStatus)
+    ) {
+      return res.status(400).json({
+        message: `status must be one of: ${ALLOWED_STATUSES.join(", ")}`,
+      });
+    }
+
+    const newTask = createTask({
+      title: normalizedTitle,
+      description: normalizedDescription,
+      category: normalizedCategory,
+      deadline,
+      postedBy: {
+        id: postedBy.id.trim(),
+        name: postedBy.name.trim(),
+        ...(postedBy.avatar && typeof postedBy.avatar === "string"
+          ? { avatar: postedBy.avatar.trim() }
+          : {}),
+      },
+      status: normalizedStatus,
+    });
+
+    res.status(201).json(newTask);
   } catch (error) {
     next(error);
   }

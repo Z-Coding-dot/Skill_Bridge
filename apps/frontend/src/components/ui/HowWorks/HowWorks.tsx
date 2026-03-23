@@ -6,7 +6,7 @@ import * as m from "motion/react-client"
 
 export const HowWorks = () => {
   return (
-    <Section>
+    <Section  id="how_works" className="scroll-mt-20">
       <h1 className="text-center text-xl sm:text-2xl lg:text-4xl font-bold mb-3">How it Works</h1>
        <p className="sm:mb-16 mb-6 text-center text-xs sm:text-xs lg:text-base">Discover our seamless three-step process designed to turn your complex challenges into simple, actionable results.</p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
