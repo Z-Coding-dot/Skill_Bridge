@@ -89,11 +89,45 @@ const createTask = ({
   return newTask;
 };
 
+const updateTaskById = (id, updates) => {
+  const taskIndex = tasks.findIndex((task) => task.id === id);
+
+  if (taskIndex === -1) {
+    return null;
+  }
+
+  tasks[taskIndex] = {
+    ...tasks[taskIndex],
+    ...updates,
+    postedBy: updates.postedBy
+      ? {
+          ...tasks[taskIndex].postedBy,
+          ...updates.postedBy,
+        }
+      : tasks[taskIndex].postedBy,
+  };
+
+  return tasks[taskIndex];
+};
+
+const deleteTaskById = (id) => {
+  const taskIndex = tasks.findIndex((task) => task.id === id);
+
+  if (taskIndex === -1) {
+    return null;
+  }
+
+  const [deletedTask] = tasks.splice(taskIndex, 1);
+  return deletedTask;
+};
+
 const getTasksCount = () => tasks.length;
 
 module.exports = {
   getAllTasks,
   getTaskById,
   createTask,
+  updateTaskById,
+  deleteTaskById,
   getTasksCount,
 };

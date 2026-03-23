@@ -3,7 +3,7 @@ import { api } from "./client";
 import { notificationsMock } from "@/mock/dashboard.mock";
 import z from "zod";
 
-const USE_MOCK_API = true;
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
 const NotificationListSchema = z.array(NotificationSchema);
 
 export const getNotifications = async (): Promise<Notification[]> => {

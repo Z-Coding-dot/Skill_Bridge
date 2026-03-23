@@ -1,7 +1,7 @@
 import { DashboardOverviewSchema, type DashboardOverview } from "@/schemas/dashboard.schema";
 import {api} from "./client";
 import { dashboardMock } from "@/mock/dashboard.mock";
-const USE_MOCK_API = true;
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
 
 
 export const getDashboardOverview = async (): Promise<DashboardOverview> => {
