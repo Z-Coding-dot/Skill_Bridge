@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import logo from '../../assets/header/SkillBridge.svg';
 import {motion} from 'motion/react';
+import { login as loginRequest } from "@/api/auth.api";
+import axios from "axios";
 
 type SignInField = {
   email: string;
@@ -24,15 +26,44 @@ const schema = yup.object({
 export const Login = () => {
   const navigate = useNavigate();
   const {login} = useAuth();
-  const {register, handleSubmit,  formState: { errors },} = useForm<SignInField>({
+  const {register, handleSubmit, setError, clearErrors, formState: { errors },} = useForm<SignInField>({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
 
-  const onSubmit = (data: SignInField) => {
-    console.log(data);
-    login({email: data.email});
-    navigate("/dashboard");
+  const onSubmit = async (data: SignInField) => {
+    clearErrors("root");
+
+    try {
+      const user = await loginRequest(data);
+      login(user);
+      navigate("/dashboard");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const backendErrors = error.response?.data?.errors;
+
+        if (Array.isArray(backendErrors) && backendErrors.length > 0) {
+          backendErrors.forEach((item: { field?: string; message?: string }) => {
+            if (!item.field || !item.message) return;
+            if (item.field === "email" || item.field === "password") {
+              setError(item.field, { type: "server", message: item.message });
+            }
+          });
+          return;
+        }
+
+        setError("root", {
+          type: "server",
+          message: error.response?.data?.message || "Unable to sign in",
+        });
+        return;
+      }
+
+      setError("root", {
+        type: "server",
+        message: "Unable to sign in",
+      });
+    }
   };
 
   return (
@@ -102,6 +133,9 @@ export const Login = () => {
               className="w-full text-center 1xl:py-2.2 text-medium xl:text-lg bg-login-bg hover:bg-blue-950 mt-4">
               Log In
             </button>
+            {errors.root?.message && (
+              <p className="text-red-600 text-sm mt-3">{errors.root.message}</p>
+            )}
           </form>
 
           {/* Redirect */}
