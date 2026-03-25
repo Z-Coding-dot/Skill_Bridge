@@ -1,3 +1,4 @@
+
 const {
   getAllTasks,
   getTaskById,
@@ -5,6 +6,7 @@ const {
   updateTaskById,
   deleteTaskById,
 } = require("../data/tasks.data");
+
 const ALLOWED_CATEGORIES = [
   "Gig",
   "Internship",
@@ -12,6 +14,7 @@ const ALLOWED_CATEGORIES = [
   "Project",
   "Freelance",
 ];
+
 const ALLOWED_STATUSES = ["Open", "Closed"];
 
 const normalizePostedBy = (postedBy) => {
@@ -52,18 +55,24 @@ const validateTaskPayload = ({
         : status;
   const normalizedPostedBy = normalizePostedBy(postedBy);
 
-  if ((!partial || title !== undefined) &&
-    (!normalizedTitle || typeof normalizedTitle !== "string")) {
+  if (
+    (!partial || title !== undefined) &&
+    (!normalizedTitle || typeof normalizedTitle !== "string")
+  ) {
     return { error: "title is required and must be a string" };
   }
 
-  if ((!partial || description !== undefined) &&
-    (!normalizedDescription || typeof normalizedDescription !== "string")) {
+  if (
+    (!partial || description !== undefined) &&
+    (!normalizedDescription || typeof normalizedDescription !== "string")
+  ) {
     return { error: "description is required and must be a string" };
   }
 
-  if ((!partial || category !== undefined) &&
-    (!normalizedCategory || typeof normalizedCategory !== "string")) {
+  if (
+    (!partial || category !== undefined) &&
+    (!normalizedCategory || typeof normalizedCategory !== "string")
+  ) {
     return { error: "category is required and must be a string" };
   }
 
@@ -76,8 +85,10 @@ const validateTaskPayload = ({
     };
   }
 
-  if ((!partial || deadline !== undefined) &&
-    (!normalizedDeadline || typeof normalizedDeadline !== "string")) {
+  if (
+    (!partial || deadline !== undefined) &&
+    (!normalizedDeadline || typeof normalizedDeadline !== "string")
+  ) {
     return { error: "deadline is required and must be a string" };
   }
 
@@ -118,13 +129,10 @@ const validateTaskPayload = ({
     },
   };
 };
-
 const getTasks = (req, res, next) => {
   try {
     const { status, category } = req.query;
-
     const tasks = getAllTasks({ status, category });
-
     res.status(200).json(tasks);
   } catch (error) {
     next(error);
@@ -134,7 +142,6 @@ const getTasks = (req, res, next) => {
 const getTask = (req, res, next) => {
   try {
     const { id } = req.params;
-
     const task = getTaskById(id);
 
     if (!task) {

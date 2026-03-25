@@ -120,7 +120,6 @@ const deleteTaskById = (id) => {
   const [deletedTask] = tasks.splice(taskIndex, 1);
   return deletedTask;
 };
-
 const getTasksCount = () => tasks.length;
 
 module.exports = {
