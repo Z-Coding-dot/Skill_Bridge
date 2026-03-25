@@ -16,6 +16,7 @@ export default function Step1UserInfo() {
 
       <label className="text-secondary sm:text-gray-700 1xl:text-sm 2xl:text-base">Bio (optional)</label>
       <textarea {...register("bio")} placeholder="Tell us about yourself..." className="w-full 1xl:py-1 2xl:py-2 1xl:text-sm 2xl:text-base bg-gray-200 text-gray-900 mb-1 border-none" />
+      {errors.bio && <p className="text-red-600 text-sm">{errors.bio.message as string}</p>}
     </div>
   );
 }
