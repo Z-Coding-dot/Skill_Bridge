@@ -31,7 +31,10 @@ export const Login = () => {
 
   const onSubmit = (data: SignInField) => {
     console.log(data);
-    login({email: data.email});
+    login({
+      email: data.email,
+      id: ""
+    });
     navigate("/dashboard");
   };
 
