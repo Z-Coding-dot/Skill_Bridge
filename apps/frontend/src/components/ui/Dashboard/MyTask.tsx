@@ -36,7 +36,7 @@ export const MyTask = () => {
   
   return (
     <Section>
-      <div className="flex items-center justify-between mt-5">
+      <div className="flex items-center justify-between">
         <h1 className="2xl:text-xl font-semibold">My Posted Tasks</h1>
         <button onClick={() => setOpen((prev) => !prev)} className="flex items-center gap-2 2xl:text-base">
           <Plus className="size-5" /> Add Task
@@ -46,13 +46,17 @@ export const MyTask = () => {
       {data && data.length > 0 && ( 
     <ul className="mt-10 space-y-4">
     {data.map((task) => (
-      <li key={task.id} className="bg-2card p-4 rounded-xl">
-        <h2 className="font-semibold">{task.title}</h2>
-        <p className="text-sm text-stone-400">{task.description}</p>
-        <span className="text-xs text-stone-500">
-          {task.category} • {task.status} 
-        </span>
-      </li>
+      <div key={task.id} className="bg-2card rounded-xl flex flex-col-reverse sm:flex-row items-center sm:justify-between">
+        <div className="p-2 sm:p-5">
+        <h2 className="font-semibold text-sm sm:text-base 2xl:text-2xl 3xl:text-3xl mb-4">{task.title}</h2>
+        <p className="text-xs sm:text-sm 2xl:text-base text-stone-300 line-clamp-2"><span>Descriptions: </span>{task.description}</p>
+        </div>
+        <div className="flex justify-between items-center w-full sm:w-auto gap-4 sm:flex-col p-2 sm:p-5">
+        <span className={`text-xs sm:text-sm font-semibold ${task.status === "Open" ? "bg-green-500" : "bg-red-500"} text-white rounded-lg py-0.5 sm:py-1 px-2 sm:px-3`}>{task.status} </span>
+        <span className="text-xs sm:text-sm font-semibold text-white bg-purple-500 rounded-lg py-0.5 sm:py-1 px-1 sm:px-2">{task.category} </span>
+
+        </div>
+      </div>
     ))}
   </ul>
   )}

@@ -36,22 +36,22 @@ const notificationConfig = {
   
   return (
     <Section>
-      <div className="flex flex-col gap-4 bg-2card w-full rounded-xl p-6 mt-5">
+      <div className="flex flex-col gap-4 bg-2card w-full rounded-xl p-2 sm:p-4">
         {data?.map((n) => {
           const config = notificationConfig[n.type];
           const Icon = config.icon;
       return (
       <div key={n.id}
-      className={clsx("flex gap-4 rounded-xl p-4 bg-card-bg")}>
+      className={clsx("flex gap-4 rounded-xl p-2 sm:p-4 bg-card-bg")}>
       <Icon className={clsx("mt-2", config.iconColor)} />
-      <div className="flex justify-between items-center w-full">
+      <div className="flex flex-col sm:flex-row sm:justify-between items-center w-full gap-2 sm:gap-4">
         <div className="mr-5">
-        <h1>{n.title}</h1>
-        <p className="text-wrap">{n.message}</p>
+        <h1 className="text-sm sm:text-base">{n.title}</h1>
+        <p className="text-wrap text-xs sm:text-sm mt-1 sm:mt-2 text-stone-400">{n.message}</p>
         </div>
-        <div>
-        <p className={clsx("text-xs px-2 py-1 rounded-xl text-center mb-3 text-white", config.textBG)}>{n.type}</p>
-        <span className="text-xs text-trinary font-semibold truncate">{n.createdAt}</span>
+        <div className="flex flex-col justify-between h-full max-sm:items-end">
+        <p className={clsx("hidden sm:flex text-xs px-2 py-1 rounded-lg text-center  mb-3 text-white justify-center capitalize", config.textBG)}>{n.type}</p>
+        <span className="text-xs text-trinary font-semibold truncate mt-4 max-sm:-mr-25">{n.createdAt}</span>
         </div>
       </div>
         </div>)
