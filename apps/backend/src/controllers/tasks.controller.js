@@ -1,3 +1,4 @@
+
 const {
   getAllTasks,
   getTaskById,
@@ -128,7 +129,6 @@ const validateTaskPayload = ({
     },
   };
 };
-
 const getTasks = (req, res, next) => {
   try {
     const { status, category } = req.query;
