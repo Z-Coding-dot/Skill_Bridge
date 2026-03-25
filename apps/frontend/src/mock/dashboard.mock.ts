@@ -29,7 +29,7 @@ export const tasksMock: Task[]= [
   {
     id: "task-1",
     title: "Web Design for Student Portfolio",
-    description:"I need a good",
+    description:"I am looking for a talented web designer to create a portfolio website for me. The website should be modern, responsive, and showcase my projects and skills effectively. I have a clear vision of the design and can provide examples of websites I like.",
     category: "Project",
     deadline: "2026-12-31",
     postedBy: {
@@ -119,7 +119,7 @@ export const applicationsMock: Application[]= [
   {
     id: "app-1",
     taskTitle: "Web Design for Student Portfolio",
-    status: "pending",
+    status: "rejected",
     pitch: "I have 3 years of experience in web design and have created multiple portfolio websites. I can deliver a modern, responsive design that perfectly showcases your work."
   }
 ];
