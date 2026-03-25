@@ -31,18 +31,18 @@ export const routes = createBrowserRouter([
         element: <TaskBoard />,
       },
       {
-        path: ROUTES.MESSAGES,
-        element:(<ProtectedRoute> <Messages /></ProtectedRoute>),
-      },
-      {
-        path: ROUTES.PROFILE,
-        element: (<ProtectedRoute> <Profile /></ProtectedRoute>),
-      },
-      {
         path: "/tasks/:id",
         element: (<ProtectedRoute> <TaskDetailsPage /></ProtectedRoute>),
       },
     ],
+  },
+  {
+    path: ROUTES.MESSAGES,
+    element:(<ProtectedRoute> <Messages /></ProtectedRoute>),
+  },
+  {
+    path: ROUTES.PROFILE,
+    element: (<ProtectedRoute> <Profile /></ProtectedRoute>),
   },
   {
     path: ROUTES.DASHBOARD,
