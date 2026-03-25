@@ -1,3 +1,4 @@
+
 const {
   getAllTasks,
   getTaskById,
@@ -119,7 +120,6 @@ const validateTaskPayload = ({
     },
   };
 };
-
 const getTasks = (req, res, next) => {
   try {
     const { status, category } = req.query;
@@ -214,7 +214,6 @@ const deleteTask = (req, res, next) => {
       message: "Task deleted successfully",
       task: deletedTask,
     });
-=======
     const { title, description, category, deadline, postedBy, status } =
       req.body;
     const normalizedTitle = typeof title === "string" ? title.trim() : title;
