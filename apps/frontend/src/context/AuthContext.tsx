@@ -9,6 +9,7 @@ import {
 type User = {
   id: string;
   email: string;
+  name?: string;
 };
 
 type AuthContextType = {
