@@ -50,7 +50,7 @@ export const MyTask = () => {
         <h2 className="font-semibold">{task.title}</h2>
         <p className="text-sm text-stone-400">{task.description}</p>
         <span className="text-xs text-stone-500">
-          {task.category} • {task.status}
+          {task.category} • {task.status} 
         </span>
       </li>
     ))}
