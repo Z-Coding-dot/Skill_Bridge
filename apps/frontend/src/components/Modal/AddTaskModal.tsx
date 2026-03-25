@@ -1,11 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task, TaskCategory } from "@/schemas/task.schema";
 import { createTask } from "@/api/tasks.api";
+import { X } from "lucide-react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+};
+
+type FormState = {
+  title: string;
+  description: string;
+  category: TaskCategory;
+  deadline: string;
+};
+
+type FormErrors = {
+  title?: string;
+  description?: string;
+  deadline?: string;
+};
+
+const initialForm: FormState = {
+  title: "",
+  description: "",
+  category: "Project",
+  deadline: "",
 };
 
 const CATEGORY_OPTIONS = [
@@ -18,102 +39,155 @@ const CATEGORY_OPTIONS = [
 
 export const AddTaskModal = ({ isOpen, onClose }: Props) => {
   const queryClient = useQueryClient();
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const createTaskMutation = useMutation({
     mutationFn: createTask,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      setForm(initialForm);
+      setErrors({});
       onClose();
-      setForm({
-        title: "",
-        description: "",
-        category: "Project",
-        deadline: "",
-      });
     },
   });
 
- const [form, setForm] = useState<{
-  title: string;
-  description: string;
-  category: TaskCategory;
-  deadline: string;
-}>({
-  title: "",
-  description: "",
-  category: "Project",
-  deadline: "",
-});
-
+  useEffect(() => {
+    if (!isOpen) {
+      setForm(initialForm);
+      setErrors({});
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = () => {
-const newTask: Omit<Task, "id" | "createdAt"> = {
-  title: form.title.trim(),
-  description: form.description.trim(),
-  category: form.category,
-  deadline: form.deadline,
-  status: "Open",
-  postedBy: {
-    id: "user-1",
-    name: "Parsa Karimi",
-  },
-};
+  const validate = () => {
+    const nextErrors: FormErrors = {};
 
+    if (!form.title.trim()) {
+      nextErrors.title = "Title is required.";
+    } else if (form.title.trim().length < 3) {
+      nextErrors.title = "Title must be at least 3 characters.";
+    }
+
+    if (!form.description.trim()) {
+      nextErrors.description = "Description is required.";
+    } else if (form.description.trim().length < 10) {
+      nextErrors.description = "Description must be at least 10 characters.";
+    }
+
+    if (!form.deadline) {
+      nextErrors.deadline = "Deadline is required.";
+    } else if (new Date(form.deadline) < new Date()) {
+      nextErrors.deadline = "Deadline must be a future date.";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (!validate()) return;
+
+    const newTask: Omit<Task, "id" | "createdAt"> = {
+      title: form.title.trim(),
+      description: form.description.trim(),
+      category: form.category,
+      deadline: form.deadline,
+      status: "Open",
+      postedBy: {
+        id: "user-1",
+        name: "Parsa Karimi",
+      },
+    };
 
     createTaskMutation.mutate(newTask);
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-2card w-full max-w-xl rounded-2xl p-6">
-        <h2 className="text-xl font-semibold mb-4">Add Task</h2>
+    <div className="fixed inset-0 bg-black/50 flex sm:items-center sm:justify-center z-50">
+      <div className="bg-2card w-full max-w-2xl sm:rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold mb-4">Add Task</h2>
+          <button className="p-1 rounded-full mb-3" onClick={onClose}>
+            <X className="size-5 font-bold sm:size-6" />
+          </button>
+        </div>
 
         <div className="flex flex-col gap-3">
-          <input
-            className="input"
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) =>
-              setForm({ ...form, title: e.target.value })
-            }
-          />
+          <div>
+            <input
+              className="input w-full"
+              placeholder="Title"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+            />
+            {errors.title && (
+              <p className="mt-1 text-xs text-error">{errors.title}</p>
+            )}
+          </div>
 
-          <textarea
-            className="input min-h-[100px]"
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
-          />
+          <div>
+            <textarea
+              className="input min-h-[100px] w-full"
+              placeholder="Description"
+              value={form.description}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
+            />
+            {errors.description && (
+              <p className="mt-1 text-xs text-error">{errors.description}</p>
+            )}
+          </div>
 
           <div className="flex gap-3">
             <select
               className="input flex-1"
               value={form.category}
               onChange={(e) =>
-                setForm({ ...form, category: e.target.value as TaskCategory})
-              } >
+                setForm({ ...form, category: e.target.value as TaskCategory })
+              }
+            >
               {CATEGORY_OPTIONS.map((c) => (
-                <option key={c} value={c}> {c} </option> ))}
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
             </select>
 
-            <input type="date"
-              className="input flex-1"
-              value={form.deadline}
-              onChange={(e) => setForm({ ...form, deadline: e.target.value })}/>
+            <div className="flex-1">
+              <input
+                type="date"
+                className="input w-full"
+                value={form.deadline}
+                onChange={(e) =>
+                  setForm({ ...form, deadline: e.target.value })
+                }
+              />
+              {errors.deadline && (
+                <p className="mt-1 text-xs text-error">{errors.deadline}</p>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 mt-6">
+        {createTaskMutation.isError && (
+          <p className="mt-3 text-sm text-error">
+            Failed to create task. Please try again.
+          </p>
+        )}
+
+        <div className="flex justify-between gap-3 mt-6">
           <button onClick={onClose} className="px-4 py-2">
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={createTaskMutation.isPending}
-            className="bg-primary px-4 py-2 rounded text-white">Save Task
+            className="bg-primary hover:bg-hover px-4 py-2 rounded text-white w-3/4"
+          >
+            {createTaskMutation.isPending ? "Saving..." : "Add Task"}
           </button>
         </div>
       </div>

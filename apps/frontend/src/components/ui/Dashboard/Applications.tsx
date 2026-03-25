@@ -7,12 +7,12 @@ import { Clock } from "lucide-react"
 
 
 export const Applications = () => {
-  const { data: app, isLoading } = useQuery<Application[]>({
+  const { data: app, isPending } = useQuery<Application[]>({
     queryKey: ["applications"],
     queryFn: () => getApplications(),
   });
 
-  if (isLoading) {
+  if (isPending) {
     return <Section className="mt-12">Loading...</Section>;
   }
 
@@ -20,23 +20,31 @@ export const Applications = () => {
     return <Section className="mt-12">No Applications</Section>;
   }
 
+  const STYLE_STATUS = {
+    pending: "bg-yellow-500",
+    accepted: "bg-green-500",
+    rejected: "bg-red-500",
+  };
+
   return (
-    <Section className="mt-5">
+    <Section>
       <div className="space-y-6">
         {app.map((application) => (
           <div
             key={application.id}
-            className="flex flex-col items-start bg-2card w-full rounded-xl p-6">
-            <h3 className="mb-3">{application.taskTitle}</h3>
-
-            <span className="flex items-center text-xs gap-2 bg-accent rounded-2xl px-2 py-1 mb-5 text-stone-100">
-              <Clock className="h-4 w-4" />
+            className="flex flex-col items-start bg-2card w-full rounded-xl p-2 sm:p-5">
+            <div className="flex items-center justify-between mb-3 sm:mb-6 w-full">
+            <h3 className="text-sm sm:text-base font-semibold 2xl:text-xl">{application.taskTitle}</h3>
+            <span className={`${STYLE_STATUS[application.status] ?? "bg-gray-500"} flex items-center text-xs sm:text-sm capitalize font-semibold gap-2 rounded-lg px-2 py-1 text-stone-100`}>
+              {application.status === "pending" && <Clock className="h-4 w-4" /> }
               {application.status}
             </span>
 
-            <div className="bg-card-bg flex flex-col items-start w-full p-4 rounded-xl">
-              <p className="text-stone-400">Your Pitch:</p>
-              <p className="text-stone-200">{application.pitch}</p>
+              </div>
+
+            <div className="bg-card-bg flex flex-col items-start w-full p-2 sm:p-4 rounded-xl">
+              <p className="text-stone-400 text-sm mb-3">Your Pitch:</p>
+              <p className="text-stone-200 text-xs sm:text-sm">{application.pitch}</p>
             </div>
           </div>
         ))}

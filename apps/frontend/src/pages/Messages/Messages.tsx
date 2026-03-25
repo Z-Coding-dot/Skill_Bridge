@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import Section from "@/components/Section/Section";
 import { getMessages, } from "@/api/messages.api";
+import { Header } from "@/layouts/Header/Header";
+import MobileFooter from "@/layouts/Footer/MobileFooter";
 
 export const Messages = () => {
  const { data, isLoading } = useQuery({
@@ -14,8 +16,10 @@ const messages = Array.isArray(data) ? data : [];
   if (isLoading) return <Section>Loading messages...</Section>;
 
   return (
+      <>
+      <Header/>
     <Section>
-      <h1 className="text-xl font-semibold mb-6">Messages</h1>
+      <h1 className="text-xl font-semibold mb-6 mt-20">Messages</h1>
 
       {messages.length === 0 ? (
         <p className="text-stone-400">You have no messages.</p>
@@ -33,6 +37,10 @@ const messages = Array.isArray(data) ? data : [];
           ))}
         </div>
       )}
+      <>
+      <MobileFooter/>
+      </>
     </Section>
+          </>
   );
 };
