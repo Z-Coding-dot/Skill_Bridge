@@ -11,6 +11,8 @@ import signup from "../../assets/login_signUp.webp";
 import logo from "../../assets/header/SkillBridge.svg";
 import { useAuth } from "../../context/AuthContext";
 import {motion} from 'motion/react';
+import { signup as signupRequest } from "@/api/auth.api";
+import axios from "axios";
 
 
 /* form types */
@@ -62,14 +64,63 @@ export default function SignUp() {
     mode: "onTouched",
   });
 
-  const { handleSubmit, trigger } = methods;
+  const { handleSubmit, trigger, setError, clearErrors, formState: { errors } } = methods;
 
-  const onSubmit = (data: FormData) => {
-    login({email: data.email});
-    navigate("/dashboard");
+  const onSubmit = async (data: FormData) => {
+    clearErrors("root");
 
-    // send to server here 
+    try {
+      const user = await signupRequest({
+        name: data.name,
+        email: data.email,
+        bio: data.bio,
+        skills: data.skills,
+        password: data.password,
+      });
 
+      login(user);
+      navigate("/dashboard");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const backendErrors = error.response?.data?.errors;
+
+        if (Array.isArray(backendErrors) && backendErrors.length > 0) {
+          backendErrors.forEach((item: { field?: string; message?: string }) => {
+            if (!item.field || !item.message) return;
+
+            if (item.field.startsWith("skills")) {
+              setError("skills", { type: "server", message: item.message });
+              setStep(2);
+              return;
+            }
+
+            if (item.field === "password") {
+              setError("password", { type: "server", message: item.message });
+              setStep(3);
+              return;
+            }
+
+            if (item.field === "name" || item.field === "email" || item.field === "bio") {
+              setError(item.field, { type: "server", message: item.message });
+              setStep(1);
+            }
+          });
+
+          return;
+        }
+
+        setError("root", {
+          type: "server",
+          message: error.response?.data?.message || "Unable to create account",
+        });
+        return;
+      }
+
+      setError("root", {
+        type: "server",
+        message: "Unable to create account",
+      });
+    }
   };
 
   const handleNext = async () => {
@@ -124,6 +175,9 @@ export default function SignUp() {
                 <button type="submit" className="px-6 py-2 bg-[var(--success)] w-full"> Create Account </button>
               )}
             </div>
+            {errors.root?.message && (
+              <p className="text-red-600 text-sm mt-3">{errors.root.message}</p>
+            )}
             <div className="flex items-center justify-center mt-4 gap-2 w-full 1xl:min-w-[280px] 2xl:min-w-[400px]">
               <p className="font-semibold text-center">Already a member?</p>
               <Link to="/login" className="text-[var(--accent)] font-bold">

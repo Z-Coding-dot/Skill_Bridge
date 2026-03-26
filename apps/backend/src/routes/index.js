@@ -1,4 +1,5 @@
 const express = require("express");
+const authRoutes = require("./auth.routes");
 const profileRoutes = require("./profile.routes");
 const tasksRoutes = require("./tasks.routes");
 const applicationsRoutes = require("./applications.routes");
@@ -12,6 +13,7 @@ router.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
 
+router.use("/auth", authRoutes);
 router.use("/profile", profileRoutes);
 router.use("/tasks", tasksRoutes);
 router.use("/applications", applicationsRoutes);
