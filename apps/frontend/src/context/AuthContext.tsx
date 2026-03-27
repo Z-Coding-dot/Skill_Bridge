@@ -5,18 +5,20 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import axios from "axios";
+import {
+  getCurrentUser,
+  type AuthUser,
+  logout as logoutRequest,
+} from "@/api/auth.api";
 
-type User = {
-  id: string;
-  email: string;
-  name?: string;
-};
+type User = AuthUser;
 
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   login: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,20 +27,49 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // hydrate from storage / API
   useEffect(() => {
-    const stored = localStorage.getItem("auth_user");
-    if (stored) setUser(JSON.parse(stored));
-    setIsLoading(false);
+    let isMounted = true;
+
+    const hydrateUser = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+
+        if (isMounted) {
+          setUser(currentUser);
+        }
+      } catch (error) {
+        if (!axios.isAxiosError(error) || error.response?.status !== 401) {
+          console.error("Unable to restore auth session", error);
+        }
+
+        if (isMounted) {
+          setUser(null);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    hydrateUser();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = (user: User) => {
-    localStorage.setItem("auth_user", JSON.stringify(user));
     setUser(user);
   };
 
-  const logout = () => {
-    localStorage.removeItem("auth_user");
+  const logout = async () => {
+    try {
+      await logoutRequest();
+    } catch (error) {
+      console.error("Unable to log out cleanly", error);
+    }
+
     setUser(null);
   };
 
