@@ -41,7 +41,6 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<FormErrors>({});
-
   const createTaskMutation = useMutation({
     mutationFn: createTask,
     onSuccess: async () => {
