@@ -1,11 +1,4 @@
-
-const {
-  getAllTasks,
-  getTaskById,
-  createTask,
-  updateTaskById,
-  deleteTaskById,
-} = require("../data/tasks.data");
+const prisma = require("../lib/prisma");
 
 const ALLOWED_CATEGORIES = [
   "Gig",
@@ -17,26 +10,36 @@ const ALLOWED_CATEGORIES = [
 
 const ALLOWED_STATUSES = ["Open", "Closed"];
 
-const normalizePostedBy = (postedBy) => {
-  if (!postedBy || typeof postedBy !== "object") {
-    return postedBy;
-  }
-
-  return {
-    ...(typeof postedBy.id === "string" ? { id: postedBy.id.trim() } : {}),
-    ...(typeof postedBy.name === "string" ? { name: postedBy.name.trim() } : {}),
-    ...(typeof postedBy.avatar === "string"
-      ? { avatar: postedBy.avatar.trim() }
-      : {}),
-  };
+const taskInclude = {
+  postedBy: {
+    select: {
+      id: true,
+      name: true,
+      avatarUrl: true,
+    },
+  },
 };
+
+const mapTask = (task) => ({
+  id: task.id,
+  title: task.title,
+  description: task.description,
+  category: task.category,
+  deadline: task.deadline.toISOString(),
+  postedBy: {
+    id: task.postedBy.id,
+    name: task.postedBy.name,
+    ...(task.postedBy.avatarUrl ? { avatar: task.postedBy.avatarUrl } : {}),
+  },
+  status: task.status,
+  createdAt: task.createdAt.toISOString(),
+});
 
 const validateTaskPayload = ({
   title,
   description,
   category,
   deadline,
-  postedBy,
   status,
   partial = false,
 }) => {
@@ -53,7 +56,6 @@ const validateTaskPayload = ({
       : typeof status === "string"
         ? status.trim()
         : status;
-  const normalizedPostedBy = normalizePostedBy(postedBy);
 
   if (
     (!partial || title !== undefined) &&
@@ -92,16 +94,11 @@ const validateTaskPayload = ({
     return { error: "deadline is required and must be a string" };
   }
 
-  if (!partial || postedBy !== undefined) {
-    if (
-      !normalizedPostedBy ||
-      typeof normalizedPostedBy !== "object" ||
-      typeof normalizedPostedBy.id !== "string" ||
-      typeof normalizedPostedBy.name !== "string"
-    ) {
-      return {
-        error: "postedBy is required and must include string id and name",
-      };
+  if (normalizedDeadline !== undefined) {
+    const parsedDeadline = new Date(normalizedDeadline);
+
+    if (Number.isNaN(parsedDeadline.getTime())) {
+      return { error: "deadline must be a valid date string" };
     }
   }
 
@@ -124,25 +121,42 @@ const validateTaskPayload = ({
         : {}),
       ...(normalizedCategory !== undefined ? { category: normalizedCategory } : {}),
       ...(normalizedDeadline !== undefined ? { deadline: normalizedDeadline } : {}),
-      ...(normalizedPostedBy !== undefined ? { postedBy: normalizedPostedBy } : {}),
       ...(normalizedStatus !== undefined ? { status: normalizedStatus } : {}),
     },
   };
 };
-const getTasks = (req, res, next) => {
+
+const getTasks = async (req, res, next) => {
   try {
     const { status, category } = req.query;
-    const tasks = getAllTasks({ status, category });
-    res.status(200).json(tasks);
+    const tasks = await prisma.task.findMany({
+      where: {
+        ...(typeof status === "string" && ALLOWED_STATUSES.includes(status)
+          ? { status }
+          : {}),
+        ...(typeof category === "string" && ALLOWED_CATEGORIES.includes(category)
+          ? { category }
+          : {}),
+      },
+      include: taskInclude,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.status(200).json(tasks.map(mapTask));
   } catch (error) {
     next(error);
   }
 };
 
-const getTask = (req, res, next) => {
+const getTask = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const task = getTaskById(id);
+    const task = await prisma.task.findUnique({
+      where: { id },
+      include: taskInclude,
+    });
 
     if (!task) {
       return res.status(404).json({
@@ -150,13 +164,13 @@ const getTask = (req, res, next) => {
       });
     }
 
-    res.status(200).json(task);
+    res.status(200).json(mapTask(task));
   } catch (error) {
     next(error);
   }
 };
 
-const postTask = (req, res, next) => {
+const postTask = async (req, res, next) => {
   try {
     const validation = validateTaskPayload({
       ...req.body,
@@ -169,21 +183,38 @@ const postTask = (req, res, next) => {
       });
     }
 
-    const newTask = createTask(validation.data);
-    res.status(201).json(newTask);
+    const newTask = await prisma.task.create({
+      data: {
+        ...validation.data,
+        deadline: new Date(validation.data.deadline),
+        postedById: req.user.id,
+      },
+      include: taskInclude,
+    });
+
+    res.status(201).json(mapTask(newTask));
   } catch (error) {
     next(error);
   }
 };
 
-const updateTask = (req, res, next) => {
+const updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const existingTask = getTaskById(id);
+    const existingTask = await prisma.task.findUnique({
+      where: { id },
+      include: taskInclude,
+    });
 
     if (!existingTask) {
       return res.status(404).json({
         message: `Task with id ${id} not found`,
+      });
+    }
+
+    if (existingTask.postedBy.id !== req.user.id) {
+      return res.status(403).json({
+        message: "you can only update your own tasks",
       });
     }
 
@@ -198,27 +229,51 @@ const updateTask = (req, res, next) => {
       });
     }
 
-    const updatedTask = updateTaskById(id, validation.data);
-    res.status(200).json(updatedTask);
+    const updatedTask = await prisma.task.update({
+      where: { id },
+      data: {
+        ...validation.data,
+        ...(validation.data.deadline
+          ? { deadline: new Date(validation.data.deadline) }
+          : {}),
+      },
+      include: taskInclude,
+    });
+
+    res.status(200).json(mapTask(updatedTask));
   } catch (error) {
     next(error);
   }
 };
 
-const deleteTask = (req, res, next) => {
+const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deletedTask = deleteTaskById(id);
+    const existingTask = await prisma.task.findUnique({
+      where: { id },
+      include: taskInclude,
+    });
 
-    if (!deletedTask) {
+    if (!existingTask) {
       return res.status(404).json({
         message: `Task with id ${id} not found`,
       });
     }
 
+    if (existingTask.postedBy.id !== req.user.id) {
+      return res.status(403).json({
+        message: "you can only delete your own tasks",
+      });
+    }
+
+    const deletedTask = await prisma.task.delete({
+      where: { id },
+      include: taskInclude,
+    });
+
     res.status(200).json({
       message: "Task deleted successfully",
-      task: deletedTask,
+      task: mapTask(deletedTask),
     });
   } catch (error) {
     next(error);
