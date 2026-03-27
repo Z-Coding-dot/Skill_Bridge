@@ -9,6 +9,7 @@ const notFound = require("./middleware/notFound.middleware");
 const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
+const SESSION_MAX_AGE = 1000 * 60 * 60 * 24 * 7;
 
 app.use(
   cors({
@@ -23,10 +24,12 @@ app.use(
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    rolling: true,
     cookie: {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      maxAge: SESSION_MAX_AGE,
     },
   }),
 );
