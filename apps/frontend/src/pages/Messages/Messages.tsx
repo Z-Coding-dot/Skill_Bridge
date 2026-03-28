@@ -1,46 +1,73 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Section from "@/components/Section/Section";
-import { getMessages, } from "@/api/messages.api";
 import { Header } from "@/layouts/Header/Header";
 import MobileFooter from "@/layouts/Footer/MobileFooter";
+import { ChatWindow } from "@/components/ui/Messages/ChatWindow";
+import { ConversationList } from "@/components/ui/Messages/ConversationList";
+import type { MessageType } from "@/schemas/message.schema";
+import { conversationsMock, mockMessagesByUser } from "@/mock/dashboard.mock";
+
+const CURRENT_USER_ID = "user-1";
 
 export const Messages = () => {
- const { data, isLoading } = useQuery({
-  queryKey: ["messages"],
-  queryFn: getMessages,
-});
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [messagesByUser, setMessagesByUser] = useState<Record<string, MessageType[]>>(mockMessagesByUser);
 
-const messages = Array.isArray(data) ? data : [];
+  const activeUser = conversationsMock.find((u) => u.id === selectedUserId) ?? null;
+  const activeMessages = selectedUserId ? (messagesByUser[selectedUserId] ?? []) : [];
 
+  const handleSelectUser = (id: string) => setSelectedUserId(id);
 
-  if (isLoading) return <Section>Loading messages...</Section>;
+  const handleBack = () => setSelectedUserId(null);
+
+  const handleSendMessage = (text: string) => {
+    if (!selectedUserId) return;
+
+    const newMessage: MessageType = {
+      id: `msg-${Date.now()}`,
+      senderId: CURRENT_USER_ID,
+      receiverId: selectedUserId,
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      createdAt: new Date().toISOString(),
+      isRead: false,
+    };
+
+    setMessagesByUser((prev) => ({
+      ...prev,
+      [selectedUserId]: [...(prev[selectedUserId] ?? []), newMessage],
+    }));
+  };
 
   return (
-      <>
-      <Header/>
-    <Section>
-      <h1 className="text-xl font-semibold mb-6 mt-20">Messages</h1>
+    <div className="flex flex-col h-screen">
+      <Header />
 
-      {messages.length === 0 ? (
-        <p className="text-stone-400">You have no messages.</p>
-      ) : (
-        <div className="flex flex-col gap-4 mt-12">
-          {messages.map((msg) => (
-            <div key={msg.id}
-              className="flex flex-col bg-2card p-4 rounded-xl shadow-sm">
-              <div className="flex justify-between items-center mb-1">
-                <span className="font-semibold">{msg.senderId}</span>
-                <span className="text-xs text-stone-400">{msg.createdAt}</span>
-              </div>
-              <p className="text-white">{msg.text}</p>
-            </div>
-          ))}
+      <div className="flex overflow-hidden mt-10 sm:mt-16">
+
+        {/* Conversation list — always visible on desktop, hidden on mobile when chat is open */}
+        <div className={`${selectedUserId ? "hidden md:flex" : "flex"} w-full sm:w-85 flex-col`}>
+          <ConversationList
+            users={conversationsMock}
+            activeUserId={selectedUserId}
+            onSelectUser={handleSelectUser}
+          />
         </div>
-      )}
-      <>
-      <MobileFooter/>
-      </>
-    </Section>
-          </>
+
+        {/* Chat window — hidden on mobile when no user selected */}
+        <div className={`${!selectedUserId ? "hidden md:flex" : "flex"} flex-1 flex-col`}>
+          <ChatWindow
+            activeUser={activeUser}
+            messages={activeMessages}
+            currentUserId={CURRENT_USER_ID}
+            onSendMessage={handleSendMessage}
+            onBack={handleBack}
+          />
+        </div>
+
+      </div>
+
+      <MobileFooter />
+    </div>
   );
 };
