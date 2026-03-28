@@ -29,6 +29,11 @@ export const Header = () => {
 
   ];
 
+  const handleLogout = async () => {
+    await logout();
+    setIsProfile(false);
+  };
+
   return (
     <section className="fixed w-full z-50">
       <header className="z-20 relative flex items-center justify-between px-3 1xl:px-12 backdrop-blur-3xl drop-shadow-lg">
@@ -108,7 +113,9 @@ export const Header = () => {
                     </Link>
                     <hr />
                     <p
-                     onClick={logout} className="flex items-center gap-2 text-xs sm:text-sm px-3 sm:px-6 mt-2 text-error hover:text-red-600 cursor-pointer group"><LogOut className="size-3 sm:size-4 text-error group-hover:text-red-600"/> Logout</p>
+                     onClick={() => {
+                       void handleLogout();
+                     }} className="flex items-center gap-2 text-xs sm:text-sm px-3 sm:px-6 mt-2 text-error hover:text-red-600 cursor-pointer group"><LogOut className="size-3 sm:size-4 text-error group-hover:text-red-600"/> Logout</p>
                   </div>
               </div>
               </div>

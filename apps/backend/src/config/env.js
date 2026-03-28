@@ -5,4 +5,6 @@ module.exports = {
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5173",
   AUTH_SECRET: process.env.AUTH_SECRET || "dev-auth-secret-change-me",
   AUTH_COOKIE_NAME: process.env.AUTH_COOKIE_NAME || "skillbridge_auth",
+  SESSION_SECRET: process.env.SESSION_SECRET || "dev-session-secret-change-me",
+  SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME || "skillbridge.sid",
 };

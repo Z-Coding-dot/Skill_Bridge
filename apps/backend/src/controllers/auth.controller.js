@@ -1,6 +1,9 @@
 const prisma = require("../lib/prisma");
 const { hashPassword, verifyPassword } = require("../lib/password");
 const { clearAuthCookie, setAuthCookie } = require("../lib/auth-token");
+const passport = require("passport");
+const { SESSION_COOKIE_NAME } = require("../config/env");
+const { hashPassword } = require("../lib/password");
 
 const mapAuthUser = (user) => ({
   id: user.id,
@@ -59,27 +62,30 @@ const signup = async (req, res, next) => {
       message: "account created successfully",
       user: mapAuthUser(user),
     });
+    req.login(user, (loginError) => {
+      if (loginError) {
+        return next(loginError);
+      }
+
+      return res.status(201).json({
+        message: "account created successfully",
+        user: mapAuthUser(user),
+      });
+    });
   } catch (error) {
     next(error);
   }
-};
+}
 
-const login = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
-    const normalizedPassword = typeof password === "string" ? password : "";
+const login = (req, res, next) => {
+  passport.authenticate("local", (error, user, info) => {
+    if (error) {
+      return next(error);
+    }
 
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
-    });
-
-    if (
-      !user ||
-      !(await verifyPassword(normalizedPassword, user.passwordHash))
-    ) {
+    if (!user) {
       return res.status(401).json({
-        message: "invalid email or password",
+        message: info?.message || "invalid email or password",
       });
     }
 
@@ -89,9 +95,40 @@ const login = async (req, res, next) => {
       message: "login successful",
       user: mapAuthUser(user),
     });
-  } catch (error) {
-    next(error);
-  }
+    req.login(user, (loginError) => {
+      if (loginError) {
+        return next(loginError);
+      }
+
+      return res.status(200).json({
+        message: "login successful",
+        user: mapAuthUser(user),
+      });
+    });
+  })(req, res, next);
+};
+
+const me = (req, res) => {
+  res.status(200).json({
+    user: mapAuthUser(req.user),
+  });
+};
+
+const logout = (req, res, next) => {
+  req.logout((error) => {
+    if (error) {
+      return next(error);
+    }
+
+    req.session.destroy((sessionError) => {
+      if (sessionError) {
+        return next(sessionError);
+      }
+
+      res.clearCookie(SESSION_COOKIE_NAME);
+      return res.status(200).json({ message: "logout successful" });
+    });
+  });
 };
 
 const me = (req, res) => {
@@ -110,4 +147,4 @@ module.exports = {
   login,
   me,
   logout,
-};
+}};
