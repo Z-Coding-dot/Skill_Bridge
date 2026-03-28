@@ -1,8 +1,8 @@
 const { getDashboardOverviewData } = require("../data/dashboard.data");
 
-const getDashboardOverview = (req, res, next) => {
+const getDashboardOverview = async (req, res, next) => {
   try {
-    const overview = getDashboardOverviewData();
+    const overview = await getDashboardOverviewData();
     res.status(200).json(overview);
   } catch (error) {
     next(error);

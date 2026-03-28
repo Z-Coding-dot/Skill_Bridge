@@ -1,8 +1,4 @@
-const { getTasksCount } = require("./tasks.data");
-const {
-  getApplicationsCount,
-  getAcceptedApplicationsCount,
-} = require("./applications.data");
+const prisma = require("../lib/prisma");
 
 const recentActivity = [
   {
@@ -19,12 +15,22 @@ const recentActivity = [
   },
 ];
 
-const getDashboardOverviewData = () => {
+const getDashboardOverviewData = async () => {
+  const [tasksPosted, applicationsSent, accepted] = await Promise.all([
+    prisma.task.count(),
+    prisma.application.count(),
+    prisma.application.count({
+      where: {
+        status: "accepted",
+      },
+    }),
+  ]);
+
   return {
     stats: {
-      tasksPosted: getTasksCount(),
-      applicationsSent: getApplicationsCount(),
-      accepted: getAcceptedApplicationsCount(),
+      tasksPosted,
+      applicationsSent,
+      accepted,
     },
     recentActivity,
   };
