@@ -3,6 +3,8 @@ const { hashPassword, verifyPassword } = require("../lib/password");
 const { clearAuthCookie, setAuthCookie } = require("../lib/auth-token");
 const passport = require("passport");
 const { SESSION_COOKIE_NAME } = require("../config/env");
+const passport = require("passport");
+const { SESSION_COOKIE_NAME } = require("../config/env");
 const { hashPassword } = require("../lib/password");
 
 const mapAuthUser = (user) => ({
@@ -14,7 +16,8 @@ const mapAuthUser = (user) => ({
 const signup = async (req, res, next) => {
   try {
     const { name, email, bio, skills, password } = req.body;
-    const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    const normalizedEmail =
+      typeof email === "string" ? email.trim().toLowerCase() : "";
     const normalizedBio = typeof bio === "string" ? bio.trim() : "";
     const normalizedPassword = typeof password === "string" ? password : "";
     const normalizedSkills = Array.isArray(skills)
@@ -55,18 +58,11 @@ const signup = async (req, res, next) => {
         },
       },
     });
-
-    setAuthCookie(res, user.id);
-
-    res.status(201).json({
-      message: "account created successfully",
-      user: mapAuthUser(user),
-    });
     req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
       }
-
+      setAuthCookie(res, user.id);
       return res.status(201).json({
         message: "account created successfully",
         user: mapAuthUser(user),
@@ -75,7 +71,7 @@ const signup = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const login = (req, res, next) => {
   passport.authenticate("local", (error, user, info) => {
@@ -88,18 +84,12 @@ const login = (req, res, next) => {
         message: info?.message || "invalid email or password",
       });
     }
-
-    setAuthCookie(res, user.id);
-
-    res.status(200).json({
-      message: "login successful",
-      user: mapAuthUser(user),
-    });
     req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
       }
 
+      setAuthCookie(res, user.id);
       return res.status(200).json({
         message: "login successful",
         user: mapAuthUser(user),
@@ -125,21 +115,11 @@ const logout = (req, res, next) => {
         return next(sessionError);
       }
 
+      clearAuthCookie(res);
       res.clearCookie(SESSION_COOKIE_NAME);
       return res.status(200).json({ message: "logout successful" });
     });
   });
-};
-
-const me = (req, res) => {
-  res.status(200).json({
-    user: mapAuthUser(req.user),
-  });
-};
-
-const logout = (req, res) => {
-  clearAuthCookie(res);
-  res.status(200).json({ message: "logout successful" });
 };
 
 module.exports = {
@@ -147,4 +127,4 @@ module.exports = {
   login,
   me,
   logout,
-}};
+};

@@ -1,8 +1,5 @@
 const prisma = require("../lib/prisma");
-const {
-  AUTH_COOKIE_NAME,
-  verifyAuthToken,
-} = require("../lib/auth-token");
+const { AUTH_COOKIE_NAME, verifyAuthToken } = require("../lib/auth-token");
 
 const parseCookies = (headerValue = "") =>
   headerValue
@@ -12,16 +9,12 @@ const parseCookies = (headerValue = "") =>
     .reduce((cookies, entry) => {
       const separatorIndex = entry.indexOf("=");
 
-      if (separatorIndex === -1) {
-        return cookies;
-      }
+      if (separatorIndex === -1) return cookies;
 
       const key = entry.slice(0, separatorIndex).trim();
       const value = entry.slice(separatorIndex + 1).trim();
 
-      if (!key) {
-        return cookies;
-      }
+      if (!key) return cookies;
 
       cookies[key] = decodeURIComponent(value);
       return cookies;
@@ -32,9 +25,7 @@ const loadAuthenticatedUser = async (req) => {
   const token = cookies[AUTH_COOKIE_NAME];
   const payload = verifyAuthToken(token);
 
-  if (!payload) {
-    return null;
-  }
+  if (!payload) return null;
 
   const user = await prisma.user.findUnique({
     where: { id: payload.sub },
@@ -84,4 +75,5 @@ const requireAuth = (req, res, next) => {
 module.exports = {
   optionalAuth,
   requireAuth,
-}};
+};
+};
