@@ -51,7 +51,7 @@ const notificationConfig = {
         </div>
         <div className="flex flex-col justify-between h-full max-sm:items-end">
         <p className={clsx("hidden sm:flex text-xs px-2 py-1 rounded-lg text-center  mb-3 text-white justify-center capitalize", config.textBG)}>{n.type}</p>
-        <span className="text-xs text-trinary font-semibold truncate mt-4 max-sm:-mr-25">{n.createdAt}</span>
+        <span className="text-xs text-trinary font-semibold truncate mt-4 max-sm:-mr-25">{new Date(n.createdAt).toLocaleDateString().split("T")[0]}</span>
         </div>
       </div>
         </div>)

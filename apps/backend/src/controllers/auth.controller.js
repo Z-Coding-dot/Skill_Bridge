@@ -1,4 +1,6 @@
 const prisma = require("../lib/prisma");
+const { hashPassword, verifyPassword } = require("../lib/password");
+const { clearAuthCookie, setAuthCookie } = require("../lib/auth-token");
 const passport = require("passport");
 const { SESSION_COOKIE_NAME } = require("../config/env");
 const { hashPassword } = require("../lib/password");
@@ -54,6 +56,12 @@ const signup = async (req, res, next) => {
       },
     });
 
+    setAuthCookie(res, user.id);
+
+    res.status(201).json({
+      message: "account created successfully",
+      user: mapAuthUser(user),
+    });
     req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
@@ -67,7 +75,7 @@ const signup = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
 const login = (req, res, next) => {
   passport.authenticate("local", (error, user, info) => {
@@ -81,6 +89,12 @@ const login = (req, res, next) => {
       });
     }
 
+    setAuthCookie(res, user.id);
+
+    res.status(200).json({
+      message: "login successful",
+      user: mapAuthUser(user),
+    });
     req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
@@ -117,9 +131,20 @@ const logout = (req, res, next) => {
   });
 };
 
+const me = (req, res) => {
+  res.status(200).json({
+    user: mapAuthUser(req.user),
+  });
+};
+
+const logout = (req, res) => {
+  clearAuthCookie(res);
+  res.status(200).json({ message: "logout successful" });
+};
+
 module.exports = {
   signup,
   login,
   me,
   logout,
-};
+}};
