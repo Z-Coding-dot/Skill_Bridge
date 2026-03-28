@@ -3,6 +3,9 @@ const { hashPassword, verifyPassword } = require("../lib/password");
 const { clearAuthCookie, setAuthCookie } = require("../lib/auth-token");
 const passport = require("passport");
 const { SESSION_COOKIE_NAME } = require("../config/env");
+const passport = require("passport");
+const { SESSION_COOKIE_NAME } = require("../config/env");
+const { hashPassword } = require("../lib/password");
 
 const mapAuthUser = (user) => ({
   id: user.id,
@@ -55,15 +58,11 @@ const signup = async (req, res, next) => {
         },
       },
     });
-
-    // Only respond inside the req.login callback — not before it
     req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
       }
-
       setAuthCookie(res, user.id);
-
       return res.status(201).json({
         message: "account created successfully",
         user: mapAuthUser(user),
@@ -85,15 +84,12 @@ const login = (req, res, next) => {
         message: info?.message || "invalid email or password",
       });
     }
-
-    // Only respond inside the req.login callback — not before it
     req.login(user, (loginError) => {
       if (loginError) {
         return next(loginError);
       }
 
       setAuthCookie(res, user.id);
-
       return res.status(200).json({
         message: "login successful",
         user: mapAuthUser(user),
@@ -108,7 +104,6 @@ const me = (req, res) => {
   });
 };
 
-// Kept the complete logout with session destroy + cookie clear
 const logout = (req, res, next) => {
   req.logout((error) => {
     if (error) {
