@@ -28,9 +28,10 @@ export const MyTask = () => {
         <div className="2xl:max-w-4xl mx-auto flex flex-col items-center justify-center bg-2card w-full rounded-2xl mt-20 p-12">
           <Briefcase className="size-12 mb-8" />
           <p className="mb-12">You haven't posted any tasks yet</p>
-          <button className="flex items-center gap-2 2xl:text-base">
-            <Plus className="size-5" /> Post Your First Task
+          <button onClick={() => setOpen((prev) => !prev)} className="flex items-center gap-2 2xl:text-base">
+            <Plus className="size-5" /> Post Your First Task  
           </button>
+          {open && <AddTaskModal isOpen={open} onClose={() => setOpen((pre) => !pre)} />}
         </div>
   )}
   
