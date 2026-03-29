@@ -89,7 +89,8 @@ export const Header = () => {
 
           <Link to={'/login'}>
           <button className="hidden sm:block bg-[var(--card-bg)] text-xs 1xl:text-sm 2xl:text-base text-[var(--text-primary)] px-3 py-1 2xl:px-4 2xl:py-1.5 rounded-lg hover:bg-text-primary transition-colors duration-500 ease-in-out">
-            Log in</button>
+            Sign In
+          </button>
           </Link>
           <Link to={'/signUp'}>
           <button className="px-3 py-1 2xl:px-4 2xl:py-1.5  text-xs 1xl:text-sm 2xl:text-base">Sign Up</button>

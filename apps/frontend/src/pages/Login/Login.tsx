@@ -131,7 +131,7 @@ export const Login = () => {
             <button
               type="submit"
               className="w-full text-center 1xl:py-2.2 text-medium xl:text-lg bg-login-bg hover:bg-blue-950 mt-4">
-              Log In
+              Sign In
             </button>
             {errors.root?.message && (
               <p className="text-red-600 text-sm mt-3">{errors.root.message}</p>
