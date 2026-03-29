@@ -1,5 +1,5 @@
 import type { Application } from "@/schemas/application.schema";
-import type { MessageType, ChatUser } from "@/schemas/message.schema";
+import type {Message } from "@/schemas/message.schema";
 import type { Notification } from "@/schemas/notification.schema";
 import type { Task } from "@/schemas/task.schema";
 
@@ -43,77 +43,34 @@ export const tasksMock: Task[]= [
 
 ];
 
-
-export const conversationsMock: ChatUser[] = [
+export const messagesMock: Message[]= [
   {
-    id: "u2",
-    name: "Mustafa",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
-    lastMessage: "Hey, can you send the files?",
-    lastMessageTime: "10:30 AM",
-    unreadCount: 2,
-  },
-  {
-    id: "u3",
-    name: "Parsa",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
-    lastMessage: "Thanks for the update!",
-    lastMessageTime: "Yesterday",
-    unreadCount: 0,
+    id: "msg-1",
+    senderId: "Ali Khan",
+    receiverId: "Sarah Lee",
+    text: "Hi, I am interested in your Web Design task. Can we discuss the details?",
+    createdAt: "2024-12-01T10:30:00Z",
+    isRead: false,
   },
 ];
-
-export const mockMessagesByUser: Record<string, MessageType[]> = {
-  u2: [
-    {
-      id: "msg-1",
-      senderId: "u2",
-      receiverId: "user-1",
-      text: "Hi, I am interested in your Web Design task. Can we discuss the details?",
-      timestamp: "10:28 AM",
-      createdAt: "2024-12-01T10:28:00Z",
-      isRead: true,
-    },
-    {
-      id: "msg-2",
-      senderId: "user-1",
-      receiverId: "u2",
-      text: "Sure! I'd love to hear more about what you need.",
-      timestamp: "10:29 AM",
-      createdAt: "2024-12-01T10:29:00Z",
-      isRead: true,
-    },
-    {
-      id: "msg-3",
-      senderId: "u2",
-      receiverId: "user-1",
-      text: "Hey, can you send the files?",
-      timestamp: "10:30 AM",
-      createdAt: "2024-12-01T10:30:00Z",
-      isRead: false,
-    },
-  ],
-  u3: [
-    {
-      id: "msg-4",
-      senderId: "user-1",
-      receiverId: "u3",
-      text: "Just pushed the latest changes to the repo.",
-      timestamp: "Yesterday",
-      createdAt: "2024-11-30T15:00:00Z",
-      isRead: true,
-    },
-    {
-      id: "msg-5",
-      senderId: "u3",
-      receiverId: "user-1",
-      text: "Thanks for the update!",
-      timestamp: "Yesterday",
-      createdAt: "2024-11-30T15:05:00Z",
-      isRead: true,
-    },
-  ],
-};
+export const conversationsMock = [
+    { 
+        id: "u2", 
+        name: "Sarah Johnson", 
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", 
+        lastMessage: "Hey, can you send the files?", 
+        lastMessageTime: "10:30 AM",
+        unreadCount: 2
+      },
+      { 
+        id: "u3", 
+        name: "David Chen", 
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop", 
+        lastMessage: "Thanks for the update!", 
+        lastMessageTime: "Yesterday",
+        unreadCount: 0
+      }
+];
 
 export const profileMock = {
   name: "Parsa",

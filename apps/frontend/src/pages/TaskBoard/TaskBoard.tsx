@@ -76,7 +76,7 @@ export const TaskBoard = () => {
               <p className="text-xs sm:text-sm text-muted-foreground leading-5 mb-4 line-clamp-3 text-[var(--text-trinary)]">{task.description}</p>
               <div className="flex justify-between items-center my-2">
                 <span className="text-xs sm:text-sm flex items-center gap-1"> <Calendar className="size-3 sm:size-5"/> Deadline:</span>
-                <span className="text-xs text-muted-foreground">{new Date(task.deadline).toLocaleDateString().split("T")[0]}</span>
+                <span className="text-xs text-muted-foreground">{task.deadline}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <img src={task.postedBy.avatar} alt={task.postedBy.name} className="w-8 h-8 rounded-full mt-2 mb-1"/>

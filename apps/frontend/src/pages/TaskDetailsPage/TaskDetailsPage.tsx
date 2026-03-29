@@ -71,7 +71,7 @@ export const TaskDetailsPage = () => {
                 <Calendar className="size-3 sm:size-6" /> Posted:
               </span>
               <span className="text-sm text-[var(--text-primary)]">
-                {new Date(task.createdAt).toLocaleDateString().split("T")[0]}
+                {task.createdAt}
               </span>
             </div>
             <div className="my-5 w-full h-[0.2px] bg-[var(--border)]" />
@@ -80,7 +80,7 @@ export const TaskDetailsPage = () => {
                 <Calendar className="size-3 sm:size-6" /> Deadline:
               </span>
               <span className="text-sm text-[var(--text-primary)]">
-                {new Date(task.deadline).toLocaleDateString().split("T")[0]}
+                {task.deadline}
               </span>
             </div>
           </div>
