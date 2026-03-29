@@ -1,16 +1,22 @@
-const optionalAuth = (req, res, next) => {
-  next();
-};
+const express = require("express");
+const {
+  signup,
+  login,
+  me,
+  logout,
+} = require("../controllers/auth.controller");
+const { requireAuth } = require("../middleware/auth.middleware");
+const validateRequest = require("../middleware/validation.middleware");
+const {
+  signupValidator,
+  loginValidator,
+} = require("../validators/auth.validator");
 
-const requireAuth = (req, res, next) => {
-  if (!req.isAuthenticated || !req.isAuthenticated() || !req.user) {
-    return res.status(401).json({ message: "authentication required" });
-  }
+const router = express.Router();
 
-  next();
-};
+router.post("/signup", signupValidator, validateRequest, signup);
+router.post("/login", loginValidator, validateRequest, login);
+router.get("/me", requireAuth, me);
+router.post("/logout", logout);
 
-module.exports = {
-  optionalAuth,
-  requireAuth,
-};
+module.exports = router;
