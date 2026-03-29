@@ -6,6 +6,10 @@ import { applicationsMock } from "@/mock/dashboard.mock";
 const USE_MOCK_API = import.meta.env.VITE_USE_MOCK === "true";
 
 const ApplicationListSchema = z.array(ApplicationSchema);
+const CreateApplicationSchema = z.object({
+  taskId: z.string(),
+  pitch: z.string(),
+});
 
 export const getApplications = async (): Promise<Application[]> => {
   if (USE_MOCK_API) {
@@ -17,18 +21,19 @@ export const getApplications = async (): Promise<Application[]> => {
 };
 
 export const submitApplication = async (
-  app: Partial<Application>
+  app: { taskId: string; pitch: string }
 ): Promise<Application> => {
   if (USE_MOCK_API) {
+    const payload = CreateApplicationSchema.parse(app);
     return ApplicationSchema.parse({
-      ...app,
+      ...payload,
       id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
+      taskTitle: "Mock Task",
       status: "pending",
     });
   }
 
-  const res = await api.post("/applications", app);
+  const payload = CreateApplicationSchema.parse(app);
+  const res = await api.post("/applications", payload);
   return ApplicationSchema.parse(res.data);
 };
-

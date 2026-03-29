@@ -1,43 +1,72 @@
-const {
-  getAllApplications,
-  createApplication,
-} = require("../data/applications.data");
+const prisma = require("../lib/prisma");
 
-const getApplications = (req, res, next) => {
+const mapApplication = (application) => ({
+  id: application.id,
+  taskId: application.taskId,
+  taskTitle: application.task.title,
+  status: application.status,
+  pitch: application.pitch,
+});
+
+const getApplications = async (req, res, next) => {
   try {
-    const applications = getAllApplications();
-    res.status(200).json(applications);
+    const applications = await prisma.application.findMany({
+      where: {
+        applicantId: req.user.id,
+      },
+      include: {
+        task: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.status(200).json(applications.map(mapApplication));
   } catch (error) {
     next(error);
   }
 };
 
-const submitApplication = (req, res, next) => {
+const submitApplication = async (req, res, next) => {
   try {
-    const { taskTitle, pitch } = req.body;
-    const normalizedTaskTitle =
-      typeof taskTitle === "string" ? taskTitle.trim() : taskTitle;
-    const normalizedPitch = typeof pitch === "string" ? pitch.trim() : pitch;
+    const { taskId, pitch } = req.body;
 
-    if (!normalizedTaskTitle || typeof normalizedTaskTitle !== "string") {
-      return res.status(400).json({
-        message: "taskTitle is required and must be a string",
-      });
-    }
-
-    if (!normalizedPitch || typeof normalizedPitch !== "string") {
-      return res.status(400).json({
-        message: "pitch is required and must be a string",
-      });
-    }
-
-    const newApplication = createApplication({
-      taskTitle: normalizedTaskTitle,
-      pitch: normalizedPitch,
+    const newApplication = await prisma.application.create({
+      data: {
+        taskId: taskId.trim(),
+        applicantId: req.user.id,
+        pitch: pitch.trim(),
+      },
+      include: {
+        task: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
     });
 
-    res.status(201).json(newApplication);
+    res.status(201).json(mapApplication(newApplication));
   } catch (error) {
+    if (error?.code === "P2002") {
+      return res.status(409).json({
+        message: "you have already applied to this task",
+      });
+    }
+
+    if (error?.code === "P2003") {
+      return res.status(400).json({
+        message: "taskId must reference an existing task",
+      });
+    }
+
     next(error);
   }
 };
