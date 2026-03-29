@@ -9,7 +9,7 @@ type ConversationListProps = {
 
 export const ConversationList = ({ users, activeUserId, onSelectUser }: ConversationListProps) => {
   return (
-    <div className="w-full border-r border-[var(--border)] bg-card-bg flex flex-col h-screen">
+    <div className="w-full md:w-1/3 lg:w-1/4 border-r border-[var(--border)] bg-card-bg flex flex-col h-full">
       <div className="p-4 border-b border-[var(--border)]">
         <h2 className="text-xl font-bold mb-4">Messages</h2>
         <div className="relative">
