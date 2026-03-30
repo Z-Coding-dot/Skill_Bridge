@@ -5,5 +5,6 @@ export interface dashboardData  {
   id: string;
   label: string;
   icon: LucideIcon;
-  to: string;
+  to: string | null;
+  onClick?: () => void;
 };

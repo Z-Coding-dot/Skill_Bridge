@@ -141,7 +141,7 @@ export const Login = () => {
           {/* Redirect */}
           <div className="flex items-center mt-4 space-x-2">
             <p className="font-semibold">New here?</p>
-            <Link to="/signup" className="text-[var(--accent)] font-bold">
+            <Link to="/signup" className="text-[var(--accent)] font-bold max-sm:text-cyan-300 underline">
               Create Account
             </Link>
           </div>

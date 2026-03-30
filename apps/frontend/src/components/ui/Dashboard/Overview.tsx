@@ -3,14 +3,15 @@ import Section from "@/components/Section/Section";
 import { Bell, Briefcase, CheckCheck, CircleCheck, File} from "lucide-react";
 import type { DashboardOverview } from "@/schemas/dashboard.schema";
 import { getDashboardOverview } from "@/api/dashboard.api";
+import { OverviewSkeleton } from "@/components/Loaders/OverviewSkeleton";
 
 export const Overview = () => {
-  const { data, isLoading } = useQuery<DashboardOverview>({
+  const { data, isPending } = useQuery<DashboardOverview>({
     queryKey: ["dashboard-overview"],
     queryFn: () => getDashboardOverview(),
   });
 
-  if (isLoading) return <Section>Loading...</Section>;
+  if (isPending) return <OverviewSkeleton />;
  
 
   return (
@@ -43,9 +44,9 @@ export const Overview = () => {
       </div>
 
       <div className="rounded-2xl sm:p-5 sm:mt-10">
-        <h2 className="text-bae sm:text-xl mb-4">Recent Activity</h2>
+        <h2 className="text-base sm:text-xl mb-4 text-center">Recent Activity</h2>
         {data?.recentActivity.length === 0 ? (
-          <p className="text-stone-400">No recent activity.</p>
+          <p className="text-stone-400 text-center text-xs sm:text-sm">You have not performed any actions recently.</p>
         ) : (
           data?.recentActivity.map((activity) => (
             <div

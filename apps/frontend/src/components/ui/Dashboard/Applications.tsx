@@ -1,4 +1,5 @@
 import { getApplications } from "@/api/applications.api";
+import { ApplicationsSkeleton } from "@/components/Loaders/ApplilcationSkeleton";
 import Section from "@/components/Section/Section"
 import type { Application } from "@/schemas/application.schema";
 import { useQuery } from "@tanstack/react-query";
@@ -13,11 +14,11 @@ export const Applications = () => {
   });
 
   if (isPending) {
-    return <Section className="mt-12">Loading...</Section>;
+    return <ApplicationsSkeleton />;
   }
 
   if (!app || app.length === 0) {
-    return <Section className="mt-12">No Applications</Section>;
+    return <Section className="text-stone-300 text-sm sm:text-lg mt-12 text-center">You have not applied for any tasks.</Section>;
   }
 
   const STYLE_STATUS = {

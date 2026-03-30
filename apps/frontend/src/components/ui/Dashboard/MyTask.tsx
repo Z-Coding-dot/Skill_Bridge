@@ -5,12 +5,13 @@ import type { Task } from "@/schemas/task.schema";
 import { getMyTasks } from "@/api/tasks.api";
 import { useState } from "react";
 import { AddTaskModal } from "@/components/Modal/AddTaskModal";
+import { MyTaskSkeleton } from "@/components/Loaders/MyTaskSkeleton";
 
 
 
 export const MyTask = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data, isLoading, error } = useQuery<Task[]>({
+  const { data, isPending, error } = useQuery<Task[]>({
      queryKey: ["tasks"],
      queryFn: () => getMyTasks(),
    });
@@ -19,8 +20,8 @@ export const MyTask = () => {
     return <Section><div className="text-center mt-25 text-red-500 text-4xl font-bold">Something went wrong 😟</div></Section>
    }
 
-  if (isLoading) {
-    return <Section>Loading...</Section>;
+  if (isPending) {
+    return <MyTaskSkeleton />;
   }
 
  if ( !data ||  data?.length === 0) {
