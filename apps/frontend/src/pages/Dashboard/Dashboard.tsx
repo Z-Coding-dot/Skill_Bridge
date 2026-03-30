@@ -1,11 +1,12 @@
-import { Bell, Briefcase, ChartColumn, CodeIcon, File, Settings } from "lucide-react";
+import { Bell, Briefcase, ChartColumn, CodeIcon, File, MessageSquarePlus, Settings } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import type { dashboardData } from "@/types/dashboard";
 import { useRef, useState, useEffect } from "react";
-import { DashboardHeader } from "@/layouts/Dashboard/DashboardHeader";
+import { DashboardHeader } from "@/layouts/Dashboard_Header/DashboardHeader";
 import { ROUTES } from "@/routes/routeConfig";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import MobileFooter from "@/layouts/Footer/MobileFooter";
+import { FeedbackModal } from "@/components/Modal/FeedbackModal";
 
 const isMobile = () => window.innerWidth < 640;
 
@@ -13,6 +14,8 @@ export const Dashboard = () => {
   const [mobile, setMobile] = useState<boolean>(isMobile());
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(!isMobile());
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,11 +34,12 @@ export const Dashboard = () => {
   }, sideBarOpen);
 
   const sidebarTab: dashboardData[] = [
-    { id: "overview",     label: "Overview",       to: "",                    icon: ChartColumn },
+    { id: "overview",     label: "Overview",        to: "",                    icon: ChartColumn },
     { id: "task",         label: "My Task",         to: ROUTES.MY_TASK,        icon: Briefcase   },
     { id: "application",  label: "Applications",    to: ROUTES.APPLICATIONS,   icon: File        },
     { id: "notification", label: "Notifications",   to: ROUTES.NOTIFICATIONS,  icon: Bell        },
     { id: "setting",      label: "Settings",        to: ROUTES.SETTINGS,       icon: Settings    },
+    { id: "feedback",     label: "Feedback",        to: null, onClick: () => setIsFeedbackOpen(true), icon: MessageSquarePlus},
   ];
 
   return (
@@ -55,8 +59,7 @@ export const Dashboard = () => {
         className={`
           ${sideBarOpen ? "w-50 1xl:w-55 sm:-mt-0.15" : "w-12 sm:w-16"}
           max-sm:fixed z-20 bg-card-bg h-screen transition-all duration-500 ease-initial
-        `}
-      >
+        `}>
         <NavLink
           to={"/"}
           className="flex items-center gap-2 font-bold pl-3 sm:pl-4 py-2.25 mb-5 sm:py-3.25 border-b border-secondary"
@@ -72,9 +75,22 @@ export const Dashboard = () => {
         </NavLink>
 
         {sidebarTab.map((d) => (
+          d.onClick ? (
+        <button
+        key={d.id}
+        onClick={d.onClick}
+       className="bg-transparent my-4 sm:w-[90%] mx-2 block p-2 sm:px-4 py-2 hover:bg-btnHover hover:rounded-xl rounded-lg text-left">
+      <div className="flex items-center gap-4">
+        <d.icon className="text-white size-4" />
+        {sideBarOpen && (
+          <span className="text-white text-xs sm:text-sm">{d.label}</span>
+        )}
+      </div>
+    </button>
+          ): (
           <NavLink
             key={d.id}
-            to={d.to}
+            to={d.to!}
             end={d.to === ""}
             className={({ isActive }) =>
               `my-4 mx-2 block p-2 sm:px-4 py-2 ${
@@ -91,7 +107,12 @@ export const Dashboard = () => {
               )}
             </div>
           </NavLink>
-        ))}
+        )))}
+      
+      </div>
+      <div>
+        {/* Feedback Modal */}
+        <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)}/>
       </div>
 
       {/* Main content */}

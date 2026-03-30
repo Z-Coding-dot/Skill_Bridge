@@ -4,6 +4,7 @@ import Section from "@/components/Section/Section";
 import { getNotifications } from "@/api/notifications.api";
 import type { Notification } from "@/schemas/notification.schema";
 import clsx from "clsx";
+import { NotificationsSkeleton } from "@/components/Loaders/NotificationSkeleton";
 
 
 export const Notifications = () => {
@@ -13,7 +14,7 @@ export const Notifications = () => {
   });
 
   if (isPending) {
-    return <Section>Loading...</Section>;
+    return <NotificationsSkeleton />;
   }
   if(isError) return <Section className="text-center mt-25 text-red-600">Something went wrong</Section>
 

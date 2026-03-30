@@ -109,8 +109,8 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
       <div className="bg-2card w-full max-w-2xl sm:rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold mb-4">Add Task</h2>
-          <button className="p-1 rounded-full mb-3" onClick={onClose}>
-            <X className="size-5 font-bold sm:size-6" />
+          <button className="bg-transparent hover:bg-btnHover p-1 mb-3" onClick={onClose}>
+            <X className="size-5 font-bold text-white" />
           </button>
         </div>
 
@@ -143,12 +143,10 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
 
           <div className="flex gap-3">
             <select
-              className="input flex-1"
+              className="input flex-1 text-sm sm:text-base"
               value={form.category}
               onChange={(e) =>
-                setForm({ ...form, category: e.target.value as TaskCategory })
-              }
-            >
+                setForm({ ...form, category: e.target.value as TaskCategory })}>
               {CATEGORY_OPTIONS.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -159,7 +157,7 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
             <div className="flex-1">
               <input
                 type="date"
-                className="input w-full"
+                className="input w-full text-sm sm:text-base"
                 value={form.deadline}
                 onChange={(e) =>
                   setForm({ ...form, deadline: e.target.value })
@@ -179,13 +177,13 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
         )}
 
         <div className="flex justify-between gap-3 mt-6">
-          <button onClick={onClose} className="px-4 py-2">
+          <button onClick={onClose} className="flex-1">
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={createTaskMutation.isPending}
-            className="bg-primary hover:bg-hover px-4 py-2 rounded text-white w-3/4"
+            className="w-3/4"
           >
             {createTaskMutation.isPending ? "Saving..." : "Add Task"}
           </button>
