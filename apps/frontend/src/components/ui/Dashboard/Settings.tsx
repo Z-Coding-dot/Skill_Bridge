@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Section from "@/components/Section/Section";
-import { MessageSquarePlus, User2Icon } from "lucide-react";
+import { User2Icon } from "lucide-react";
 import { getProfile, updateProfile } from "@/api/profile.api";
 import { ProfileSchema } from "@/schemas/profile.schema";
 import { useEffect, useRef, useState } from "react";
-import { FeedbackModal } from "@/components/Modal/FeedbackModal";
+import { SettingSkeleton } from "@/components/Loaders/SettingsSkeleton";
 
 export const Setting = () => {
   const queryClient = useQueryClient();
@@ -14,7 +14,6 @@ export const Setting = () => {
   const [isEditingSkills, setIsEditingSkills] = useState<boolean>(false);
   const [skills, setSkills] = useState<ProfileSchema["skills"]>([]);
   const [skillsInput, setSkillsInput] = useState("");
-  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   const { data: profile, isPending } = useQuery<ProfileSchema>({
     queryKey: ["profile"],
@@ -36,7 +35,7 @@ export const Setting = () => {
     setSkillsInput((profile.skills ?? []).map((skill) => skill.label).join(", "));
   }, [profile]);
 
-  if (isPending || !profile) return <Section>Loading...</Section>;
+  if (isPending || !profile) return <SettingSkeleton/>;
 
   const saveSkills = () => {
     const nextSkills = skillsInput
@@ -94,8 +93,7 @@ export const Setting = () => {
 
               <button
                 onClick={() => fileRef.current?.click()}
-                className="text-xs sm:text-sm mt-5 sm:mt-10 cursor-pointer"
-              >
+                className="text-xs sm:text-sm mt-5 sm:mt-10 cursor-pointer">
                 Change Profile Image
               </button>
             </div>
@@ -194,35 +192,7 @@ export const Setting = () => {
             )}
           </div>
         </div>
-
-        {/* Feedback Section */}
-        <div className="w-full rounded-xl bg-2card p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div>
-              <h2 className="text-base sm:text-lg 2xl:text-2xl font-semibold">
-                Feedback
-              </h2>
-              <p className="text-xs sm:text-sm mt-1">
-                Share your opinion, report an issue, or suggest improvements for SkillBridge.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setIsFeedbackOpen(true)}
-              className="flex items-center justify-center gap-2 text-xs sm:text-sm"
-            >
-              <MessageSquarePlus className="size-4" />
-              Give Feedback
-            </button>
-          </div>
-        </div>
       </div>
-
-      <FeedbackModal
-        isOpen={isFeedbackOpen}
-        onClose={() => setIsFeedbackOpen(false)}
-      />
     </Section>
   );
 };

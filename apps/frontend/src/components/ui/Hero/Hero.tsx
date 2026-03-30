@@ -43,7 +43,7 @@ export default function Hero() {
             </m.button>
             </Link>
             {user !== null ?(
-            <Link to="/dashboard">
+            <Link to="/dashboard/my_task">
             <m.button initial={{ opacity: 0, y: 50 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.3 }} 

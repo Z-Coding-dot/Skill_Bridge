@@ -8,9 +8,10 @@ import type { Task } from "@/schemas/task.schema"
 import { Link } from "react-router-dom"
 import { ROUTES } from "@/routes/routeConfig"
 import { Header } from "@/layouts/Header/Header"
+import { ProfileSkeleton } from "@/components/Loaders/ProfileSkeleton"
 
 export const Profile = () => {
-    const {data: profile, isLoading} = useQuery<ProfileSchema>({
+    const {data: profile, isPending} = useQuery<ProfileSchema>({
         queryKey: ["profile"],
         queryFn: getProfile})
 
@@ -19,7 +20,7 @@ export const Profile = () => {
        queryFn: getMyTasks,
      });
 
-if (isLoading || !profile) return <Section>Loading...</Section>;
+if (isPending || !profile) return <ProfileSkeleton/>;
 
     return(
         <>

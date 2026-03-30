@@ -99,8 +99,8 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-      <div className="w-full max-w-lg rounded-2xl bg-2card p-5 sm:p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 sm:px-4">
+      <div className="w-full max-sm:h-full max-w-lg sm:rounded-2xl bg-2card p-5 sm:p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg sm:text-xl font-semibold">Share Feedback</h2>
           <button
@@ -179,14 +179,14 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
         </div>
 
         <div className="mt-6 flex justify-end gap-3">
-          <button type="button" onClick={onClose}>
+          <button type="button" onClick={onClose} className="flex-1">
             Cancel
           </button>
           <button
+           className="w-3/4"
             type="button"
             onClick={handleSubmit}
-            disabled={feedbackMutation.isPending}
-          >
+            disabled={feedbackMutation.isPending}>
             {feedbackMutation.isPending ? "Submitting..." : "Submit Feedback"}
           </button>
         </div>

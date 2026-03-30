@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { ScrollToTop } from "../../components/ScrollToTop/ScrollToTop";
 import { getTasks } from "@/api/tasks.api";
 import type { Task } from "@/schemas/task.schema";
+import { TaskBoardSkeleton } from "@/components/Loaders/TaskBoardSkeleton";
 
 
 
@@ -16,7 +17,7 @@ export const TaskBoard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const selectedCategory = searchParams.get('category') || 'All';
-  const { data = [], isLoading, error } = useQuery<Task[]>({
+  const { data = [], isPending, error } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: getTasks,
   });
@@ -27,9 +28,9 @@ export const TaskBoard = () => {
     return matchCategory && matchSearch;
   })
 
-  if (isLoading) return <Section>Loading tasks...</Section>;
+  if (isPending) return <TaskBoardSkeleton />;
 
-  if (error) return <Section>Unable to load tasks.</Section>;
+  if (error) return <Section>Unable to fetch tasks, Try again later.</Section>;
 
   return (
     <Section>
@@ -61,8 +62,8 @@ export const TaskBoard = () => {
       {/* Task List */}
       <div>
         {/* task found  */}
-        <div>
-        <h3 className="mb-6"> {filteredTasks.length} {filteredTasks.length === 1 ? 'Opportunity' : 'Opportunities'} Found</h3>
+        <div className="bg-active/20 px-4 py-2 rounded-lg mb-6 sm:mx-20">
+        <h3 className="flex justify-between sm:px-10 text-sm sm:text-base"> <span className="text-white text-sm sm:text-base">{filteredTasks.length} </span> {filteredTasks.length === 1 ? 'Opportunity' : 'Opportunities'} Found</h3>
         </div>
         {/* Task Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4">
@@ -83,7 +84,7 @@ export const TaskBoard = () => {
                 <span className="text-xs sm:text-base text-[var(--text-trinary)]">{task.postedBy.name}</span>
               </div>
               {/* details button  */}
-              <button className="w-full mt-4 sm:py-2 bg-[var(--primary)] rounded-md text-sm sm:text-base font-medium hover:bg-[var(--primary-dark)] transition-colors">View Details</button> 
+              <button className="w-full mt-4 sm:py-2 rounded-md text-sm sm:text-base font-medium">View Details</button> 
             </div>
               </Link>
           ))}

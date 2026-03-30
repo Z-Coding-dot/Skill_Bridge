@@ -179,8 +179,8 @@ export default function SignUp() {
               <p className="text-red-600 text-sm mt-3">{errors.root.message}</p>
             )}
             <div className="flex items-center justify-center mt-4 gap-2 w-full 1xl:min-w-[280px] 2xl:min-w-[400px]">
-              <p className="font-semibold text-center">Already a member?</p>
-              <Link to="/login" className="text-[var(--accent)] font-bold">
+              <p className="font-semibold text-center ">Already a member?</p>
+              <Link to="/login" className="text-[var(--accent)] font-bold max-sm:text-cyan-300 underline">
                 Sign In
               </Link>
             </div>
