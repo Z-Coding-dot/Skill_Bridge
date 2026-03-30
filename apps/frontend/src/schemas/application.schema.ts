@@ -2,6 +2,7 @@ import {z} from "zod";
 
 export const ApplicationSchema = z.object({
     id: z.string(),
+    taskId: z.string(),
     taskTitle: z.string(),
     status: z.enum(["pending", "accepted", "rejected"]),
     pitch: z.string(),
