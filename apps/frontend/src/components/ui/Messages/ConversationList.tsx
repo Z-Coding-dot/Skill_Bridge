@@ -8,6 +8,21 @@ type ConversationListProps = {
 };
 
 export const ConversationList = ({ users, activeUserId, onSelectUser }: ConversationListProps) => {
+  const formatConversationTime = (value?: string) => {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(date);
+  };
+
   return (
     <div className="w-full border-r border-[var(--border)] bg-card-bg flex flex-col h-screen">
       <div className="p-4 border-b border-[var(--border)]">
@@ -39,8 +54,10 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-start mb-1">
                 <h3 className="font-semibold text-sm truncate">{user.name}</h3>
-                {user.lastMessageTime && (
-                  <span className="text-xs text-[var(--text-secondary)]">{user.lastMessageTime}</span>
+                {user.lastMessageAt && (
+                  <span className="text-xs text-[var(--text-secondary)]">
+                    {formatConversationTime(user.lastMessageAt)}
+                  </span>
                 )}
               </div>
               <p className="text-sm text-[var(--text-secondary)] truncate">
