@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
+import type { SignUpFormData } from "./SignUp";
 
 export default function Step2Skills() {
-  const {control, formState: { errors } } = useFormContext();
-  const { fields, append, remove } = useFieldArray({ control, name: "skills" });
+  const {control, formState: { errors } } = useFormContext<SignUpFormData>();
+  const { fields, append, remove } = useFieldArray<SignUpFormData, "skills">({
+    control,
+    name: "skills",
+  });
 
   const [input, setInput] = useState("");
 

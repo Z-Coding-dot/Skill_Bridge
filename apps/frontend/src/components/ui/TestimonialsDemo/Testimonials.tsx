@@ -1,10 +1,10 @@
-import { TestimonialsColumn } from '../../Testimonials/TestimonialsColumn';
+import { TestimonialsColumn, type Testimonial } from '../../Testimonials/TestimonialsColumn';
 import { motion } from "motion/react";
 import { testimonials } from '../../../lib/consts/testimonials/testimonials.data';
 
-const firstColumn = testimonials.slice(0, 3);
-const secondColumn = testimonials.slice(3, 6);
-const thirdColumn = testimonials.slice(6, 9);
+const firstColumn: Testimonial[] = testimonials.slice(0, 3);
+const secondColumn: Testimonial[] = testimonials.slice(3, 6);
+const thirdColumn: Testimonial[] = testimonials.slice(6, 9);
 
 
 export const Testimonials = () => {
@@ -35,4 +35,3 @@ export const Testimonials = () => {
     </section>
   );
 };
-

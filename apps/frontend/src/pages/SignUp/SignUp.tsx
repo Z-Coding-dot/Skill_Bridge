@@ -16,7 +16,7 @@ import axios from "axios";
 
 
 /* form types */
-type FormData = {
+export type SignUpFormData = {
   name: string;
   email: string;
   bio?: string;
@@ -51,7 +51,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   const {login} = useAuth();
   const [step, setStep] = useState(1);
-  const methods = useForm<FormData>({
+  const methods = useForm<SignUpFormData>({
     resolver: yupResolver(schema) as any,
     defaultValues: {
       name: "",
@@ -66,7 +66,7 @@ export default function SignUp() {
 
   const { handleSubmit, trigger, setError, clearErrors, formState: { errors } } = methods;
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SignUpFormData) => {
     clearErrors("root");
 
     try {
