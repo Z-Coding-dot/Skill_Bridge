@@ -49,7 +49,7 @@ export const conversationsMock: ChatUser[] = [
     name: "Mustafa",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
     lastMessage: "Hey, can you send the files?",
-    lastMessageTime: "10:30 AM",
+    lastMessageAt: "2024-12-01T10:30:00Z",
     unreadCount: 2,
   },
   {
@@ -57,7 +57,7 @@ export const conversationsMock: ChatUser[] = [
     name: "Parsa",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
     lastMessage: "Thanks for the update!",
-    lastMessageTime: "Yesterday",
+    lastMessageAt: "2024-11-30T15:05:00Z",
     unreadCount: 0,
   },
 ];
@@ -69,7 +69,6 @@ export const mockMessagesByUser: Record<string, MessageType[]> = {
       senderId: "u2",
       receiverId: "user-1",
       text: "Hi, I am interested in your Web Design task. Can we discuss the details?",
-      timestamp: "10:28 AM",
       createdAt: "2024-12-01T10:28:00Z",
       isRead: true,
     },
@@ -78,7 +77,6 @@ export const mockMessagesByUser: Record<string, MessageType[]> = {
       senderId: "user-1",
       receiverId: "u2",
       text: "Sure! I'd love to hear more about what you need.",
-      timestamp: "10:29 AM",
       createdAt: "2024-12-01T10:29:00Z",
       isRead: true,
     },
@@ -87,7 +85,6 @@ export const mockMessagesByUser: Record<string, MessageType[]> = {
       senderId: "u2",
       receiverId: "user-1",
       text: "Hey, can you send the files?",
-      timestamp: "10:30 AM",
       createdAt: "2024-12-01T10:30:00Z",
       isRead: false,
     },
@@ -98,7 +95,6 @@ export const mockMessagesByUser: Record<string, MessageType[]> = {
       senderId: "user-1",
       receiverId: "u3",
       text: "Just pushed the latest changes to the repo.",
-      timestamp: "Yesterday",
       createdAt: "2024-11-30T15:00:00Z",
       isRead: true,
     },
@@ -107,7 +103,6 @@ export const mockMessagesByUser: Record<string, MessageType[]> = {
       senderId: "u3",
       receiverId: "user-1",
       text: "Thanks for the update!",
-      timestamp: "Yesterday",
       createdAt: "2024-11-30T15:05:00Z",
       isRead: true,
     },
@@ -161,9 +156,9 @@ export const notificationsMock: Notification[]= [
 export const applicationsMock: Application[]= [
   {
     id: "app-1",
+    taskId: "task-1",
     taskTitle: "Web Design for Student Portfolio",
     status: "rejected",
     pitch: "I have 3 years of experience in web design and have created multiple portfolio websites. I can deliver a modern, responsive design that perfectly showcases your work."
   }
 ];
-

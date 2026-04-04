@@ -20,6 +20,19 @@ export const ChatWindow = ({
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const formatMessageTime = (value: string) => {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(date);
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -96,7 +109,7 @@ export const ChatWindow = ({
                     isMe ? "text-white/70" : "text-[var(--text-secondary)]"
                   }`}
                 >
-                  {msg.timestamp}
+                  {formatMessageTime(msg.createdAt)}
                 </span>
               </div>
             </div>
