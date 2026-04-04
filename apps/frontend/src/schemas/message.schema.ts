@@ -5,19 +5,20 @@ export const MessageSchema = z.object({
   senderId: z.string(),
   receiverId: z.string(),
   text: z.string(),
-  timestamp: z.string(),
   createdAt: z.string(),
   isRead: z.boolean(),
 });
 
-export const ChatUserSchema = z.object({
+export const ConversationSchema = z.object({
   id: z.string(),
   name: z.string(),
   avatar: z.string().optional(),
   lastMessage: z.string().optional(),
-  lastMessageTime: z.string().optional(),
+  lastMessageAt: z.string().optional(),
   unreadCount: z.number().optional(),
 });
 
-export type MessageType = z.infer<typeof MessageSchema>;
-export type ChatUser = z.infer<typeof ChatUserSchema>;
+export type Message = z.infer<typeof MessageSchema>;
+export type MessageType = Message;
+export type Conversation = z.infer<typeof ConversationSchema>;
+export type ChatUser = Conversation;
