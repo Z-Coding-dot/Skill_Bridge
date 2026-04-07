@@ -128,28 +128,32 @@ export const notificationsMock: Notification[]= [
     type: "info",
     title: "New application received for Web Design Project",
     createdAt:"2025-12-01",
-    message: "please review your application. and do successfully "
+    message: "please review your application. and do successfully ",
+    readAt: null,
   },
   {
     id: "notif-2",
     type: "warning",
     title: "Application accepted for React Intern position",
     createdAt: '2026-12-01',
-    message: "please review your application. and do successfully please review your application. and do successfully "
+    message: "please review your application. and do successfully please review your application. and do successfully ",
+    readAt: null,
   },
   {
     id: "notif-2",
     type: "error",
     title: "Application accepted for React Intern position",
     createdAt: '2026-12-01',
-    message: "please review your application. and do successfully please review your application. and do successfully "
+    message: "please review your application. and do successfully please review your application. and do successfully ",
+    readAt: "2026-12-01T08:30:00Z",
   },
   {
     id: "notif-2",
     type: "success",
     title: "Application accepted for React Intern position",
     createdAt: '2026-12-01',
-    message: "please review your application. and do successfully please review your application. iew your application. and do successfully please review your application. iew your application. and do successfully please review your application. iew your application. and do successfully please review your application. iew your application. and do successfully please review your application. and do successfully "
+    message: "please review your application. and do successfully please review your application. iew your application. and do successfully please review your application. iew your application. and do successfully please review your application. iew your application. and do successfully please review your application. iew your application. and do successfully please review your application. and do successfully ",
+    readAt: null,
   },
 ];
 
