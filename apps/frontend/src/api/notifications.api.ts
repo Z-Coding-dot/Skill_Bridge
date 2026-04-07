@@ -14,3 +14,18 @@ export const getNotifications = async (): Promise<Notification[]> => {
   return NotificationListSchema.parse(res.data);
 };
 
+export const markNotificationAsRead = async (id: string): Promise<void> => {
+  if (USE_MOCK_API) {
+    return;
+  }
+
+  await api.patch(`/notifications/${id}/read`);
+};
+
+export const markAllNotificationsAsRead = async (): Promise<void> => {
+  if (USE_MOCK_API) {
+    return;
+  }
+
+  await api.patch("/notifications/read-all");
+};
