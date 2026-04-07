@@ -48,8 +48,20 @@ const submitApplication = async (req, res, next) => {
           select: {
             id: true,
             title: true,
+            postedById: true,
           },
         },
+      },
+    });
+
+    await prisma.notification.create({
+      data: {
+        userId: newApplication.task.postedById,
+        type: "info",
+        title: "New application received",
+        message: `${req.user.name} applied to "${newApplication.task.title}".`,
+        taskId: newApplication.taskId,
+        applicationId: newApplication.id,
       },
     });
 
