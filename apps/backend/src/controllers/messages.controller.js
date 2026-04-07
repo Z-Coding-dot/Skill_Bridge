@@ -154,6 +154,15 @@ const createMessage = async (req, res, next) => {
       },
     });
 
+    await prisma.notification.create({
+      data: {
+        userId: receiverId,
+        type: "info",
+        title: `New message from ${req.user.name}`,
+        message: text.length > 120 ? `${text.slice(0, 117)}...` : text,
+      },
+    });
+
     res.status(201).json(mapMessage(message));
   } catch (error) {
     next(error);
