@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { submitFeedback } from "@/api/feedback.api";
-import { useAuth } from "@/context/AuthContext";
-
+import { useAuth } from "@/context/useAuth";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -100,7 +99,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 sm:px-4">
-      <div className="w-full max-sm:h-full max-w-lg sm:rounded-2xl bg-2card p-5 sm:p-6 shadow-xl">
+      <div className="w-full max-sm:h-full max-w-xl sm:rounded-2xl bg-2card p-5 sm:p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg sm:text-xl font-semibold">Share Feedback</h2>
           <button
@@ -137,7 +136,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, message: e.target.value }))
               }
-              className="min-h-[120px] w-full"
+              className="sm:min-h-[350px] w-full h-[270px]"
             />
             {errors.message && (
               <p className="mt-1 text-xs text-error">{errors.message}</p>

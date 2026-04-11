@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, Search } from "lucide-react"
+import { Calendar, Search, User } from "lucide-react"
 import Section from "../../components/Section/Section"
 import { Input } from "../../components/Search/Input";
 import { Link, useSearchParams } from "react-router-dom";
@@ -30,7 +30,7 @@ export const TaskBoard = () => {
 
   if (isPending) return <TaskBoardSkeleton />;
 
-  if (error) return <Section>Unable to fetch tasks, Try again later.</Section>;
+  if (error) return <h1 className="pt-25 text-center">Oop! Something went wrong. Please try again.</h1>;
 
   return (
     <Section>
@@ -67,20 +67,24 @@ export const TaskBoard = () => {
         </div>
         {/* Task Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4">
-          {filteredTasks.map((task) => (
+      
+           {filteredTasks.map((task) => (
             <Link to={`/tasks/${task.id}`} key={task.id}>
             <div className="card max-sm:p-3">
               <div className="flex justify-end items-center mb-3">
                 <span className="text-xs sm:text-sm bg-[var(--success)] text-[var(--text-primary)] rounded-xl px-2 py-0.5 font-semibold ">{task.category}</span>
               </div>
               <h4 className="text-sm sm:text-lg font-semibold mb-3 line-clamp-1">{task.title}</h4>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-5 mb-4 line-clamp-3 text-[var(--text-trinary)]">{task.description}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-5 mb-4 line-clamp-3 text-[var(--text-trinary)] whitespace-pre-wrap">{task.description}</p>
               <div className="flex justify-between items-center my-2">
                 <span className="text-xs sm:text-sm flex items-center gap-1"> <Calendar className="size-3 sm:size-5"/> Deadline:</span>
                 <span className="text-xs text-muted-foreground">{new Date(task.deadline).toLocaleDateString().split("T")[0]}</span>
               </div>
               <div className="flex items-center space-x-3">
-                <img src={task.postedBy.avatar} alt={task.postedBy.name} className="w-8 h-8 rounded-full mt-2 mb-1"/>
+                {task.postedBy.avatar
+                  ? <img src={task.postedBy.avatar} alt={task.postedBy.name} className="w-8 h-8 object-cover rounded-full mt-2 mb-1" />
+                  : <span className="w-8 h-8 rounded-full mt-2 mb-1 bg-primary flex items-center justify-center"><User className="size-5 text-white" /></span>
+                }
                 <span className="text-xs sm:text-base text-[var(--text-trinary)]">{task.postedBy.name}</span>
               </div>
               {/* details button  */}
