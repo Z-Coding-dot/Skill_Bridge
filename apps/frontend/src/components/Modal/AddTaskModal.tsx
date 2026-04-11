@@ -35,6 +35,8 @@ const CATEGORY_OPTIONS = [
   "Tutoring",
   "Project",
   "Freelance",
+  "Job",
+  "Other",
 ] as const;
 
 export const AddTaskModal = ({ isOpen, onClose }: Props) => {
@@ -106,7 +108,7 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex sm:items-center sm:justify-center z-50">
-      <div className="bg-2card w-full max-w-2xl sm:rounded-2xl p-6">
+      <div className="bg-2card w-full max-w-3xl sm:rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold mb-4">Add Task</h2>
           <button className="bg-transparent hover:bg-btnHover p-1 mb-3" onClick={onClose}>
@@ -129,7 +131,7 @@ export const AddTaskModal = ({ isOpen, onClose }: Props) => {
 
           <div>
             <textarea
-              className="input min-h-[100px] w-full"
+              className="input sm:min-h-[350px] w-full h-[270px]"
               placeholder="Description"
               value={form.description}
               onChange={(e) =>

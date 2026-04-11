@@ -9,7 +9,7 @@ import Step3Password from "./Step3Password";
 import { Link, useNavigate } from "react-router-dom";
 import signup from "../../assets/login_signUp.webp";
 import logo from "../../assets/header/SkillBridge.svg";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import {motion} from 'motion/react';
 import { signup as signupRequest } from "@/api/auth.api";
 import axios from "axios";

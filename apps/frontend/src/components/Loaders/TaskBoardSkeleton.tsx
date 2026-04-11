@@ -1,4 +1,3 @@
-// TaskBoard.skeleton.tsx
 import Section from "@/components/Section/Section";
 import { Skeleton } from "./Skeleton";
 

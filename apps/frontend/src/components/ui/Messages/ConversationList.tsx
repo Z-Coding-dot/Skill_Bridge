@@ -1,5 +1,6 @@
 import type { ChatUser } from "@/schemas/message.schema";
-import { Search } from "lucide-react";
+import { Search, User } from "lucide-react";
+import { useState } from "react";
 
 type ConversationListProps = {
   users: ChatUser[];
@@ -8,15 +9,16 @@ type ConversationListProps = {
 };
 
 export const ConversationList = ({ users, activeUserId, onSelectUser }: ConversationListProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const formatConversationTime = (value?: string) => {
     if (!value) return "";
-
     const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-      return value;
-    }
-
+    if (Number.isNaN(date.getTime())) return value;
     return new Intl.DateTimeFormat(undefined, {
       hour: "numeric",
       minute: "2-digit",
@@ -29,6 +31,8 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
         <h2 className="text-xl font-bold mb-4">Messages</h2>
         <div className="relative">
           <input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             type="text"
             placeholder="Search messages..."
             className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--bg)] border-none focus:ring-1 focus:ring-[var(--primary)]"
@@ -38,7 +42,12 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {users.map((user) => (
+        {filteredUsers.length === 0 && (
+          <p className="text-center text-sm text-[var(--text-secondary)] mt-10">
+            No conversations found.
+          </p>
+        )}
+        {filteredUsers.map((user) => (
           <div
             key={user.id}
             onClick={() => onSelectUser(user.id)}
@@ -46,11 +55,10 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
               activeUserId === user.id ? "bg-[var(--bg)] border-l-4 border-[var(--primary)]" : ""
             }`}
           >
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-10 h-10 rounded-full object-cover"
-            />
+            {user.avatar
+              ? <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
+              : <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0"><User className="size-5 text-white" /></span>
+            }
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-start mb-1">
                 <h3 className="font-semibold text-sm truncate">{user.name}</h3>
@@ -65,7 +73,7 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
               </p>
             </div>
             {user.unreadCount && user.unreadCount > 0 ? (
-              <span className="bg-[var(--primary)] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-[var(--primary)] text-white text-xs font-bold px-2 py-0.5 rounded-full shrink-0">
                 {user.unreadCount}
               </span>
             ) : null}

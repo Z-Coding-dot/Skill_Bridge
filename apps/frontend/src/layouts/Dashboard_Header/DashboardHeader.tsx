@@ -19,7 +19,7 @@ export const DashboardHeader = ({handleSideBar}: sidebarProps ) => {
               </div>
             </div>
             <div className="flex items-center">
-              <Link to={'/messages'} className="hover:bg-btnHover hover:text-white rounded-lg p-1 sm:p-2 cursor-pointer">
+              <Link to={'/messages'} className="hover:bg-btnHover hover:text-white rounded-lg p-1 sm:p-2 cursor-pointer hidden sm:block">
                <MessageCircle className="size-5 2xl:size-6"/>
               </Link>
             <Link to={'/profile'} className="hover:bg-btnHover hover:text-white rounded-lg p-1 sm:p-2 cursor-pointer">

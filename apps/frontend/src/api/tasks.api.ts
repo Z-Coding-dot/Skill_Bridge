@@ -19,7 +19,14 @@ export const getTasks = async (): Promise<Task[]> => {
   return TaskListSchema.parse(res.data);
 };
 
-export const getMyTasks = getTasks;
+export const getMyTasks = async (): Promise<Task[]> => {
+  if (USE_MOCK_API) {
+    return TaskListSchema.parse(tasksMock);
+  }
+
+  const res = await api.get<Task[]>("/tasks/my-tasks");
+  return TaskListSchema.parse(res.data);
+};
 
 export const getTaskById = async (id: string): Promise<Task> => {
   if (USE_MOCK_API) {
@@ -33,6 +40,10 @@ export const getTaskById = async (id: string): Promise<Task> => {
   }
 
   const res = await api.get<Task>(`/tasks/${id}`);
+  return TaskSchema.parse(res.data);
+};
+export const updateTask = async (id: string, data: Partial<Task>): Promise<Task> => {
+  const res = await api.put<Task>(`/tasks/${id}`, data);
   return TaskSchema.parse(res.data);
 };
 
@@ -49,6 +60,7 @@ export const createTask = async (
     });
   }
 
+  
   const res = await api.post<Task>("/tasks", payload);
   return TaskSchema.parse(res.data);
 };
