@@ -11,6 +11,7 @@ export const Setting = () => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isEditingSkills, setIsEditingSkills] = useState<boolean>(false);
   const [skills, setSkills] = useState<ProfileSchema["skills"]>([]);
   const [skillsInput, setSkillsInput] = useState("");
@@ -30,12 +31,11 @@ export const Setting = () => {
 
   useEffect(() => {
     if (!profile) return;
-
     setSkills(profile.skills ?? []);
     setSkillsInput((profile.skills ?? []).map((skill) => skill.label).join(", "));
   }, [profile]);
 
-  if (isPending || !profile) return <SettingSkeleton/>;
+  if (isPending || !profile) return <SettingSkeleton />;
 
   const saveSkills = () => {
     const nextSkills = skillsInput
@@ -48,9 +48,7 @@ export const Setting = () => {
       }));
 
     setSkills(nextSkills);
-    updateProfileMutation.mutate({
-      skills: nextSkills,
-    });
+    updateProfileMutation.mutate({ skills: nextSkills });
   };
 
   return (
@@ -64,10 +62,10 @@ export const Setting = () => {
             </h1>
 
             <div className="flex items-start sm:gap-5 gap-3 my-3 sm:my-5">
-              {avatarPreview ? (
+              {avatarPreview || profile.avatar ? (
                 <span className="p-1 rounded-full border-1 border-trinary">
                   <img
-                    src={avatarPreview}
+                    src={avatarPreview ?? profile.avatar!}
                     className="size-16 sm:size-24 object-cover rounded-full"
                     alt={profile.name}
                   />
@@ -86,6 +84,7 @@ export const Setting = () => {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
+                    setAvatarFile(file);
                     setAvatarPreview(URL.createObjectURL(file));
                   }
                 }}
@@ -107,13 +106,12 @@ export const Setting = () => {
                   email: formData.get("email") as string,
                   bio: formData.get("bio") as string,
                   skills,
+                   avatar: avatarFile as unknown as string ?? undefined,
                 });
               }}
               className="flex flex-col"
             >
-              <label htmlFor="name" className="text-xs sm:text-sm mb-1 text-trinary">
-                Name
-              </label>
+              <label htmlFor="name" className="text-xs sm:text-sm mb-1 text-trinary">Name</label>
               <input
                 type="text"
                 name="name"
@@ -121,9 +119,7 @@ export const Setting = () => {
                 className="sm:mb-5 text-xs sm:text-sm"
               />
 
-              <label htmlFor="email" className="text-xs sm:text-sm mb-1 text-trinary">
-                Email
-              </label>
+              <label htmlFor="email" className="text-xs sm:text-sm mb-1 text-trinary">Email</label>
               <input
                 type="text"
                 name="email"
@@ -131,9 +127,7 @@ export const Setting = () => {
                 className="sm:mb-5 text-xs sm:text-sm"
               />
 
-              <label htmlFor="bio" className="text-xs sm:text-sm mb-1 text-trinary">
-                Bio
-              </label>
+              <label htmlFor="bio" className="text-xs sm:text-sm mb-1 text-trinary">Bio</label>
               <textarea
                 name="bio"
                 defaultValue={profile.bio}
@@ -159,11 +153,7 @@ export const Setting = () => {
               <button
                 className="text-xs sm:text-sm"
                 onClick={() => {
-                  if (isEditingSkills) {
-                    saveSkills();
-                    return;
-                  }
-
+                  if (isEditingSkills) { saveSkills(); return; }
                   setIsEditingSkills(true);
                 }}
               >
@@ -181,10 +171,7 @@ export const Setting = () => {
             ) : (
               <div className="flex flex-wrap items-start gap-4 mt-8">
                 {skills.map((skill) => (
-                  <span
-                    key={skill.id}
-                    className="bg-card-bg rounded-xl px-3 py-1 text-stone-100"
-                  >
+                  <span key={skill.id} className="bg-card-bg rounded-xl px-3 py-1 text-stone-100">
                     {skill.label}
                   </span>
                 ))}
