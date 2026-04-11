@@ -53,7 +53,7 @@ export const Notifications = () => {
   if (data?.length === 0) {
     return (
       <Section>
-        <p className="text-stone-400 mt-5">No notifications.</p>
+        <p className="text-stone-300 text-sm sm:text-lg mt-12 text-center">You have not received any notifications.</p>
       </Section>
     );
   }
@@ -64,21 +64,29 @@ export const Notifications = () => {
     <Section>
       <div className="flex items-center justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-semibold">Notifications</h2>
-          <p className="text-sm text-stone-400">
-            {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
-          </p>
+          <h2 className="text-base sm:text-xl font-semibold">Notifications</h2>
         </div>
 
         <button
           type="button"
           onClick={() => markAllMutation.mutate()}
           disabled={unreadCount === 0 || markAllMutation.isPending}
-          className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg border border-[var(--border)] px-2 sm:px-3 sm:py-2 text-xs sm:text-sm disabled:cursor-not-allowed disabled:opacity-50"
         >
           Mark all as read
         </button>
       </div>
+      <div className="text-center m-2 rounded-lg">
+  <p
+    className={`text-sm text-white rounded-lg py-1 ${
+      unreadCount > 0 ? "bg-amber-600" : "bg-green-600"
+    }`}
+  >
+    {unreadCount > 0
+      ? `You have ${unreadCount} unread notifications`
+      : "All caught up"}
+  </p>
+</div>
 
       <div className="flex flex-col gap-4 bg-2card w-full rounded-xl p-2 sm:p-4">
         {data?.map((notification) => {
@@ -100,14 +108,14 @@ export const Notifications = () => {
                 isUnread ? "bg-card-bg ring-1 ring-[var(--primary)]/40" : "bg-card-bg/70",
               )}
             >
-              <Icon className={clsx("mt-2 shrink-0", config.iconColor)} />
+              <Icon className={clsx("mt-2 shrink-0 hidden sm:block", config.iconColor)} />
 
               <div className="flex flex-col sm:flex-row sm:justify-between items-center w-full gap-2 sm:gap-4">
-                <div className="mr-5">
-                  <div className="flex items-center gap-2">
+                <div className="sm:mr-5">
+                  <div className="flex items-center gap-2 max-sm:justify-between">
                     <h3 className="text-sm sm:text-base">{notification.title}</h3>
                     {isUnread ? (
-                      <span className="size-2 rounded-full bg-[var(--primary)]" />
+                      <span className="size-2 rounded-full bg-yellow-500" />
                     ) : null}
                   </div>
                   <p className="text-wrap text-xs sm:text-sm mt-1 sm:mt-2 text-stone-400">
@@ -115,7 +123,7 @@ export const Notifications = () => {
                   </p>
                 </div>
 
-                <div className="flex flex-col justify-between h-full max-sm:items-end">
+                <div className="flex sm:flex-col sm:justify-between h-full sm:items-end">
                   <p className={clsx("hidden sm:flex text-xs px-2 py-1 rounded-lg text-center mb-3 text-white justify-center capitalize", config.textBG)}>
                     {notification.type}
                   </p>
