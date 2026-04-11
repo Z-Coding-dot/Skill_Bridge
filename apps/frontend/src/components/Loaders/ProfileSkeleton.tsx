@@ -1,4 +1,3 @@
-// Profile.skeleton.tsx
 import Section from "@/components/Section/Section";
 import { Header } from "@/layouts/Header/Header";
 import { Skeleton } from "./Skeleton";
