@@ -1,5 +1,5 @@
 import type { ChatUser, MessageType } from "@/schemas/message.schema";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Send, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 type ChatWindowProps = {
@@ -8,6 +8,7 @@ type ChatWindowProps = {
   currentUserId: string;
   onSendMessage: (text: string) => void;
   onBack?: () => void;
+  initialMessage?: string;
 };
 
 export const ChatWindow = ({
@@ -16,9 +17,14 @@ export const ChatWindow = ({
   currentUserId,
   onSendMessage,
   onBack,
+  initialMessage,
 }: ChatWindowProps) => {
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+   useEffect(() => {
+    if (initialMessage) setInputValue(initialMessage);
+  }, [initialMessage]);
 
   const formatMessageTime = (value: string) => {
     const date = new Date(value);
@@ -67,27 +73,27 @@ export const ChatWindow = ({
     <div className="flex flex-col bg-card-bg max-sm:mb-14 h-screen">
 
       {/* Header */}
-      <div className="p-3 sm:p-4 border-b border-[var(--border)] flex items-center gap-5">
-        {onBack && (
-          <button
-            onClick={onBack}
-            className="md:hidden p-1 -ml-1"
-          >
-            <ArrowLeft className="size-4" />
-          </button>
-        )}
-        <img
-          src={activeUser.avatar}
-          alt={activeUser.name}
-          className="size-8 sm:w-10 sm:h-10 rounded-full object-cover"
-        />
-        <div>
-          <h2 className="font-bold text-sm sm:text-base">{activeUser.name}</h2>
-          <span className="text-xs text-[var(--success)] flex items-center gap-1">
-            <span className="w-2 h-2 bg-[var(--success)] rounded-full" />
-            Online
-          </span>
-        </div>
+      <div className="p-2 sm:p-4 border-b border-[var(--border)] flex items-center gap-2 sm:gap-5">
+          {onBack && (
+              <button
+                onClick={onBack}
+                className="md:hidden p-1 -ml-1 bg-transparent hover:bg-gray-600 rounded-full transition-colors">
+                <ArrowLeft className="size-4" />
+              </button>
+              )}
+         {activeUser.avatar
+              ? <img src={activeUser.avatar} alt={activeUser.name} className="w-10 h-10 rounded-full object-cover" />
+              : <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0"><User className="size-5 text-white" /></span>
+            }
+       <div>
+  <h2 className="font-bold text-sm sm:text-base">{activeUser.name}</h2>
+  <span className="text-xs flex items-center gap-1">
+    <span className={`w-2 h-2 rounded-full ${activeUser.isOnline ? "bg-[var(--success)]" : "bg-gray-500"}`} />
+    <p className={activeUser.isOnline ? "text-[var(--success)]" : "text-gray-500"}>
+      {activeUser.isOnline ? "Online" : "Offline"}
+    </p>
+  </span>
+</div>
       </div>
 
       {/* Messages */}
