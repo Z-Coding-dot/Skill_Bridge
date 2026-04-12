@@ -36,9 +36,13 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/uploads", express.static("uploads"));
+app.use("/api", routes);
+
 app.use("/api", routes);
 
 app.use(notFound);
 app.use(errorHandler);
+
 
 module.exports = app;
