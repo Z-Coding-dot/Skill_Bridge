@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import loginImg from "../../assets/login_signUp.webp";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import logo from '../../assets/header/SkillBridge.svg';
 import {motion} from 'motion/react';
 import { login as loginRequest } from "@/api/auth.api";
@@ -37,7 +37,7 @@ export const Login = () => {
     try {
       const user = await loginRequest(data);
       login(user);
-      navigate("/dashboard");
+      navigate(user.role === "admin" ? "/admin" : "/dashboard");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const backendErrors = error.response?.data?.errors;

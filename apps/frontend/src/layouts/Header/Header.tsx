@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/header/SkillBridge.svg";
 import MobileFooter from "@/layouts/Footer/MobileFooter";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import { ChevronDown, LayoutDashboard, LogOut, MessageCircle, User } from "lucide-react";
 import { useRef, useState } from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -36,9 +36,9 @@ export const Header = () => {
 
   return (
     <section className="fixed w-full z-50">
-      <header className="z-20 relative flex items-center justify-between px-3 1xl:px-12 backdrop-blur-3xl drop-shadow-lg">
+      <header className="z-20 relative flex items-center justify-between px-3  1xl:px-12 backdrop-blur-3xl drop-shadow-lg">
         <Link to="/">
-          <img src={logo} alt="SkillBridge Logo" className="w-32 1xl:w-35 2xl:w-45" />
+          <img src={logo} alt="SkillBridge Logo" className="w-32 1xl:w-35 2xl:w-45 max-sm:-ml-4" />
         </Link>
         {/* Desktop Navbar */}
     <nav className="hidden sm:block">

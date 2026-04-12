@@ -22,10 +22,14 @@ const mapConversation = (message, currentUserId) => {
     id: otherUser.id,
     name: otherUser.name,
     avatar,
+  return: {
+    id: otherUser.id,
+    name: otherUser.name,
+    avatar: otherUser.avatarUrl ?? undefined,
     lastMessage: message.text,
     lastMessageAt: message.createdAt.toISOString(),
     unreadCount: 0,
-  };
+  }
 };
 
 const getConversations = async (req, res, next) => {
@@ -57,6 +61,22 @@ const getConversations = async (req, res, next) => {
     },
   },
 },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -207,4 +227,4 @@ module.exports = {
   getConversationMessages,
   createMessage,
   markConversationAsRead,
-};
+}};

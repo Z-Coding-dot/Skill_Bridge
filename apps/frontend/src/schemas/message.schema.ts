@@ -16,6 +16,7 @@ export const ConversationSchema = z.object({
   lastMessage: z.string().optional(),
   lastMessageAt: z.string().optional(),
   unreadCount: z.number().optional(),
+  isOnline: z.boolean().optional(),
 });
 
 export type Message = z.infer<typeof MessageSchema>;

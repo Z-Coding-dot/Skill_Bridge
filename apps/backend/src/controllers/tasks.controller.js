@@ -31,6 +31,7 @@ const mapTask = (task) => ({
     avatar: task.postedBy.profile?.avatar
       ? `${process.env.BASE_URL || "http://localhost:3000"}${task.postedBy.profile.avatar}`
       : task.postedBy.avatarUrl ?? null,
+    ...(task.postedBy.avatarUrl ? { avatar: task.postedBy.avatarUrl } : {}),
   },
   status: task.status,
   createdAt: task.createdAt.toISOString(),
@@ -105,6 +106,8 @@ const getMyTasks = async (req, res, next) => {
 };
 
 
+const postTask = async (req, res, next) => {
+  try {
 const postTask = async (req, res, next) => {
   try {
     const taskData = normalizeTaskData({
@@ -200,4 +203,4 @@ const deleteTask = async (req, res, next) => {
   }
 };
 
-module.exports = { getTasks, getTask, postTask, updateTask, deleteTask, getMyTasks };
+module.exports = { getTasks, getTask, postTask, updateTask, deleteTask, getMyTasks }

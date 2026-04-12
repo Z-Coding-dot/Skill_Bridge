@@ -16,6 +16,13 @@ import { Applications } from "@/components/ui/Dashboard/Applications.tsx";
 import { Setting } from "@/components/ui/Dashboard/Settings.tsx";
 import { MyTask } from "@/components/ui/Dashboard/MyTask.tsx";
 import { Notifications } from "@/components/ui/Dashboard/Notifications.tsx";
+import { UserProfile } from "@/pages/Profile/UserProfile.tsx";
+import { AdminLayout } from "@/pages/Admin/AdminLayout.tsx";
+import { AdminRoute } from "@/components/ProtectedRoute/AdminRoute.tsx";
+import { AdminOverview } from "@/pages/Admin/AdminOverview.tsx";
+import { AdminUsers } from "@/pages/Admin/AdminUsers.tsx";
+import { AdminTasks } from "@/pages/Admin/AdminTasks.tsx";
+import { AdminFeedbacks } from "@/pages/Admin/AdminFeedbacks.tsx";
 
 export const routes = createBrowserRouter([
   {
@@ -37,6 +44,16 @@ export const routes = createBrowserRouter([
     ],
   },
   {
+  path: "admin",
+  element: <AdminRoute><AdminLayout /></AdminRoute>,
+  children: [
+    { index: true,          element: <AdminOverview />  },
+    { path: "users",        element: <AdminUsers />     },
+    { path: "tasks",        element: <AdminTasks />     },
+    { path: "feedbacks",    element: <AdminFeedbacks /> },
+  ],
+  },
+  {
     path: ROUTES.MESSAGES,
     element:(<ProtectedRoute> <Messages /></ProtectedRoute>),
   },
@@ -54,6 +71,10 @@ export const routes = createBrowserRouter([
       {path: ROUTES.MY_TASK, element: <MyTask/>},
       {path: ROUTES.SETTINGS, element: <Setting/>},
     ]
+  },
+  {
+    path: "profile/:id",
+    element: <ProtectedRoute><UserProfile /></ProtectedRoute>,
   },
   {
     path: ROUTES.LOGIN,
