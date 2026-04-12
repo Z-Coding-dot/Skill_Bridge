@@ -12,7 +12,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
-
 const mapProfile = (user) => ({
   name: user.name,
   email: user.email,
@@ -32,6 +31,14 @@ const loadProfileUser = async (userId) =>
       skills: {
         include: { skill: true },
         orderBy: { skill: { label: "asc" } },
+        include: {
+          skill: true,
+        },
+        orderBy: {
+          skill: {
+            label: "asc",
+          },
+        },
       },
     },
   });
@@ -40,6 +47,10 @@ const getProfile = async (req, res, next) => {
   try {
     const user = await loadProfileUser(req.user.id);
     if (!user) return res.status(404).json({ message: "profile not found" });
+    if (!user) {
+      return res.status(404).json({ message: "profile not found" });
+    }
+
     res.status(200).json(mapProfile(user));
   } catch (error) {
     next(error);
@@ -47,6 +58,7 @@ const getProfile = async (req, res, next) => {
 };
 
 const getProfileById = async (req, res, next) => {
+const updateProfile = async (req, res, next) => {
   try {
     const { id } = req.params;
     const user = await prisma.user.findUnique({
@@ -107,6 +119,39 @@ const updateProfile = async (req, res, next) => {
       return res.status(400).json({ message: "name cannot be empty" });
     if (normalizedEmail !== undefined && !normalizedEmail)
       return res.status(400).json({ message: "email cannot be empty" });
+      for (const skill of skills) {
+        if (
+          typeof skill !== "object" ||
+          skill === null ||
+          typeof skill.label !== "string"
+        ) {
+          return res.status(400).json({
+            message: "each skill must include a string label",
+          });
+        }
+      }
+    }
+
+    const normalizedName =
+      typeof name === "string" ? name.trim() : undefined;
+    const normalizedEmail =
+      typeof email === "string" ? email.trim().toLowerCase() : undefined;
+    const normalizedBio = typeof bio === "string" ? bio.trim() : undefined;
+    const normalizedSkills =
+      skills === undefined
+        ? undefined
+        : skills
+            .map((skill) => skill.label.trim())
+            .filter(Boolean)
+            .map((label) => ({ label }));
+
+    if (normalizedName !== undefined && !normalizedName) {
+      return res.status(400).json({ message: "name cannot be empty" });
+    }
+
+    if (normalizedEmail !== undefined && !normalizedEmail) {
+      return res.status(400).json({ message: "email cannot be empty" });
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id: req.user.id },
@@ -129,6 +174,12 @@ const updateProfile = async (req, res, next) => {
                       : {}),
                     ...(avatarPath !== undefined ? { avatar: avatarPath } : {}),
                   },
+        ...(normalizedBio !== undefined
+          ? {
+              profile: {
+                upsert: {
+                  create: { bio: normalizedBio },
+                  update: { bio: normalizedBio },
                 },
               },
             }
@@ -154,6 +205,14 @@ const updateProfile = async (req, res, next) => {
         skills: {
           include: { skill: true },
           orderBy: { skill: { label: "asc" } },
+          include: {
+            skill: true,
+          },
+          orderBy: {
+            skill: {
+              label: "asc",
+            },
+          },
         },
       },
     });
