@@ -13,10 +13,15 @@ const mapConversation = (message, currentUserId) => {
   const otherUser =
     message.senderId === currentUserId ? message.receiver : message.sender;
 
+  const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+  const avatar = otherUser.profile?.avatar
+    ? `${BASE_URL}${otherUser.profile.avatar}`
+    : otherUser.avatarUrl ?? undefined;
+
   return {
     id: otherUser.id,
     name: otherUser.name,
-    avatar: otherUser.avatarUrl ?? undefined,
+    avatar,
     lastMessage: message.text,
     lastMessageAt: message.createdAt.toISOString(),
     unreadCount: 0,
@@ -30,22 +35,28 @@ const getConversations = async (req, res, next) => {
       where: {
         OR: [{ senderId: currentUserId }, { receiverId: currentUserId }],
       },
-      include: {
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            avatarUrl: true,
-          },
-        },
-        receiver: {
-          select: {
-            id: true,
-            name: true,
-            avatarUrl: true,
-          },
-        },
+     include: {
+  sender: {
+    select: {
+      id: true,
+      name: true,
+      avatarUrl: true,
+      profile: {
+        select: { avatar: true },
       },
+    },
+  },
+  receiver: {
+    select: {
+      id: true,
+      name: true,
+      avatarUrl: true,
+      profile: {
+        select: { avatar: true },
+      },
+    },
+  },
+},
       orderBy: {
         createdAt: "desc",
       },

@@ -1,9 +1,22 @@
 const prisma = require("../lib/prisma");
+const multer = require("multer");
+const path = require("path");
+
+// multer config
+const storage = multer.diskStorage({
+  destination: "uploads/avatars/",
+  filename: (req, file, cb) => {
+    cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
+  },
+});
+
+const upload = multer({ storage });
 
 const mapProfile = (user) => ({
   name: user.name,
   email: user.email,
   bio: user.profile?.bio ?? "",
+  avatar: user.profile?.avatar ?? null, //  added this
   skills: user.skills.map(({ skill }) => ({
     id: skill.id,
     label: skill.label,
@@ -16,14 +29,8 @@ const loadProfileUser = async (userId) =>
     include: {
       profile: true,
       skills: {
-        include: {
-          skill: true,
-        },
-        orderBy: {
-          skill: {
-            label: "asc",
-          },
-        },
+        include: { skill: true },
+        orderBy: { skill: { label: "asc" } },
       },
     },
   });
@@ -31,10 +38,28 @@ const loadProfileUser = async (userId) =>
 const getProfile = async (req, res, next) => {
   try {
     const user = await loadProfileUser(req.user.id);
+    if (!user) return res.status(404).json({ message: "profile not found" });
+    res.status(200).json(mapProfile(user));
+  } catch (error) {
+    next(error);
+  }
+};
 
-    if (!user) {
-      return res.status(404).json({ message: "profile not found" });
-    }
+const getProfileById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        profile: true,
+        skills: {
+          include: { skill: true },
+          orderBy: { skill: { label: "asc" } },
+        },
+      },
+    });
+
+    if (!user) return res.status(404).json({ message: "profile not found" });
 
     res.status(200).json(mapProfile(user));
   } catch (error) {
@@ -44,40 +69,30 @@ const getProfile = async (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
   try {
-    const { name, email, bio, skills } = req.body;
+    const { name, email, bio } = req.body;
 
-    if (name !== undefined && typeof name !== "string") {
+    // skills comes as JSON string from FormData
+    let skills;
+    if (req.body.skills) {
+      try {
+        skills = JSON.parse(req.body.skills);
+      } catch {
+        skills = req.body.skills;
+      }
+    }
+
+    const avatarPath = req.file
+      ? `/uploads/avatars/${req.file.filename}`
+      : undefined;
+
+    if (name !== undefined && typeof name !== "string")
       return res.status(400).json({ message: "name must be a string" });
-    }
-
-    if (email !== undefined && typeof email !== "string") {
+    if (email !== undefined && typeof email !== "string")
       return res.status(400).json({ message: "email must be a string" });
-    }
-
-    if (bio !== undefined && typeof bio !== "string") {
+    if (bio !== undefined && typeof bio !== "string")
       return res.status(400).json({ message: "bio must be a string" });
-    }
 
-    if (skills !== undefined) {
-      if (!Array.isArray(skills)) {
-        return res.status(400).json({ message: "skills must be an array" });
-      }
-
-      for (const skill of skills) {
-        if (
-          typeof skill !== "object" ||
-          skill === null ||
-          typeof skill.label !== "string"
-        ) {
-          return res.status(400).json({
-            message: "each skill must include a string label",
-          });
-        }
-      }
-    }
-
-    const normalizedName =
-      typeof name === "string" ? name.trim() : undefined;
+    const normalizedName = typeof name === "string" ? name.trim() : undefined;
     const normalizedEmail =
       typeof email === "string" ? email.trim().toLowerCase() : undefined;
     const normalizedBio = typeof bio === "string" ? bio.trim() : undefined;
@@ -85,29 +100,36 @@ const updateProfile = async (req, res, next) => {
       skills === undefined
         ? undefined
         : skills
-            .map((skill) => skill.label.trim())
+            .map((s) => s.label.trim())
             .filter(Boolean)
             .map((label) => ({ label }));
 
-    if (normalizedName !== undefined && !normalizedName) {
+    if (normalizedName !== undefined && !normalizedName)
       return res.status(400).json({ message: "name cannot be empty" });
-    }
-
-    if (normalizedEmail !== undefined && !normalizedEmail) {
+    if (normalizedEmail !== undefined && !normalizedEmail)
       return res.status(400).json({ message: "email cannot be empty" });
-    }
 
     const updatedUser = await prisma.user.update({
       where: { id: req.user.id },
       data: {
         ...(normalizedName !== undefined ? { name: normalizedName } : {}),
         ...(normalizedEmail !== undefined ? { email: normalizedEmail } : {}),
-        ...(normalizedBio !== undefined
+        ...(normalizedBio !== undefined || avatarPath !== undefined
           ? {
               profile: {
                 upsert: {
-                  create: { bio: normalizedBio },
-                  update: { bio: normalizedBio },
+                  create: {
+                    ...(normalizedBio !== undefined
+                      ? { bio: normalizedBio }
+                      : {}),
+                    ...(avatarPath !== undefined ? { avatar: avatarPath } : {}),
+                  },
+                  update: {
+                    ...(normalizedBio !== undefined
+                      ? { bio: normalizedBio }
+                      : {}),
+                    ...(avatarPath !== undefined ? { avatar: avatarPath } : {}),
+                  },
                 },
               },
             }
@@ -131,29 +153,18 @@ const updateProfile = async (req, res, next) => {
       include: {
         profile: true,
         skills: {
-          include: {
-            skill: true,
-          },
-          orderBy: {
-            skill: {
-              label: "asc",
-            },
-          },
+          include: { skill: true },
+          orderBy: { skill: { label: "asc" } },
         },
       },
     });
 
     res.status(200).json(mapProfile(updatedUser));
   } catch (error) {
-    if (error?.code === "P2002") {
+    if (error?.code === "P2002")
       return res.status(409).json({ message: "email already exists" });
-    }
-
     next(error);
   }
 };
 
-module.exports = {
-  getProfile,
-  updateProfile,
-};
+module.exports = { getProfile, updateProfile, upload, getProfileById };

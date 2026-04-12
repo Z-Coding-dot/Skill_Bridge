@@ -10,6 +10,11 @@ const taskInclude = {
       id: true,
       name: true,
       avatarUrl: true,
+      profile:{
+        select:{
+          avatar: true,
+        }
+      }
     },
   },
 };
@@ -23,7 +28,9 @@ const mapTask = (task) => ({
   postedBy: {
     id: task.postedBy.id,
     name: task.postedBy.name,
-    ...(task.postedBy.avatarUrl ? { avatar: task.postedBy.avatarUrl } : {}),
+    avatar: task.postedBy.profile?.avatar
+      ? `${process.env.BASE_URL || "http://localhost:3000"}${task.postedBy.profile.avatar}`
+      : task.postedBy.avatarUrl ?? null,
   },
   status: task.status,
   createdAt: task.createdAt.toISOString(),
@@ -82,6 +89,21 @@ const getTask = async (req, res, next) => {
     next(error);
   }
 };
+
+const getMyTasks = async (req, res, next) => {
+  try {
+    const tasks = await prisma.task.findMany({
+      where: { postedById: req.user.id },
+      include: taskInclude,
+      orderBy: { createdAt: "desc" },
+    });
+
+    res.status(200).json(tasks.map(mapTask));
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 const postTask = async (req, res, next) => {
   try {
@@ -178,10 +200,4 @@ const deleteTask = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getTasks,
-  getTask,
-  postTask,
-  updateTask,
-  deleteTask,
-};
+module.exports = { getTasks, getTask, postTask, updateTask, deleteTask, getMyTasks };
