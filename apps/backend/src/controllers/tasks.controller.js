@@ -4,17 +4,17 @@ const {
   ALLOWED_STATUSES,
 } = require("../validators/tasks.validator");
 
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+
 const taskInclude = {
   postedBy: {
     select: {
       id: true,
       name: true,
       avatarUrl: true,
-      profile:{
-        select:{
-          avatar: true,
-        }
-      }
+      profile: {
+        select: { avatar: true },
+      },
     },
   },
 };
@@ -29,9 +29,8 @@ const mapTask = (task) => ({
     id: task.postedBy.id,
     name: task.postedBy.name,
     avatar: task.postedBy.profile?.avatar
-      ? `${process.env.BASE_URL || "http://localhost:3000"}${task.postedBy.profile.avatar}`
+      ? `${BASE_URL}${task.postedBy.profile.avatar}`
       : task.postedBy.avatarUrl ?? null,
-    ...(task.postedBy.avatarUrl ? { avatar: task.postedBy.avatarUrl } : {}),
   },
   status: task.status,
   createdAt: task.createdAt.toISOString(),
@@ -39,9 +38,7 @@ const mapTask = (task) => ({
 
 const normalizeTaskData = (payload) => ({
   ...(payload.title !== undefined ? { title: payload.title.trim() } : {}),
-  ...(payload.description !== undefined
-    ? { description: payload.description.trim() }
-    : {}),
+  ...(payload.description !== undefined ? { description: payload.description.trim() } : {}),
   ...(payload.category !== undefined ? { category: payload.category.trim() } : {}),
   ...(payload.deadline !== undefined ? { deadline: payload.deadline.trim() } : {}),
   ...(payload.status !== undefined ? { status: payload.status.trim() } : {}),
@@ -52,17 +49,11 @@ const getTasks = async (req, res, next) => {
     const { status, category } = req.query;
     const tasks = await prisma.task.findMany({
       where: {
-        ...(typeof status === "string" && ALLOWED_STATUSES.includes(status)
-          ? { status }
-          : {}),
-        ...(typeof category === "string" && ALLOWED_CATEGORIES.includes(category)
-          ? { category }
-          : {}),
+        ...(typeof status === "string" && ALLOWED_STATUSES.includes(status) ? { status } : {}),
+        ...(typeof category === "string" && ALLOWED_CATEGORIES.includes(category) ? { category } : {}),
       },
       include: taskInclude,
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
 
     res.status(200).json(tasks.map(mapTask));
@@ -79,11 +70,7 @@ const getTask = async (req, res, next) => {
       include: taskInclude,
     });
 
-    if (!task) {
-      return res.status(404).json({
-        message: `Task with id ${id} not found`,
-      });
-    }
+    if (!task) return res.status(404).json({ message: `Task with id ${id} not found` });
 
     res.status(200).json(mapTask(task));
   } catch (error) {
@@ -105,9 +92,6 @@ const getMyTasks = async (req, res, next) => {
   }
 };
 
-
-const postTask = async (req, res, next) => {
-  try {
 const postTask = async (req, res, next) => {
   try {
     const taskData = normalizeTaskData({
@@ -138,16 +122,10 @@ const updateTask = async (req, res, next) => {
       include: taskInclude,
     });
 
-    if (!existingTask) {
-      return res.status(404).json({
-        message: `Task with id ${id} not found`,
-      });
-    }
+    if (!existingTask) return res.status(404).json({ message: `Task with id ${id} not found` });
 
     if (existingTask.postedBy.id !== req.user.id) {
-      return res.status(403).json({
-        message: "you can only update your own tasks",
-      });
+      return res.status(403).json({ message: "you can only update your own tasks" });
     }
 
     const taskData = normalizeTaskData(req.body);
@@ -156,9 +134,7 @@ const updateTask = async (req, res, next) => {
       where: { id },
       data: {
         ...taskData,
-        ...(taskData.deadline
-          ? { deadline: new Date(taskData.deadline) }
-          : {}),
+        ...(taskData.deadline ? { deadline: new Date(taskData.deadline) } : {}),
       },
       include: taskInclude,
     });
@@ -177,16 +153,10 @@ const deleteTask = async (req, res, next) => {
       include: taskInclude,
     });
 
-    if (!existingTask) {
-      return res.status(404).json({
-        message: `Task with id ${id} not found`,
-      });
-    }
+    if (!existingTask) return res.status(404).json({ message: `Task with id ${id} not found` });
 
     if (existingTask.postedBy.id !== req.user.id) {
-      return res.status(403).json({
-        message: "you can only delete your own tasks",
-      });
+      return res.status(403).json({ message: "you can only delete your own tasks" });
     }
 
     const deletedTask = await prisma.task.delete({
@@ -194,13 +164,10 @@ const deleteTask = async (req, res, next) => {
       include: taskInclude,
     });
 
-    res.status(200).json({
-      message: "Task deleted successfully",
-      task: mapTask(deletedTask),
-    });
+    res.status(200).json({ message: "Task deleted successfully", task: mapTask(deletedTask) });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { getTasks, getTask, postTask, updateTask, deleteTask, getMyTasks }
+module.exports = { getTasks, getTask, postTask, updateTask, deleteTask, getMyTasks };
