@@ -6,6 +6,8 @@ const ALLOWED_CATEGORIES = [
   "Tutoring",
   "Project",
   "Freelance",
+  "Job",
+  "Other",
 ];
 
 const ALLOWED_STATUSES = ["Open", "Closed"];

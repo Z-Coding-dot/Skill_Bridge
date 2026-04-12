@@ -6,6 +6,9 @@ const applicationsRoutes = require("./applications.routes");
 const notificationsRoutes = require("./notifications.routes");
 const messagesRoutes = require("./messages.routes");
 const dashboardRoutes = require("./dashboard.routes");
+const adminRoutes = require("./admin.routes");
+const feedbackRoutes = require("./feedback.routes");
+
 
 const router = express.Router();
 
@@ -20,5 +23,8 @@ router.use("/applications", applicationsRoutes);
 router.use("/notifications", notificationsRoutes);
 router.use("/messages", messagesRoutes);
 router.use("/dashboard", dashboardRoutes);
+router.use("/admin", adminRoutes);
+router.use("/feedback", feedbackRoutes);
+
 
 module.exports = router;

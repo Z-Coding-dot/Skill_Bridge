@@ -7,12 +7,19 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  user
+  admin
+}
+
 enum TaskCategory {
   Gig
   Internship
   Tutoring
   Project
   Freelance
+  Job
+  Other
 }
 
 enum TaskStatus {
@@ -34,60 +41,63 @@ enum NotificationType {
 }
 
 model User {
-  id                String        @id @default(cuid())
-  email             String        @unique
-  name              String
-  passwordHash      String?
-  avatarUrl         String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  profile           Profile?
-  skills            UserSkill[]
-  postedTasks       Task[]
-  applications      Application[]
-  sentMessages      Message[]     @relation("SentMessages")
-  receivedMessages  Message[]     @relation("ReceivedMessages")
-  notifications     Notification[]
+  id               String         @id @default(cuid())
+  email            String         @unique
+  name             String
+  passwordHash     String?
+  avatarUrl        String?
+  role             Role           @default(user)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  profile          Profile?
+  skills           UserSkill[]
+  postedTasks      Task[]
+  applications     Application[]
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  notifications    Notification[]
+  feedbacks        Feedback[]
 }
 
 model Profile {
   id        String   @id @default(cuid())
   userId    String   @unique
   bio       String   @default("")
+  avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Skill {
-  id         String      @id @default(cuid())
-  label      String      @unique
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  users      UserSkill[]
+  id        String      @id @default(cuid())
+  label     String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  users     UserSkill[]
 }
 
 model UserSkill {
-  userId     String
-  skillId    String
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skill      Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  userId    String
+  skillId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill     Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([userId, skillId])
 }
 
 model Task {
-  id           String          @id @default(cuid())
+  id           String        @id @default(cuid())
   title        String
   description  String
   category     TaskCategory
   deadline     DateTime
   postedById   String
-  status       TaskStatus      @default(Open)
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  postedBy     User            @relation(fields: [postedById], references: [id], onDelete: Cascade)
+  status       TaskStatus    @default(Open)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  postedBy     User          @relation(fields: [postedById], references: [id], onDelete: Cascade)
   applications Application[]
   notifications Notification[]
 
@@ -97,15 +107,15 @@ model Task {
 }
 
 model Application {
-  id            String             @id @default(cuid())
+  id            String            @id @default(cuid())
   taskId        String
   applicantId   String
   pitch         String
-  status        ApplicationStatus  @default(pending)
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  task          Task               @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  applicant     User               @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+  status        ApplicationStatus @default(pending)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  task          Task              @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  applicant     User              @relation(fields: [applicantId], references: [id], onDelete: Cascade)
   notifications Notification[]
 
   @@unique([taskId, applicantId])
@@ -114,32 +124,44 @@ model Application {
 }
 
 model Notification {
-  id            String            @id @default(cuid())
+  id            String           @id @default(cuid())
   userId        String
   type          NotificationType
   title         String
   message       String
   taskId        String?
   applicationId String?
-  createdAt     DateTime          @default(now())
+  createdAt     DateTime         @default(now())
   readAt        DateTime?
-  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  task          Task?             @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  application   Application?      @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task          Task?            @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  application   Application?     @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
 
 model Message {
-  id          String   @id @default(cuid())
-  senderId    String
-  receiverId  String
-  text        String
-  isRead      Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  text       String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 
   @@index([senderId, createdAt])
   @@index([receiverId, createdAt])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String
+  subject   String
+  message   String
+  rating    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

@@ -5,6 +5,7 @@ const {
   postTask,
   updateTask,
   deleteTask,
+  getMyTasks,
 } = require("../controllers/tasks.controller");
 const { requireAuth } = require("../middleware/auth.middleware");
 const validateRequest = require("../middleware/validation.middleware");
@@ -16,6 +17,7 @@ const {
 const router = express.Router();
 
 router.get("/", getTasks);
+router.get("/my-tasks", requireAuth, getMyTasks); 
 router.get("/:id", getTask);
 router.post("/", requireAuth, createTaskValidator, validateRequest, postTask);
 router.put("/:id", requireAuth, updateTaskValidator, validateRequest, updateTask);
