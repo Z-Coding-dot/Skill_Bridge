@@ -1,5 +1,5 @@
 const prisma = require("../lib/prisma");
-const { upload } = require("../config/cloudinary");
+const multer = require("multer");
 const path = require("path");
 
 const storage = multer.diskStorage({
@@ -11,15 +11,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
-const BASE_URL = "";
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 const mapProfile = (user) => ({
   name: user.name,
   email: user.email,
   bio: user.profile?.bio ?? "",
-  // avatar: user.profile?.avatar ? `${BASE_URL}${user.profile.avatar}` : null,
-  avatar: user.profile?.avatar ?? null,
+  avatar: user.profile?.avatar ? `${BASE_URL}${user.profile.avatar}` : null,
   skills: user.skills.map(({ skill }) => ({
     id: skill.id,
     label: skill.label,
@@ -82,8 +80,9 @@ const updateProfile = async (req, res, next) => {
       }
     }
 
-    // const avatarPath = req.file ? `/uploads/avatars/${req.file.filename}` : undefined;
-    const avatarPath = req.file ? req.file.path : undefined;
+    const avatarPath = req.file
+      ? `/uploads/avatars/${req.file.filename}`
+      : undefined;
 
     if (name !== undefined && typeof name !== "string")
       return res.status(400).json({ message: "name must be a string" });
