@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Section from "../../Section/Section";
 import * as m from 'motion/react-client'
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import DarkVeil from "./Hero_background/Background";
 
 export default function Hero() {

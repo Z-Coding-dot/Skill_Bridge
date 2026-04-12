@@ -14,6 +14,7 @@ export class RouteConfig {
     APPLICATIONS = 'applications'
     NOTIFICATIONS = 'notifications'
     SETTINGS = 'settings'
+    USER_PROFILE = 'profile/:id'
     
 }
 export const ROUTES = new RouteConfig();
