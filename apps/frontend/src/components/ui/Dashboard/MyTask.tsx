@@ -37,8 +37,8 @@ export const MyTask = () => {
   return (
     <Section>
       <div className="flex items-center justify-between">
-        <h1 className="2xl:text-xl font-semibold">My Posted Tasks</h1>
-        <button onClick={() => setOpen(true)} className="flex items-center gap-2 2xl:text-base">
+        <h1 className="text-sm sm:text-base 2xl:text-xl font-semibold">My Posted Tasks</h1>
+        <button onClick={() => setOpen(true)} className="flex items-center gap-2 text-sm sm:text-base 2xl:text-base">
           <Plus className="size-5" /> Add Task
         </button>
       </div>
@@ -58,7 +58,7 @@ export const MyTask = () => {
             <div className="p-2 sm:p-5 w-full">
             <div className="flex sm:justify-between max-sm:flex-col-reverse sm:items-center w-full gap-4 text-center sm:text-left">
               <div>
-              <h2 className="font-semibold text-start text-sm sm:text-base 2xl:text-2xl 3xl:text-3xl sm:mb-4"> 
+              <h2 className="font-semibold text-start text-sm sm:text-base 2xl:text-lg 3xl:text-xl sm:mb-4"> 
                 <span>Title: </span>{task.title}</h2>
               </div>
               <div className="flex items-center justify-end gap-4">
@@ -70,7 +70,7 @@ export const MyTask = () => {
               </span>
               <button
                 onClick={() => setEditingTask(task)}
-                className="max-sm:w-20  bg-yellow-500 hover:bg-btnHover sm:py-1.5 sm:px-3 px-2 py-0.5 rounded-lg " >
+                className="max-sm:w-20  bg-yellow-500 hover:bg-yellow-600 sm:py-1.5 sm:px-3 px-2 py-0.5 rounded-lg " >
                 <Pencil className="size-4 text-white text-center hidden sm:block" /> <span className="sm:hidden text-white text-xs font-semibold">Edit</span>
               </button>
               </div>

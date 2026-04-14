@@ -35,7 +35,7 @@ export const Applications = () => {
             key={application.id}
             className="flex flex-col items-start bg-2card w-full rounded-xl p-2 sm:p-5">
             <div className="flex items-center justify-between mb-3 sm:mb-6 w-full">
-            <h3 className="text-sm sm:text-base font-semibold 2xl:text-xl">{application.taskTitle}</h3>
+            <h3 className="text-xs sm:text-base font-semibold 2xl:text-lg 3xl:text-xl">{application.taskTitle}</h3>
             <span className={`${STYLE_STATUS[application.status] ?? "bg-gray-500"} flex items-center text-xs sm:text-sm capitalize font-semibold gap-2 rounded-lg px-2 py-1 text-stone-100`}>
               {application.status === "pending" && <Clock className="h-4 w-4" /> }
               {application.status}

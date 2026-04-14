@@ -1,6 +1,7 @@
 import type { ChatUser } from "@/schemas/message.schema";
 import { Search, User } from "lucide-react";
 import { useState } from "react";
+import { getAvatarUrl } from "../../../../../backend/src/utils/avatar";
 
 type ConversationListProps = {
   users: ChatUser[];
@@ -55,10 +56,21 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
               activeUserId === user.id ? "bg-[var(--bg)] border-l-4 border-[var(--primary)]" : ""
             }`}
           >
-            {user.avatar
+            {/* {user.avatar
               ? <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
               : <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0"><User className="size-5 text-white" /></span>
-            }
+            } */}
+             {user.avatar ? (
+                                <img
+                                  src={getAvatarUrl(user.avatar)}
+                                  alt={user.name}
+                                  className="w-8 h-8 object-cover rounded-full mt-2 mb-1"
+                                />
+                              ) : (
+                                <span className="w-8 h-8 rounded-full mt-2 mb-1 bg-primary flex items-center justify-center">
+                                  <User className="size-5 text-white" />
+                                </span>
+                              )}
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-start mb-1">
                 <h3 className="font-semibold text-sm truncate">{user.name}</h3>

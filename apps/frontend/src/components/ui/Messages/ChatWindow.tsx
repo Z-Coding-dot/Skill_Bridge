@@ -1,6 +1,7 @@
 import type { ChatUser, MessageType } from "@/schemas/message.schema";
 import { ArrowLeft, Send, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { getAvatarUrl } from "../../../../../backend/src/utils/avatar";
 
 type ChatWindowProps = {
   activeUser: ChatUser | null;
@@ -81,10 +82,21 @@ export const ChatWindow = ({
                 <ArrowLeft className="size-4" />
               </button>
               )}
-         {activeUser.avatar
+         {/* {activeUser.avatar
               ? <img src={activeUser.avatar} alt={activeUser.name} className="w-10 h-10 rounded-full object-cover" />
               : <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0"><User className="size-5 text-white" /></span>
-            }
+            } */}
+             {activeUser.avatar ? (
+                                <img
+                                  src={getAvatarUrl(activeUser.avatar)}
+                                  alt={activeUser.name}
+                                  className="w-10 h-10 rounded-full object-cover"
+                                />
+                              ) : (
+                                <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+                                  <User className="size-5 text-white" />
+                                </span>
+                              )}
        <div>
   <h2 className="font-bold text-sm sm:text-base">{activeUser.name}</h2>
   <span className="text-xs flex items-center gap-1">
@@ -109,7 +121,7 @@ export const ChatWindow = ({
                     : "bg-[var(--card-bg)] text-white rounded-bl-none border border-[var(--border)]"
                 }`}
               >
-                <p className="text-stone-50">{msg.text}</p>
+                <p className="text-stone-50 text-xs sm:text-sm 2xl:text-base">{msg.text}</p>
                 <span
                   className={`text-[10px] block text-right mt-1 ${
                     isMe ? "text-white/70" : "text-[var(--text-secondary)]"
@@ -133,7 +145,7 @@ export const ChatWindow = ({
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
-            className="flex-1 bg-[var(--bg)] border-none text-sm rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 focus:ring-0"
+            className="flex-1 bg-[var(--bg)] border-none text-xs sm:text-sm rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 focus:ring-0"
           />
           <button
             onClick={handleSend}

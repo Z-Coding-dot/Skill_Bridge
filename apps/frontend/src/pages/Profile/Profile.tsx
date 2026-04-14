@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/routeConfig";
 import { Header } from "@/layouts/Header/Header";
 import { ProfileSkeleton } from "@/components/Loaders/ProfileSkeleton";
+import { getAvatarUrl } from "../../../../backend/src/utils/avatar";
 
 export const Profile = () => {
   const { data: profile, isPending } = useQuery<ProfileSchema>({
@@ -27,18 +28,20 @@ export const Profile = () => {
     <>
       <Header />
       <Section>
-        <div className="mt-16 flex flex-col sm:flex-row justify-center gap-4 mb-16">
+        <div className="sm:mt-16 mt-10 flex flex-col sm:flex-row justify-center gap-4 mb-16">
           <div className="sm:w-1/3 flex flex-col items-center gap-4">
-            <div className="rounded-lg bg-card-bg p-3 sm:p-5 w-full flex flex-col items-center gap-4">
-              {profile.avatar ? (
-                <img
-                  src={profile.avatar}
-                  alt={profile.name}
-                  className="size-40 rounded-full object-cover"
-                />
-              ) : (
-                <User className="size-40" />
-              )}
+            <div className="rounded-lg bg-primary p-3 sm:p-5 w-full flex flex-col items-center gap-4">
+               {profile.avatar ? (
+                                  <img
+                                    src={getAvatarUrl(profile.avatar)}
+                                    alt={profile.name}
+                                    className="size-40 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <span className="w-8 h-8 rounded-full mt-2 mb-1 bg-primary flex items-center justify-center">
+                                    <User className="size-40" />
+                                  </span>
+                                )}
               <h2 className="text-xl 2xl:text-3xl font-semibold font-sans capitalize">
                 {profile.name}
               </h2>
