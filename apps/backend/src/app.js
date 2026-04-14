@@ -9,6 +9,7 @@ const notFound = require("./middleware/notFound.middleware");
 const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
+app.set('trust proxy', 1);
 const SESSION_MAX_AGE = 1000 * 60 * 60 * 24 * 7;
 
 app.use(
