@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/layouts/Header/Header";
-import MobileFooter from "@/layouts/Footer/MobileFooter";
 import { ChatWindow } from "@/components/ui/Messages/ChatWindow";
 import { ConversationList } from "@/components/ui/Messages/ConversationList";
 import { getConversationMessages, getConversations, markConversationAsRead, sendMessage } from "@/api/messages.api";
@@ -12,6 +11,7 @@ import { useLocation } from "react-router-dom";
 
 export const Messages = () => {
   const location = useLocation();
+  const [initialMessageSent, setInitialMessageSent] = useState(false);
   const locationState = location.state as {
     receiverId?: string;
     initialMessage?: string;
@@ -23,9 +23,14 @@ export const Messages = () => {
   const { user } = useAuth();
   const isMobile = () => window.innerWidth < 640;
 
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(
-   isMobile() ? null : (locationState?.receiverId ?? null),
-  );
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(() => {
+    // 1. If we have a receiverId from the 'Apply' button, ALWAYS select it
+    if (locationState?.receiverId) return locationState.receiverId;
+
+    // 2. Otherwise, if it's desktop, we can handle auto-selection,
+    // but on mobile, we stay on the list (null)
+    return isMobile() ? null : null;
+  });
   const [userWentBack, setUserWentBack] = useState(false);
 
   const { data: conversations = [], isPending } = useQuery<Conversation[]>({
@@ -35,8 +40,14 @@ export const Messages = () => {
   });
 
   // Auto-select first conversation only when not coming from Apply and user didn't go back
-  useEffect(() => {
-    if (!selectedUserId && !locationState?.receiverId && !userWentBack && conversations.length > 0) {
+   useEffect(() => {
+    if (
+      !isMobile() &&
+      !selectedUserId &&
+      !locationState?.receiverId &&
+      !userWentBack &&
+      conversations.length > 0
+    ) {
       setSelectedUserId(conversations[0].id);
     }
   }, [conversations, selectedUserId, locationState?.receiverId, userWentBack]);
@@ -101,6 +112,7 @@ export const Messages = () => {
   const handleSendMessage = async (text: string) => {
     if (!selectedUserId) return;
     window.history.replaceState({}, "");
+    setInitialMessageSent(true);
     await sendMessageMutation.mutateAsync({ receiverId: selectedUserId, text });
   };
 
@@ -109,8 +121,9 @@ export const Messages = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header />
-
+     <div className="hidden sm:flex">
+       <Header />
+      </div>
       <div className="flex overflow-hidden mt-10 sm:mt-16">
         <div className={`${selectedUserId ? "hidden md:flex" : "flex"} w-full sm:w-85 flex-col`}>
           <ConversationList
@@ -128,15 +141,15 @@ export const Messages = () => {
             onSendMessage={handleSendMessage}
             onBack={handleBack}
             initialMessage={
+              !initialMessageSent &&
               selectedUserId === locationState?.receiverId
-                ? locationState?.initialMessage ?? ""
+                ? (locationState?.initialMessage ?? "")
                 : ""
             }
           />
         </div>
       </div>
-
-      <MobileFooter />
+      {/* <MobileFooter /> */}
     </div>
   );
 };
