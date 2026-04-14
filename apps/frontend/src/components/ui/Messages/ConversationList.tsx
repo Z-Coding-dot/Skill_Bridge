@@ -2,6 +2,8 @@ import type { ChatUser } from "@/schemas/message.schema";
 import { Search, User } from "lucide-react";
 import { useState } from "react";
 import { getAvatarUrl } from "../../../../../backend/src/utils/avatar";
+import MobileFooter from "@/layouts/Footer/MobileFooter";
+
 
 type ConversationListProps = {
   users: ChatUser[];
@@ -92,6 +94,7 @@ export const ConversationList = ({ users, activeUserId, onSelectUser }: Conversa
           </div>
         ))}
       </div>
+        <MobileFooter/>
     </div>
   );
 };
