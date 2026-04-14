@@ -83,7 +83,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }: Props) => {
         <div className="flex flex-col gap-3">
           <div>
             <input
-              className="input w-full"
+              className="input w-full text-xs sm:text-base"
               placeholder="Title"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -93,7 +93,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }: Props) => {
 
           <div>
             <textarea
-              className="input sm:min-h-[350px] w-full h-[280px]"
+              className="input sm:min-h-[350px] w-full h-[200px] text-xs sm:text-base"
               placeholder="Description"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}

@@ -11,16 +11,16 @@ const MobileFooter = () => {
   ];
 
   return (
-    <footer className="flex sm:hidden fixed bottom-0 left-0 right-0 backdrop-blur-3xl drop-shadow-2xl shadow-xl">
-      <div className="container px-2 flex justify-between items-center py-1">
+    <footer className="flex items-center justify-center left-4.5 sm:hidden fixed bottom-1 rounded-full mx-auto backdrop-blur-3xl drop-shadow-3xl shadow-xl">
+      <div className="container px-1 flex justify-between items-center py-1">
         {links.map(({ to, label, icon: Icon }) => {
           const isActive = location.pathname === to;
           return (
             <Link to={to} key={to}>
               <button
-                className={`flex flex-col items-center cursor-pointer transition-colors bg-transparent duration-300 ease-in-out`}>
-                <Icon className={`size-6 ${isActive ? "text-text-primary" : "text-[var(--text-primary)]"}`} />
-                <p className={`text-xs ${isActive ? 'text-text-primary' : 'text-[var(--text-primary)]'}`}>{label}</p>
+                className={`${isActive ? "bg-active/20 rounded-full" : "bg-transparent"} flex flex-col items-center justify-center cursor-pointer transition-colors duration-300 ease-in-out`}>
+                <Icon className={`size-4 ${isActive ? "text-text-primary" : "text-white"}`} />
+                <p className={`text-[10px] font-inter ${isActive ? 'text-text-primary' : 'text-white'}`}>{label}</p>
               </button>
             </Link>
           );
