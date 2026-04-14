@@ -124,7 +124,7 @@ export const Messages = () => {
      <div className="hidden sm:flex">
        <Header />
       </div>
-      <div className="flex overflow-hidden mt-10 sm:mt-16">
+      <div className="flex overflow-hidden">
         <div className={`${selectedUserId ? "hidden md:flex" : "flex"} w-full sm:w-85 flex-col`}>
           <ConversationList
             users={conversationList}
