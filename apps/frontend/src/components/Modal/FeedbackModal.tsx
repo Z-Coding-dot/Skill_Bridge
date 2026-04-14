@@ -121,7 +121,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, subject: e.target.value }))
               }
-              className="w-full"
+              className="w-full text-sm sm:text-base"
             />
             {errors.subject && (
               <p className="mt-1 text-xs text-error">{errors.subject}</p>
@@ -136,7 +136,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, message: e.target.value }))
               }
-              className="sm:min-h-[350px] w-full h-[270px]"
+              className="sm:min-h-[350px] w-full h-[200px] text-xs sm:text-base"
             />
             {errors.message && (
               <p className="mt-1 text-xs text-error">{errors.message}</p>
@@ -153,7 +153,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
                   rating: Number(e.target.value),
                 }))
               }
-              className="w-full"
+              className="w-full text-sm sm:text-base"
             >
               <option value={5}>5 - Excellent</option>
               <option value={4}>4 - Good</option>
