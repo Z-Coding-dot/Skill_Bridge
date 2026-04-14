@@ -17,7 +17,9 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(express.json());
+
 app.use(
   session({
     name: SESSION_COOKIE_NAME,
@@ -27,22 +29,19 @@ app.use(
     rolling: true,
     cookie: {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: SESSION_MAX_AGE,
     },
   }),
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use("/uploads", express.static("uploads"));
-app.use("/api", routes);
 
 app.use("/api", routes);
 
 app.use(notFound);
 app.use(errorHandler);
-
 
 module.exports = app;
