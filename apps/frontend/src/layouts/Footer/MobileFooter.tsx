@@ -11,7 +11,7 @@ const MobileFooter = () => {
   ];
 
   return (
-    <footer className="flex items-center justify-center left-4.5 sm:hidden fixed bottom-1 rounded-full mx-auto backdrop-blur-3xl drop-shadow-3xl shadow-xl">
+    <footer className="flex items-center justify-center left-4.5 sm:hidden fixed bottom-1 rounded-full mx-auto backdrop-blur-3xl drop-shadow-3xl bg-2card/100 shadow-xl">
       <div className="container px-1 flex justify-between items-center py-1">
         {links.map(({ to, label, icon: Icon }) => {
           const isActive = location.pathname === to;
