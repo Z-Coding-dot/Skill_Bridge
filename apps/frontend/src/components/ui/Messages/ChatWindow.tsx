@@ -23,7 +23,7 @@ export const ChatWindow = ({
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-   useEffect(() => {
+  useEffect(() => {
     if (initialMessage) setInputValue(initialMessage);
   }, [initialMessage]);
 
@@ -71,41 +71,47 @@ export const ChatWindow = ({
   }
 
   return (
-    <div className="flex flex-col bg-card-bg max-sm:mb-14 h-screen">
-
+    <div className="flex flex-col bg-card-bg h-screen">
       {/* Header */}
       <div className="p-2 sm:p-4 border-b border-[var(--border)] flex items-center gap-2 sm:gap-5">
-          {onBack && (
-              <button
-                onClick={onBack}
-                className="md:hidden p-1 -ml-1 bg-transparent hover:bg-gray-600 rounded-full transition-colors">
-                <ArrowLeft className="size-4" />
-              </button>
-              )}
-         {/* {activeUser.avatar
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="md:hidden p-1 -ml-1 bg-transparent hover:bg-gray-600 rounded-full transition-colors"
+          >
+            <ArrowLeft className="size-4" />
+          </button>
+        )}
+        {/* {activeUser.avatar
               ? <img src={activeUser.avatar} alt={activeUser.name} className="w-10 h-10 rounded-full object-cover" />
               : <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0"><User className="size-5 text-white" /></span>
             } */}
-             {activeUser.avatar ? (
-                                <img
-                                  src={getAvatarUrl(activeUser.avatar)}
-                                  alt={activeUser.name}
-                                  className="w-10 h-10 rounded-full object-cover"
-                                />
-                              ) : (
-                                <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                  <User className="size-5 text-white" />
-                                </span>
-                              )}
-       <div>
-  <h2 className="font-bold text-sm sm:text-base">{activeUser.name}</h2>
-  <span className="text-xs flex items-center gap-1">
-    <span className={`w-2 h-2 rounded-full ${activeUser.isOnline ? "bg-[var(--success)]" : "bg-gray-500"}`} />
-    <p className={activeUser.isOnline ? "text-[var(--success)]" : "text-gray-500"}>
-      {activeUser.isOnline ? "Online" : "Offline"}
-    </p>
-  </span>
-</div>
+        {activeUser.avatar ? (
+          <img
+            src={getAvatarUrl(activeUser.avatar)}
+            alt={activeUser.name}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        ) : (
+          <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <User className="size-5 text-white" />
+          </span>
+        )}
+        <div>
+          <h2 className="font-bold text-sm sm:text-base">{activeUser.name}</h2>
+          <span className="text-xs flex items-center gap-1">
+            <span
+              className={`w-2 h-2 rounded-full ${activeUser.isOnline ? "bg-[var(--success)]" : "bg-gray-500"}`}
+            />
+            <p
+              className={
+                activeUser.isOnline ? "text-[var(--success)]" : "text-gray-500"
+              }
+            >
+              {activeUser.isOnline ? "Online" : "Offline"}
+            </p>
+          </span>
+        </div>
       </div>
 
       {/* Messages */}
@@ -113,7 +119,10 @@ export const ChatWindow = ({
         {messages.map((msg) => {
           const isMe = msg.senderId === currentUserId;
           return (
-            <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+            <div
+              key={msg.id}
+              className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+            >
               <div
                 className={`max-w-[70%] p-3 rounded-2xl text-sm sm:text-base ${
                   isMe
@@ -121,7 +130,9 @@ export const ChatWindow = ({
                     : "bg-[var(--card-bg)] text-white rounded-bl-none border border-[var(--border)]"
                 }`}
               >
-                <p className="text-stone-50 text-xs sm:text-sm 2xl:text-base">{msg.text}</p>
+                <p className="text-stone-50 text-xs sm:text-sm 2xl:text-base">
+                  {msg.text}
+                </p>
                 <span
                   className={`text-[10px] block text-right mt-1 ${
                     isMe ? "text-white/70" : "text-[var(--text-secondary)]"
@@ -149,12 +160,12 @@ export const ChatWindow = ({
           />
           <button
             onClick={handleSend}
-            className="bg-[var(--primary)] text-white p-2 rounded-xl hover:bg-opacity-90 active:scale-95 transition-transform" >
+            className="bg-[var(--primary)] text-white p-2 rounded-xl hover:bg-opacity-90 active:scale-95 transition-transform"
+          >
             <Send className="size-5 sm:size-6" />
           </button>
         </div>
       </div>
-
     </div>
   );
 };
